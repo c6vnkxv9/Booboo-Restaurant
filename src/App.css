@@ -1,0 +1,32 @@
+/* Bootstrap 語意色自訂變數 */
+:root {
+  --bs-primary:   #E6ACA3;
+  --bs-success:   #E94B3C;
+  --bs-secondary: #FAEDE7;
+  --bs-accent:    #AB8866;
+  --bs-dark:      #675335;
+  --bs-light:     #FFFFFF;
+}
+
+
+/* 確保 body 使用自訂背景色 */
+body {
+  background-color: var(--bs-secondary);
+  color: var(--bs-primary);
+}
+
+/* 覆蓋 Bootstrap 按鈕樣式，確保使用自訂顏色 */
+.btn-primary {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: var(--bs-dark) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--bs-secondary) !important;
+  border-color: var(--bs-secondary) !important;
+  color: var(--bs-dark) !important;
+}
+
