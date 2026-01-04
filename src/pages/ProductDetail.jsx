@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { getAdminProductByIdAPI, getAllAdminProductsAPI } from '../api/products'
+import { getAdminProductByIdAPI, getAllAdminProductsAPI, updateAdminProductAPI } from '../api/products'
+import ProductEditModal from '../components/ProductEditModal'
 
 export default function ProductDetail() {
   const { id } = useParams()
@@ -8,6 +9,7 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+  const [showEditModal, setShowEditModal] = useState(false)
 
   const fetchProduct = useCallback(async () => {
     try {
@@ -111,6 +113,29 @@ export default function ProductDetail() {
   }
 
   const categoryName = categoryNames[product.category] || product.category || '未分類'
+
+  // 處理保存編輯
+  const handleSaveEdit = async (formData) => {
+    try {
+      // API 需要將數據包裝在 data 對象中，並包含原有的圖片數據
+      const requestData = {
+        data: {
+          ...formData,
+          // 保留原有的圖片數據（因為目前還沒有圖片編輯功能）
+          imageUrl: product.imageUrl || product.imagesUrl?.[0] || '',
+          imagesUrl: product.imagesUrl || (product.imageUrl ? [product.imageUrl] : [])
+        }
+      }
+      await updateAdminProductAPI(id, requestData)
+      // 重新獲取產品數據以確保同步
+      await fetchProduct()
+      // 可以顯示成功提示
+      alert('商品資訊已更新')
+    } catch (err) {
+      console.error('更新商品失敗:', err)
+      throw new Error(err.response?.data?.message || '更新商品失敗')
+    }
+  }
 
   return (
     <div className="container-fluid min-vh-100 py-4" style={{ backgroundColor: 'var(--bs-secondary)' }}>
@@ -564,6 +589,7 @@ export default function ProductDetail() {
                       borderColor: 'var(--bs-primary)',
                       color: 'var(--bs-dark)'
                     }}
+                    onClick={() => setShowEditModal(true)}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor = '#d49c95'
                       e.currentTarget.style.transform = 'translateY(-2px)'
@@ -582,6 +608,14 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
+
+      {/* 編輯Modal */}
+      <ProductEditModal
+        show={showEditModal}
+        product={product}
+        onClose={() => setShowEditModal(false)}
+        onSave={handleSaveEdit}
+      />
     </div>
   )
 }
