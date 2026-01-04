@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { auth } from '../utils/auth'
-
+import { adminSigninAPI } from '../api/auth'
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -26,25 +25,20 @@ export default function Login() {
     }
 
     try {
-      // 這裡可以連接真實的 API
-      // const response = await fetch('https://api.example.com/login', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({ username, password })
-      // })
-      // const data = await response.json()
+      // 調用登入 API，token 會自動保存到 sessionStorage
+      const response = await adminSigninAPI(username, password)
       
-      // 執行登入
-      if (auth.login(username, password)) {
+      // 根據 API 響應判斷登入是否成功
+      if (response.success && response.token) {
         // 登入成功，導航到產品頁面
         navigate('/products', { replace: true })
       } else {
-        setError('登入失敗，請檢查用戶名和密碼')
+        setError(response.message || '登入失敗')
       }
     } catch (err) {
-      setError('登入時發生錯誤，請稍後再試')
+      // 處理錯誤響應
+      const errorMessage = err.response?.data?.message || err.message || '登入時發生錯誤'
+      setError(errorMessage)
     }
   }
 
@@ -54,7 +48,7 @@ export default function Login() {
         <div className="mb-4">
           <h1 className="mb-0" style={{ color: '#675335', fontWeight: 'bold', fontSize: '2rem' }}>後台系統</h1>
         </div>
-        <div className="card shadow-lg mx-auto" style={{ width: '100%', maxWidth: '40%', borderRadius: '15px', border: 'none' }}>
+        <div className="card shadow-lg mx-auto" style={{ width: '100%', maxWidth: '800px', minWidth: '300px', borderRadius: '15px', border: 'none' }}>
           <div className="card-body p-5 d-flex align-items-center justify-content-center">
             <img src="/logo.png" alt="BooBoo食堂" className="img-fluid mb-3 me-5" style={{ width: '150px', height: '150px', objectFit: 'cover' }} />
             <form className="flex-grow-1" onSubmit={handleSubmit}>
@@ -91,8 +85,8 @@ export default function Login() {
               {error && (
                 <div className="alert alert-danger mb-4" role="alert" style={{ borderRadius: '8px', border: 'none' }}>
                   {error}
-                </div>
-              )}
+                </div>)
+              }
               <button type="submit" className="btn btn-primary w-100" style={{ borderRadius: '8px', padding: '12px', fontSize: '1.1rem', fontWeight: '600' }}>
                 登入
               </button>
