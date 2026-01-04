@@ -2,8 +2,7 @@
 import axiosInstance from './axios'
 import axios from 'axios'
 import { API_CONFIG } from '../config/api'
-
-const BASE_DOMAIN = 'https://ec-course-api.hexschool.io'
+import { auth } from '../utils/auth'
 
 /**
  * 管理員登入 API
@@ -13,8 +12,10 @@ const BASE_DOMAIN = 'https://ec-course-api.hexschool.io'
  * @returns {Promise} API 響應
  */
 export const adminSigninAPI = async (username, password) => {
+  // 登入 API 在 /v2/admin/signin，不在 /v2/api/{api_path}/ 路徑下
+  const baseUrl = API_CONFIG.BASE_URL
   const response = await axios.post(
-    `${BASE_DOMAIN}/v2/admin/signin`,
+    `${baseUrl}admin/signin`,
     {
       username,
       password
@@ -25,31 +26,37 @@ export const adminSigninAPI = async (username, password) => {
       }
     }
   )
+  
+  // 登入成功後，保存 token 和相關資訊到 sessionStorage
+  if (response.data.success && response.data.token) {
+    auth.setToken(response.data.token, response.data.uid, response.data.expired)
+    auth.login(username, password)
+  }
+  
   return response.data
 }
 
 /**
  * 登出 API
- * POST /v2/logout
+ * POST /v2/api/{api_path}/logout
  * @returns {Promise} API 響應
  */
 export const logoutAPI = async () => {
-  const response = await axios.post(
-    `${BASE_DOMAIN}/v2/logout`,
-    {},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_CONFIG.API_KEY}`
-      }
-    }
-  )
-  return response.data
+  try {
+    const response = await axiosInstance.post('/logout')
+    // 登出成功後清除 token
+    auth.logout()
+    return response.data
+  } catch (error) {
+    // 即使 API 失敗，也清除本地 token
+    auth.logout()
+    throw error
+  }
 }
 
 /**
  * 檢查用戶登入狀態 API
- * POST /v2/api/user/check
+ * POST /api/user/check
  * @returns {Promise} API 響應
  */
 export const checkUserAPI = async () => {
@@ -59,5 +66,5 @@ export const checkUserAPI = async () => {
 
 // 為了向後兼容，保留舊的函數名稱
 export const loginAPI = adminSigninAPI
-export const checkLoginAPI = checkUserAPI
+// export const checkLoginAPI = checkUserAPI
 

@@ -1,29 +1,60 @@
-// 簡單的認證工具函數
 export const auth = {
-  // 檢查是否已登入
   isAuthenticated: () => {
-    return localStorage.getItem('isAuthenticated') === 'true'
+    // 優先檢查 token 是否存在且未過期
+    const token = sessionStorage.getItem('token')
+    if (token) {
+      // 如果有 token，檢查是否過期
+      const expired = sessionStorage.getItem('expired')
+      if (expired) {
+        const isExpired = Date.now() > parseInt(expired, 10)
+        if (!isExpired) {
+          return true
+        }
+      } else {
+        // 如果有 token 但沒有過期時間，認為已認證
+        return true
+      }
+    }
+    // 如果沒有 token 或 token 已過期，則檢查 isAuthenticated 標誌（向後兼容）
+    return sessionStorage.getItem('isAuthenticated') === 'true'
   },
-
-  // 登入
   login: (username, password) => {
-    // 簡單的驗證邏輯（實際應用中應該連接到後端 API）
     if (username && password) {
-      localStorage.setItem('isAuthenticated', 'true')
-      localStorage.setItem('username', username)
+      sessionStorage.setItem('isAuthenticated', 'true')
+      sessionStorage.setItem('username', username)
       return true
     }
     return false
   },
-
-  // 登出
   logout: () => {
-    localStorage.removeItem('isAuthenticated')
-    localStorage.removeItem('username')
+    sessionStorage.removeItem('isAuthenticated')
+    sessionStorage.removeItem('username')
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('uid')
+    sessionStorage.removeItem('expired')
   },
-
-  // 獲取當前用戶名
   getUsername: () => {
-    return localStorage.getItem('username') || ''
+    return sessionStorage.getItem('username') || ''
+  },
+  setToken: (token, uid, expired) => {
+    sessionStorage.setItem('token', token)
+    sessionStorage.setItem('uid', uid)
+    sessionStorage.setItem('expired', expired.toString())
+  },
+  getToken: () => {
+    return sessionStorage.getItem('token') || ''
+  },
+  getUid: () => {
+    return sessionStorage.getItem('uid') || ''
+  },
+  isTokenExpired: () => {
+    const expired = sessionStorage.getItem('expired')
+    if (!expired) return true
+    return Date.now() > parseInt(expired, 10)
+  },
+  clearToken: () => {
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('uid')
+    sessionStorage.removeItem('expired')
   }
 }
