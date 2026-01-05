@@ -1,8 +1,10 @@
 import { useState, useEffect, useMemo } from 'react'
-import { getArticlesAPI } from '../api/article'
+import { getAdminArticlesAPI } from '../api/article'
 import ListLayout from '../components/ListLayout'
 import CategorySidebar from '../components/CategorySidebar'
 import ArticleCard from '../components/ArticleCard'
+import PermissionDenied from '../components/PermissionDenied'
+import { isPermissionDenied } from '../utils/permissions'
 
 const CATEGORIES = [
   { id: 'all', name: '全部文章', icon: '📰' },
@@ -20,6 +22,7 @@ export default function Articles() {
   const [allArticles, setAllArticles] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [permissionError, setPermissionError] = useState(null)
   const [activeCategory, setActiveCategory] = useState('all')
   const [sortBy, setSortBy] = useState('newest')
 
@@ -31,11 +34,17 @@ export default function Articles() {
     try {
       setLoading(true)
       setError(null)
-      const response = await getArticlesAPI()
+      setPermissionError(null)
+      const response = await getAdminArticlesAPI()
       const articlesData = response.articles || []
       setAllArticles(articlesData)
     } catch (err) {
-      setError('獲取文章列表失敗，請稍後再試')
+      // 檢查是否為權限不足錯誤
+      if (isPermissionDenied(err)) {
+        setPermissionError(err)
+      } else {
+        setError('獲取文章列表失敗，請稍後再試')
+      }
     } finally {
       setLoading(false)
     }
@@ -70,6 +79,13 @@ export default function Articles() {
           <p className="mt-3" style={{ color: 'var(--bs-dark)' }}>正在載入文章列表...</p>
         </div>
       </div>
+    )
+  }
+
+  // 如果權限不足，顯示權限錯誤提示
+  if (permissionError) {
+    return (
+        <PermissionDenied error={permissionError} onRetry={fetchArticles} />
     )
   }
 

@@ -4,7 +4,9 @@ import ListLayout from '../components/ListLayout'
 import CategorySidebar from '../components/CategorySidebar'
 import ProductCard from '../components/ProductCard'
 import PromotionBanner from '../components/PromotionBanner'
+import PermissionDenied from '../components/PermissionDenied'
 import { uploadAndSaveToLocal } from '../api/imgUpload'
+import { isPermissionDenied } from '../utils/permissions'
 const CATEGORIES = [
   { id: 'all', name: '全部商品', icon: '📋' },
   { id: 'mainDishes', name: '定食套餐', icon: '🍱' },
@@ -25,32 +27,29 @@ export default function Products() {
   const [allProducts, setAllProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [permissionError, setPermissionError] = useState(null)
   const [activeCategory, setActiveCategory] = useState('all')
   const [sortBy, setSortBy] = useState('popular')
 
   useEffect(() => {
     fetchProducts()
   }, [])
-
   const fetchProducts = async () => {
-    const images = [
-      'Gemini_Generated_Image_5v4ky25v4ky25v4k.png',
-      'Gemini_Generated_Image_beo86qbeo86qbeo8.png',
-      'Gemini_Generated_Image_kzf6mrkzf6mrkzf6.png'
-    ];
-    
-    uploadAndSaveToLocal(images).then(urls => {
-      console.log('所有圖片上傳結果：', urls);
-    });
     try {
       setLoading(true)
       setError(null)
+      setPermissionError(null)
       const response = await getAllAdminProductsAPI()
-      let productsData = response.products || [] 
-      productsData = Object.values(productsData)     
-      setAllProducts(productsData)
+      const productsData = response.products || [] 
+      const productsArray = Array.isArray(productsData) ? productsData : Object.values(productsData)
+      setAllProducts(productsArray)
     } catch (err) {
-      setError('獲取產品列表失敗，請稍後再試')
+      // 檢查是否為權限不足錯誤
+      if (isPermissionDenied(err)) {
+        setPermissionError(err)
+      } else {
+        setError('獲取產品列表失敗，請稍後再試')
+      }
     } finally {
       setLoading(false)
     }
@@ -84,6 +83,13 @@ export default function Products() {
           <p className="mt-3" style={{ color: 'var(--bs-dark)' }}>正在載入產品列表...</p>
         </div>
       </div>
+    )
+  }
+
+  // 如果權限不足，顯示權限錯誤提示
+  if (permissionError) {
+    return (
+        <PermissionDenied error={permissionError} onRetry={fetchProducts} />
     )
   }
 

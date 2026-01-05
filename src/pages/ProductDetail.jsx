@@ -2,12 +2,15 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getAdminProductByIdAPI, getAllAdminProductsAPI, updateAdminProductAPI } from '../api/products'
 import ProductEditModal from '../components/ProductEditModal'
+import PermissionDenied from '../components/PermissionDenied'
+import { isPermissionDenied } from '../utils/permissions'
 
 export default function ProductDetail() {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [permissionError, setPermissionError] = useState(null)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [showEditModal, setShowEditModal] = useState(false)
 
@@ -15,6 +18,7 @@ export default function ProductDetail() {
     try {
       setLoading(true)
       setError(null)
+      setPermissionError(null)
       
       // 先嘗試使用單個產品 API
       try {
@@ -26,6 +30,12 @@ export default function ProductDetail() {
           return
         }
       } catch (singleProductError) {
+        // 檢查是否為權限不足錯誤
+        if (isPermissionDenied(singleProductError)) {
+          setPermissionError(singleProductError)
+          setLoading(false)
+          return
+        }
         // 如果單個產品 API 失敗，則從所有產品列表中查找
         console.log('單個產品 API 失敗，嘗試從列表中獲取:', singleProductError)
       }
@@ -51,7 +61,12 @@ export default function ProductDetail() {
       }
     } catch (err) {
       console.error('獲取產品詳情失敗:', err)
-      setError('獲取產品詳情失敗，請稍後再試')
+      // 檢查是否為權限不足錯誤
+      if (isPermissionDenied(err)) {
+        setPermissionError(err)
+      } else {
+        setError('獲取產品詳情失敗，請稍後再試')
+      }
     } finally {
       setLoading(false)
     }
@@ -71,6 +86,20 @@ export default function ProductDetail() {
           <p className="mt-3" style={{ color: 'var(--bs-dark)' }}>正在載入產品詳情...</p>
         </div>
       </div>
+    )
+  }
+
+  // 如果權限不足，顯示權限錯誤提示
+  if (permissionError) {
+    return (
+      <>
+        <PermissionDenied error={permissionError} onRetry={fetchProduct} />
+        <div className="mt-3 text-center">
+          <Link to="/products" className="btn btn-outline-primary">
+            返回產品列表
+          </Link>
+        </div>
+      </>
     )
   }
 
@@ -121,6 +150,12 @@ export default function ProductDetail() {
       alert('商品資訊已更新')
     } catch (err) {
       console.error('更新商品失敗:', err)
+      // 如果是權限不足，顯示友好提示
+      if (isPermissionDenied(err)) {
+        alert('您沒有權限更新商品資訊')
+        setShowEditModal(false)
+        return
+      }
       throw new Error(err.response?.data?.message || '更新商品失敗')
     }
   }
