@@ -1,16 +1,17 @@
 import { useState, useEffect, useMemo } from 'react'
-import { getAdminArticlesAPI } from '../api/article'
+import { getArticlesAPI } from '../api/article'
 import ListLayout from '../components/ListLayout'
 import CategorySidebar from '../components/CategorySidebar'
 import ArticleCard from '../components/ArticleCard'
 import PermissionDenied from '../components/PermissionDenied'
 import { isPermissionDenied } from '../utils/permissions'
-
 const CATEGORIES = [
   { id: 'all', name: '全部文章', icon: '📰' },
-  { id: 'news', name: '最新消息', icon: '✨' },
-  { id: 'events', name: '活動資訊', icon: '🎁' },
-  { id: 'blog', name: '美食日誌', icon: '📝' }
+  { id: 'customerStories', name: '顧客故事', icon: '👥' },
+  { id: 'ownerDaily', name: '店主日常', icon: '👨‍🍳' },
+  { id: 'holidayInfo', name: '店休資訊', icon: '📅' },
+  { id: 'mediaReports', name: '媒體報導', icon: '📺' },
+  { id: 'charityEvents', name: '公益活動', icon: '❤️' },
 ]
 
 const SORT_OPTIONS = [
@@ -28,6 +29,7 @@ export default function Articles() {
 
   useEffect(() => {
     fetchArticles()
+    // uploadAndSaveToLocal(['Gemini_Generated_Image_2yyxph2yyxph2yyx.png'])
   }, [])
 
   const fetchArticles = async () => {
@@ -35,7 +37,7 @@ export default function Articles() {
       setLoading(true)
       setError(null)
       setPermissionError(null)
-      const response = await getAdminArticlesAPI()
+      const response = await getArticlesAPI()
       const articlesData = response.articles || []
       setAllArticles(articlesData)
     } catch (err) {
@@ -83,6 +85,8 @@ export default function Articles() {
   }
 
   // 如果權限不足，顯示權限錯誤提示
+  //https://storage.googleapis.com/vue-course-api.appspot.com/booboo/1767627615866.png
+  //https://storage.googleapis.com/vue-course-api.appspot.com/booboo/1767627615830.png
   if (permissionError) {
     return (
         <PermissionDenied error={permissionError} onRetry={fetchArticles} />
