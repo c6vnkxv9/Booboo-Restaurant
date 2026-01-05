@@ -13,7 +13,8 @@ const axiosInstance = axios.create({
 // 請求攔截器 - 自動添加 Token
 axiosInstance.interceptors.request.use(
   (config) => {
-    // 從 sessionStorage 獲取 token 並自動添加到 header
+    // 這確保即使在 Vercel 等部署環境中，baseURL 也不會被錯誤解析
+    config.baseURL = `${API_CONFIG.BASE_URL}api/${API_CONFIG.API_KEY}`
     const token = auth.getToken()
     if (token) {
       config.headers['Authorization'] = token
@@ -52,7 +53,9 @@ axiosInstance.interceptors.response.use(
       console.error('API Error:', {
         status,
         data: error.response.data,
-        url: error.config?.url
+        url: error.config?.url,
+        baseURL: error.config?.baseURL,
+        fullURL: error.config?.baseURL ? `${error.config.baseURL}${error.config.url}` : error.config?.url
       })
     } else if (error.request) {
       // 請求已發出但沒有收到響應
