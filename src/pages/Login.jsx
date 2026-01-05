@@ -7,14 +7,6 @@ export default function Login() {
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
-  // 使用 guest middleware - 如果已經登入，重定向到產品頁面
-  // useEffect(() => {
-  //   const { shouldRedirect, redirect } = guestMiddleware()
-  //   if (shouldRedirect && redirect) {
-  //     navigate(redirect, { replace: true })
-  //   }
-  // }, [navigate])
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
@@ -25,32 +17,28 @@ export default function Login() {
     }
 
     try {
-      // 調用登入 API，token 會自動保存到 sessionStorage
       const response = await adminSigninAPI(username, password)
-      
-      // 根據 API 響應判斷登入是否成功
       if (response.success && response.token) {
-        // 登入成功，導航到產品頁面
         navigate('/products', { replace: true })
       } else {
         setError(response.message || '登入失敗')
       }
     } catch (err) {
-      // 處理錯誤響應
       const errorMessage = err.response?.data?.message || err.message || '登入時發生錯誤'
       setError(errorMessage)
     }
   }
 
   return (
-    <div className="container-fluid vh-100 d-flex align-items-center justify-content-center" style={{ background: 'linear-gradient(135deg, #FAEDE7 0%, #E6ACA3 100%)' }}>
-      <div className="text-center w-100">
+    <div className="container-fluid vh-100 d-flex align-items-center justify-content-center">
+      <img src="/japanese-paper.svg" alt="BooBoo食堂" className="img-fluid" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }} />
+      <div className="text-center w-100 position-absolute top-50 start-50 translate-middle">
         <div className="mb-4">
           <h1 className="mb-0" style={{ color: '#675335', fontWeight: 'bold', fontSize: '2rem' }}>後台系統</h1>
         </div>
-        <div className="card shadow-lg mx-auto" style={{ width: '100%', maxWidth: '800px', minWidth: '300px', borderRadius: '15px', border: 'none' }}>
+        <div className="card shadow-lg mx-auto" style={{ width: '90%', maxWidth: '800px', minWidth: '250px', borderRadius: '15px', border: 'none' }}>
           <div className="card-body p-5 d-flex align-items-center justify-content-center">
-            <img src="/logo.png" alt="BooBoo食堂" className="img-fluid mb-3 me-5" style={{ width: '150px', height: '150px', objectFit: 'cover' }} />
+            <img src="/logo.png" alt="BooBoo食堂" className="img-fluid d-none d-md-block mb-3 me-5" style={{ width: '150px', height: '150px', objectFit: 'cover' }} />
             <form className="flex-grow-1" onSubmit={handleSubmit}>
               <div className="mb-4">
                 <div className="d-flex align-items-center mb-2">
