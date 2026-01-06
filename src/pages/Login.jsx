@@ -30,8 +30,7 @@ export default function Login() {
   }
 
   return (
-      <main className="container-fluid vh-100 d-flex align-items-center justify-content-center position-relative flex-column">
-        <img src="/japanese-paper.jpg" alt="BooBoo食堂" className="img-fluid" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }} />
+      <main className="container-fluid vh-100 d-flex align-items-center justify-content-center position-relative flex-column" style={{ backgroundImage: 'url(/japanese-paper.jpg)', backgroundSize: '200px 200px', backgroundRepeat: 'repeat' }}>
         <h1 className="display-6 fw-bold mb-4 d-flex align-items-center gap-3" style={{ color: '#675335', letterSpacing: '0.05em' }}>
           <span 
             className="d-block bg-primary rounded-pill shadow-sm" 
