@@ -1,9 +1,7 @@
 export const auth = {
   isAuthenticated: () => {
-    // 優先檢查 token 是否存在且未過期
     const token = sessionStorage.getItem('token')
     if (token) {
-      // 如果有 token，檢查是否過期
       const expired = sessionStorage.getItem('expired')
       if (expired) {
         const isExpired = Date.now() > parseInt(expired, 10)
@@ -11,7 +9,6 @@ export const auth = {
           return true
         }
       } else {
-        // 如果有 token 但沒有過期時間，認為已認證
         return true
       }
     }

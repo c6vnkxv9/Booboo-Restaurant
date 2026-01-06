@@ -16,7 +16,7 @@ export const getProductsAPI = async () => {
  * @returns {Promise} API 響應
  */
 export const getProductByIdAPI = async (id) => {
-  const response = await axiosInstance.get(`/products/${id}`)
+  const response = await axiosInstance.get(`/product/${id}`)
   return response.data
 }
 

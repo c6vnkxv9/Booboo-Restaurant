@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-
+import { CATEGORIES, SORT_OPTIONS } from '@/const/PRODUCT_CATEGEORIES'
 /**
  * 產品編輯Modal組件
  * @param {boolean} show - 是否顯示Modal
@@ -60,13 +60,6 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
       setLoading(false)
     }
   }
-
-  const categories = [
-    { value: 'mainDishes', label: '主餐類' },
-    { value: 'sideDishes', label: '小菜類' },
-    { value: 'soups', label: '湯品類' },
-    { value: 'drinks', label: '飲料類' }
-  ]
 
   if (!show) return null
 
@@ -136,9 +129,9 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
                     }}
                   >
                     <option value="">請選擇分類</option>
-                    {categories.map(cat => (
-                      <option key={cat.value} value={cat.value}>
-                        {cat.label}
+                    {CATEGORIES.map(cat => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
                       </option>
                     ))}
                   </select>

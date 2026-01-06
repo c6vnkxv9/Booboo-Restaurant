@@ -1,10 +1,6 @@
 // 認證 Middleware
 import { auth } from '../utils/auth'
 
-/**
- * 認證中間件 - 檢查用戶是否已登入
- * @returns {Object} { isAuthenticated: boolean, redirect: string | null }
- */
 export const authMiddleware = () => {
   const isAuthenticated = auth.isAuthenticated()
   
@@ -21,10 +17,7 @@ export const authMiddleware = () => {
   }
 }
 
-/**
- * 反向認證中間件 - 如果已登入則重定向（用於登入頁面）
- * @returns {Object} { shouldRedirect: boolean, redirect: string | null }
- */
+
 export const guestMiddleware = () => {
   const isAuthenticated = auth.isAuthenticated()
   
