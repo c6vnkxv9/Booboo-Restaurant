@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { getAdminProductByIdAPI, getAllAdminProductsAPI, updateAdminProductAPI } from '../api/products'
-import ProductEditModal from '../components/ProductEditModal'
-import PermissionDenied from '../components/PermissionDenied'
-import { isPermissionDenied } from '../utils/permissions'
-import { CATEGORIES } from '../const/PRODUCT_CATEGEORIES'
+import { getProductByIdAPI } from '@/api/products'
+import ProductEditModal from '@/components/ProductEditModal'
+import PermissionDenied from '@/components/PermissionDenied'
+import { isPermissionDenied } from '@/utils/permissions'
+import { CATEGORIES } from '@/const/PRODUCT_CATEGEORIES'
 export default function ProductDetail() {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
@@ -22,7 +22,7 @@ export default function ProductDetail() {
       
       // 先嘗試使用單個產品 API
       try {
-        const response = await getAdminProductByIdAPI(id)
+        const response = await getProductByIdAPI(id)
         const productData = response.product || response.data || response
         if (productData) {
           setProduct(productData)
@@ -36,28 +36,6 @@ export default function ProductDetail() {
           setLoading(false)
           return
         }
-        // 如果單個產品 API 失敗，則從所有產品列表中查找
-        console.log('單個產品 API 失敗，嘗試從列表中獲取:', singleProductError)
-      }
-
-      // 從所有產品列表中查找
-      const response = await getAllAdminProductsAPI()
-      let productsData = response.products || response.data || response || []
-      
-      // 如果是對象（不是數組），將對象轉換為數組
-      if (!Array.isArray(productsData) && typeof productsData === 'object') {
-        productsData = Object.values(productsData)
-      }
-      
-      const productsArray = Array.isArray(productsData) ? productsData : []
-      const foundProduct = productsArray.find(
-        (p) => p.id === id || p.id === parseInt(id) || p._id === id
-      )
-      
-      if (foundProduct) {
-        setProduct(foundProduct)
-      } else {
-        setError('產品不存在')
       }
     } catch (err) {
       console.error('獲取產品詳情失敗:', err)
@@ -318,13 +296,13 @@ export default function ProductDetail() {
 
               {/* 底部操作按鈕 */}
               <div className="mt-auto border-top pt-4 d-flex justify-content-end gap-3">
-                <button
+                {/* <button
                   className="btn btn-primary py-1 rounded-3 fw-bold"
                   style={{ background: 'linear-gradient(to right, var(--bs-primary), var(--bs-primary-dark, #d88a7d))' }}
                   onClick={() => setShowEditModal(true)}
                 >
                   編輯資訊
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onEdit, onDelete }) {
   return (
     <div className="col-12 col-sm-6 col-lg-4">
       <div className="product-card-group-new">
@@ -88,6 +88,62 @@ export default function ProductCard({ product }) {
                 >
                   NT$ {(product.price || 0).toLocaleString()}
                 </span>
+                {onEdit && (
+                  <button
+                    className="btn btn-link p-0 text-decoration-none d-flex align-items-center"
+                    style={{ 
+                      color: 'var(--bs-primary)',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      border: 'none',
+                      transition: 'color 0.3s'
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      onEdit(product)
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = 'var(--bs-primary-dark, #c85a4a)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = 'var(--bs-primary)'
+                    }}
+                  >
+                    編輯
+                    <span className="material-symbols-outlined ms-1" style={{ fontSize: '1rem' }}>
+                      edit
+                    </span>
+                  </button>
+                )}
+                {onDelete && (
+                  <button
+                    className="btn btn-link p-0 text-decoration-none d-flex align-items-center"
+                    style={{ 
+                      color: 'var(--bs-primary)',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      border: 'none',
+                      transition: 'color 0.3s'
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      onEdit(product)
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = 'var(--bs-primary-dark, #c85a4a)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = 'var(--bs-primary)'
+                    }}
+                  >
+                    刪除
+                    <span className="material-symbols-outlined ms-1" style={{ fontSize: '1rem' }}>
+                      delete
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
           </div>

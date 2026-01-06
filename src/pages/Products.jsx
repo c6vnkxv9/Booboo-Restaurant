@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
-import { getAllAdminProductsAPI } from '@/api/products'
+import { getAllAdminProductsAPI, createAdminProductAPI, updateAdminProductAPI, deleteAdminProductAPI } from '@/api/products'
 import ListLayout from '@/components/ListLayout'
 import CategorySidebar from '@/components/CategorySidebar'
 import ProductCard from '@/components/ProductCard'
+import ProductEditModal from '@/components/ProductEditModal'
 import PermissionDenied from '@/components/PermissionDenied'
 import { isPermissionDenied } from '@/utils/permissions'
 import { CATEGORIES, SORT_OPTIONS } from '@/const/PRODUCT_CATEGEORIES'
@@ -15,6 +16,8 @@ export default function Products() {
   const [permissionError, setPermissionError] = useState(null)
   const [activeCategory, setActiveCategory] = useState('all')
   const [sortBy, setSortBy] = useState('newest')
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [editingProduct, setEditingProduct] = useState(null)
 
   useEffect(() => {
     fetchProducts()
@@ -60,6 +63,63 @@ export default function Products() {
     }
     return filtered
   }, [allProducts, activeCategory, sortBy])
+
+  // 處理新增商品
+  const handleAddProduct = () => {
+    setEditingProduct(null)
+    setShowEditModal(true)
+
+  }
+
+  // 處理編輯商品
+  const handleEditProduct = (product) => {
+    setEditingProduct(product)
+    setShowEditModal(true)
+  }
+  const handleDeleteProduct = (product) => {
+    deleteAdminProductAPI(product.id)
+    fetchProducts()
+  }
+
+  // 處理關閉 Modal
+  const handleCloseModal = () => {
+    setShowEditModal(false)
+    setEditingProduct(null)
+  }
+
+  // 處理保存商品
+  const handleSaveProduct = async (formData) => {
+    try {
+      // API 需要將數據包裝在 data 物件中
+      const requestData = {
+        data: {
+          ...formData
+        }
+      }
+      
+      if (editingProduct) {
+        // 更新現有商品
+        await updateAdminProductAPI(editingProduct.id, requestData)
+      } else {
+        // 創建新商品
+        await createAdminProductAPI(requestData)
+      }
+      // 重新獲取產品列表
+      await fetchProducts()
+    } catch (err) {
+      if (isPermissionDenied(err)) {
+        setPermissionError(err)
+        throw err
+      } else {
+        // 處理錯誤訊息陣列
+        const errorMessage = err.response?.data?.message
+        const errorText = Array.isArray(errorMessage) 
+          ? errorMessage.join(', ') 
+          : (errorMessage || '保存失敗，請稍後再試')
+        throw new Error(errorText)
+      }
+    }
+  }
 
   if (loading) {
     return (
@@ -128,6 +188,13 @@ export default function Products() {
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </select>
+          <button
+            className="btn btn-primary py-1 rounded-3 fw-bold"
+            style={{ background: 'linear-gradient(to right, var(--bs-primary), var(--bs-primary-dark, #d88a7d))' }}
+            onClick={handleAddProduct}
+          >
+            新增商品
+          </button>
         </div>
       </div>
 
@@ -141,10 +208,23 @@ export default function Products() {
       ) : (
         <div className="row g-4">
           {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard 
+              key={product.id} 
+              product={product} 
+              onEdit={handleEditProduct}
+              onDelete={handleDeleteProduct}
+            />
           ))}
         </div>
       )}
+
+      {/* 產品編輯 Modal */}
+      <ProductEditModal
+        show={showEditModal}
+        product={editingProduct}
+        onClose={handleCloseModal}
+        onSave={handleSaveProduct}
+      />
     </ListLayout>
   )
 }
