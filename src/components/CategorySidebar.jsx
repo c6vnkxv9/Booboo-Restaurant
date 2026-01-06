@@ -69,7 +69,6 @@ export default function CategorySidebar({
         </div>
       </div>
 
-      {/* 額外內容（例如優惠橫幅） */}
       {extra}
     </div>
   )

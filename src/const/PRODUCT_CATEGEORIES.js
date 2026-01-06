@@ -8,7 +8,6 @@ export const CATEGORIES = [
 ]
   
 export const SORT_OPTIONS = [
-    { value: 'popular', label: '人氣推薦' },
     { value: 'priceHigh', label: '價格由高到低' },
     { value: 'priceLow', label: '價格由低到高' },
     { value: 'newest', label: '最新上架' }

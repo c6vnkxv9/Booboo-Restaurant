@@ -34,7 +34,7 @@ export default function Login() {
         <h1 className="display-6 fw-bold mb-4 d-flex align-items-center gap-3" style={{ color: '#675335', letterSpacing: '0.05em' }}>
           <span 
             className="d-block bg-primary rounded-pill shadow-sm" 
-            style={{ width: '8px', height: '32px', boxShadow: '0 0 10px rgba(230,154,141,0.6)' }}
+            style={{ width: '8px', height: '100%', boxShadow: '0 0 10px rgba(230,154,141,0.6)' }}
           ></span>
           後台系統
         </h1>
@@ -58,8 +58,8 @@ export default function Login() {
             
             <div className="position-relative z-1">
               <h2 className="h4 fw-bold mb-2" style={{ color: '#675335' }}>BooBoo 食堂</h2>
-              <div className="mx-auto rounded-pill bg-primary bg-opacity-50 mb-2" style={{ height: '4px', width: '48px' }}></div>
-              <p className="small fw-medium mb-0" style={{ color: 'rgba(103, 83, 53, 0.7)' }}>美味與管理的完美結合</p>
+              <div className="mx-auto rounded-pill bg-primary bg-opacity-50 mb-2" style={{ height: '4px', width: '100%' }}></div>
+              <p className="small fw-medium mb-0" style={{ color: 'rgba(103, 83, 53, 0.7)' }}>主廚跟老鼠才可以進來</p>
             </div>
           </div>
 
@@ -85,7 +85,7 @@ export default function Login() {
                     className="form-control bg-light border-start-0 rounded-end-3 py-2 px-3"
                     id="username"
                     name="username"
-                    placeholder="kami"
+                    placeholder="請輸入用戶名"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -133,11 +133,8 @@ export default function Login() {
                 </button>
               </div>
 
-              <div className="d-flex justify-content-between align-items-center pt-3 border-top mt-2">
-                <a href="#" className="text-decoration-none small text-primary fw-medium position-relative">
-                  忘記密碼？
-                </a>
-                <span className="font-monospace text-muted" style={{ fontSize: '10px', opacity: 0.7 }}>v2.0 System</span>
+              <div className="d-flex justify-content-end align-items-center pt-3 border-top mt-2">
+                <span className="font-monospace text-muted" style={{ fontSize: '10px', opacity: 0.7 }}>v1.0 System</span>
               </div>
             </form>
           </div>

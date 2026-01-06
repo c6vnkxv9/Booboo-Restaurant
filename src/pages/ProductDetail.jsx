@@ -4,7 +4,7 @@ import { getAdminProductByIdAPI, getAllAdminProductsAPI, updateAdminProductAPI }
 import ProductEditModal from '../components/ProductEditModal'
 import PermissionDenied from '../components/PermissionDenied'
 import { isPermissionDenied } from '../utils/permissions'
-
+import { CATEGORIES } from '../const/PRODUCT_CATEGEORIES'
 export default function ProductDetail() {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
@@ -126,14 +126,9 @@ export default function ProductDetail() {
   const productContent = product.content || ''
 
   // 分類名稱對應
-  const categoryNames = {
-    'mainDishes': '主餐類',
-    'sideDishes': '小菜類',
-    'soups': '湯品類',
-    'drinks': '飲料類'
-  }
+ 
 
-  const categoryName = categoryNames[product.category] || product.category || '未分類'
+  const categoryName = CATEGORIES.find(cat => cat.id === product.category)?.name || '未分類'
 
   // 處理保存編輯
   const handleSaveEdit = async (formData) => {
@@ -147,12 +142,10 @@ export default function ProductDetail() {
       }
       await updateAdminProductAPI(id, requestData)
       await fetchProduct()
-      alert('商品資訊已更新')
     } catch (err) {
       console.error('更新商品失敗:', err)
       // 如果是權限不足，顯示友好提示
       if (isPermissionDenied(err)) {
-        alert('您沒有權限更新商品資訊')
         setShowEditModal(false)
         return
       }
@@ -185,19 +178,6 @@ export default function ProductDetail() {
           <span className="fw-semibold" style={{ color: 'var(--bs-dark)' }}>
             商品詳情 #{id}
           </span>
-        </div>
-        <div className="d-flex gap-2">
-          <button
-            className="btn btn-sm border rounded"
-            style={{
-              backgroundColor: 'var(--bs-light)',
-              borderColor: '#e0e0e0',
-              color: 'var(--bs-accent)'
-            }}
-          >
-            <span className="me-2">👁</span>
-            預覽前台
-          </button>
         </div>
       </div>
 
@@ -339,12 +319,8 @@ export default function ProductDetail() {
               {/* 底部操作按鈕 */}
               <div className="mt-auto border-top pt-4 d-flex justify-content-end gap-3">
                 <button
-                  className="btn btn-sm border rounded fw-bold"
-                  style={{
-                    backgroundColor: 'var(--bs-primary)',
-                    borderColor: 'var(--bs-primary)',
-                    color: 'var(--bs-dark)'
-                  }}
+                  className="btn btn-primary py-1 rounded-3 fw-bold"
+                  style={{ background: 'linear-gradient(to right, var(--bs-primary), var(--bs-primary-dark, #d88a7d))' }}
                   onClick={() => setShowEditModal(true)}
                 >
                   編輯資訊

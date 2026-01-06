@@ -3,7 +3,6 @@ import { getAllAdminProductsAPI } from '@/api/products'
 import ListLayout from '@/components/ListLayout'
 import CategorySidebar from '@/components/CategorySidebar'
 import ProductCard from '@/components/ProductCard'
-import PromotionBanner from '@/components/PromotionBanner'
 import PermissionDenied from '@/components/PermissionDenied'
 import { isPermissionDenied } from '@/utils/permissions'
 import { CATEGORIES, SORT_OPTIONS } from '@/const/PRODUCT_CATEGEORIES'
@@ -15,7 +14,7 @@ export default function Products() {
   const [error, setError] = useState(null)
   const [permissionError, setPermissionError] = useState(null)
   const [activeCategory, setActiveCategory] = useState('all')
-  const [sortBy, setSortBy] = useState('popular')
+  const [sortBy, setSortBy] = useState('newest')
 
   useEffect(() => {
     fetchProducts()
@@ -52,6 +51,9 @@ export default function Products() {
         break
       case 'priceLow':
         filtered.sort((a, b) => (a.price || 0) - (b.price || 0))
+        break
+      case 'newest':
+        filtered.sort((a, b) => (b.create_at || 0) - (a.create_at || 0))
         break
       default:
         break
@@ -101,7 +103,6 @@ export default function Products() {
           categories={CATEGORIES}
           title="菜單分類"
           subtitle="請選擇您喜愛的餐點類別"
-          extra={<PromotionBanner />}
         />
       }
     >
