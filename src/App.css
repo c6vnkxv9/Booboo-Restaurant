@@ -14,7 +14,10 @@ body {
   background-color: var(--bs-secondary);
   color: var(--bs-primary);
 }
-
+.bg-primary {
+  --bs-bg-opacity: 1;
+  background-color: var(--bs-primary) !important;
+}
 /* 覆蓋 Bootstrap 按鈕樣式，確保使用自訂顏色 */
 .btn-primary {
   background-color: var(--bs-primary) !important;

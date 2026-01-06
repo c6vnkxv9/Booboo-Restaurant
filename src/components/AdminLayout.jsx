@@ -8,7 +8,7 @@ import AdminFooter from './AdminFooter'
  */
 export default function AdminLayout() {
   return (
-    <div className="d-flex flex-column min-vh-100" style={{ backgroundImage: 'url(/japanese-paper.svg)', backgroundSize: 'contain', backgroundRepeat: 'repeat' }}>
+    <div className="d-flex flex-column min-vh-100" style={{ backgroundImage: 'url(/japanese-paper.jpg)', backgroundSize: 'contain', backgroundRepeat: 'repeat' }}>
       <div className="container py-4 flex-grow-1">
         <AdminHeader />
         <main className="mt-4">
