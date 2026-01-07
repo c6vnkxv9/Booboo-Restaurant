@@ -4,7 +4,7 @@ import { auth } from '../utils/auth'
 
 // 創建 axios 實例
 const axiosInstance = axios.create({
-  baseURL: `${API_CONFIG.BASE_URL}api/${API_CONFIG.API_KEY}`,
+  baseURL: `${API_CONFIG.BASE_URL}api/${API_CONFIG.API_KEY}/`,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -14,12 +14,12 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     // 這確保即使在 Vercel 等部署環境中，baseURL 也不會被錯誤解析
-    config.baseURL = `${API_CONFIG.BASE_URL}api/${API_CONFIG.API_KEY}`
+    config.baseURL = `${API_CONFIG.BASE_URL}api/${API_CONFIG.API_KEY}/`
     const token = auth.getToken()
     if (token) {
       config.headers['Authorization'] = token
     }
-    
+
     return config
   },
   (error) => {
@@ -38,13 +38,13 @@ axiosInstance.interceptors.response.use(
       // 服務器返回了錯誤狀態碼
       const status = error.response.status
       const errorMessage = error.response.data?.message || ''
-      
+
       // 根據錯誤訊息判斷是權限不足還是 token 無效
       // 後端返回 "禁止使用, 請確認 api_path 是否為本人使用。" 表示權限不足
-      const isPermissionDeniedMessage = errorMessage.includes('禁止使用') || 
-                                        errorMessage.includes('api_path') ||
-                                        errorMessage.includes('權限')
-      
+      const isPermissionDeniedMessage = errorMessage.includes('禁止使用') ||
+        errorMessage.includes('api_path') ||
+        errorMessage.includes('權限')
+
       // 如果是權限不足的錯誤訊息，標記為權限不足（不自動登出）
       if (isPermissionDeniedMessage) {
         error.isPermissionDenied = true
@@ -62,7 +62,7 @@ axiosInstance.interceptors.response.use(
           }, 100)
         }
       }
-      
+
       console.error('API Error:', {
         status,
         data: error.response.data,
