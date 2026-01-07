@@ -1,96 +1,159 @@
-import PropTypes from 'prop-types';
+import { Box, Container, Typography, Button, Stack, useTheme } from '@mui/material';
+import { styled } from '@mui/material/styles';
+const heroImage = '/jp_patten2.jpg';
+const HeroHeader = styled(Box)(({ heroImage }) => ({
+	position: 'relative',
+	color: '#fff',
+    marginTop: '80px',
+	height: '',
+	backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.25)), url(${heroImage})`,
+	backgroundSize: 'cover',
+	backgroundPosition: 'center',
+}));
 
-const Hero = ({ palette, heroImage }) => (
-	<header
-		className="position-relative text-white"
-		style={{
-			minHeight: '90vh',
-			backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.25)), url(${heroImage})`,
-			backgroundSize: 'cover',
-			backgroundPosition: 'center',
-			paddingTop: '120px',
-		}}
-	>
-		<div className="container position-relative h-100 d-flex align-items-center py-5">
-			<div className="d-flex flex-column align-items-start justify-content-center col-12 col-lg-9 col-xl-7 gap-3">
-				<div
-					className="border-start border-4 ps-4 mb-3"
-					style={{ borderColor: palette.clay }}
-				>
-					<p
-						className="text-uppercase mb-0 fw-semibold"
-						style={{ letterSpacing: '0.2em' }}
-					>
-						Japanese Craftsmanship
-					</p>
-				</div>
-				<h1
-					className="fw-bold mb-3 lh-tight"
-					style={{
-						fontFamily: "'Kaisei Opti', serif",
-						fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
-						textShadow: '0 6px 24px rgba(0,0,0,0.35)',
+const BorderAccent = styled(Box)(({ theme }) => ({
+	borderLeft: `4px solid ${theme.palette.secondary.main}`,
+	paddingLeft: theme.spacing(2),
+	marginBottom: theme.spacing(3),
+}));
+
+const HeroTitle = styled(Typography)({
+	fontFamily: "'Kaisei Opti', serif",
+	fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+	textShadow: '0 6px 24px rgba(0,0,0,0.35)',
+	fontWeight: 'bold',
+	lineHeight: 'tight',
+	marginBottom: theme => theme.spacing(3),
+});
+
+const PrimaryButton = styled(Button)(({ theme }) => ({
+	backgroundColor: theme.palette.primary.main,
+	color: '#fff',
+	borderRadius: '4px',
+	letterSpacing: '0.08em',
+	fontWeight: 'bold',
+	padding: theme.spacing(1.5, 2),
+	boxShadow: theme.shadows[4],
+	'&:hover': {
+		backgroundColor: theme.palette.primary.main,
+		opacity: 0.9,
+	},
+}));
+
+const OutlineButton = styled(Button)({
+	border: '2px solid #fff',
+	color: '#fff',
+	borderRadius: '4px',
+	letterSpacing: '0.08em',
+	fontWeight: 'bold',
+	backgroundColor: 'transparent',
+	padding: theme => theme.spacing(1.5, 2),
+	boxShadow: theme => theme.shadows[4],
+	'&:hover': {
+		border: '2px solid #fff',
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
+	},
+});
+
+const ScrollIndicator = styled(Box)({
+	position: 'absolute',
+	bottom: 0,
+	left: '50%',
+	transform: 'translateX(-50%)',
+	paddingBottom: theme => theme.spacing(3),
+});
+
+const Hero = () => {
+	const theme = useTheme();
+	
+	return (
+		<HeroHeader component="header" heroImage={heroImage}>
+			<Container
+				sx={{
+					position: 'relative',
+					height: '100%',
+					display: 'flex',
+					alignItems: 'center',
+					py: 5,
+				}}
+			>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'flex-start',
+						justifyContent: 'center',
+						width: { xs: '100%', lg: '75%', xl: '58.33%' },
+						gap: 3,
 					}}
 				>
-					一期一會的
-					<br />
-					<span style={{ color: palette.clay }}>旬之味</span>
-				</h1>
-				<p
-					className="fs-5 mb-4 text-light"
-					style={{ maxWidth: '640px', lineHeight: 1.7 }}
-				>
-					Experience the ephemeral beauty of seasonal ingredients, crafted with
-					dedication and tradition. Each bowl tells a story of patience and
-					mastery.
-				</p>
-				<div className="d-flex flex-column flex-sm-row gap-3">
-					<a
-						className="btn btn-lg px-4 py-3 text-white fw-bold shadow d-flex align-items-center gap-2"
-						style={{
-							backgroundColor: palette.clay,
-							borderRadius: '4px',
-							letterSpacing: '0.08em',
-						}}
-						href="#items"
-					>
-						立即選購
-						<span
-							className="material-symbols-outlined"
-							style={{ transition: 'transform 0.2s' }}
+					<BorderAccent>
+						<Typography
+							variant="body2"
+							sx={{
+								textTransform: 'uppercase',
+								marginBottom: 0,
+								fontWeight: 600,
+								letterSpacing: '0.2em',
+							}}
 						>
-							arrow_forward
-						</span>
-					</a>
-					<a
-						className="btn btn-lg px-4 py-3 fw-bold shadow d-flex align-items-center justify-content-center"
-						style={{
-							border: '2px solid #fff',
-							color: '#fff',
-							borderRadius: '4px',
-							letterSpacing: '0.08em',
-							backgroundColor: 'transparent',
+							日本料理
+						</Typography>
+					</BorderAccent>
+					<HeroTitle variant="h1">
+						一期一會的
+						<br />
+						<span style={{ color: theme.palette.primary.main }}>旬之味</span>
+					</HeroTitle>
+					<Typography
+						variant="h6"
+						sx={{
+							maxWidth: '640px',
+							lineHeight: 1.7,
+							color: 'rgba(255, 255, 255, 0.9)',
+							marginBottom: 4,
 						}}
-						href="#menu"
 					>
-						View Menu
-					</a>
-				</div>
-			</div>
-			<div className="position-absolute bottom-0 start-50 translate-middle-x pb-3">
-				<span className="material-symbols-outlined fs-1 text-white opacity-75">
-					arrow_downward
-				</span>
-			</div>
-		</div>
-	</header>
-);
-
-Hero.propTypes = {
-	palette: PropTypes.shape({
-		clay: PropTypes.string.isRequired,
-	}).isRequired,
-	heroImage: PropTypes.string.isRequired,
+						體驗四季旬味的無常美感，以匠心與傳承細膩呈現。
+						每一碗皆蘊藏時間與技藝的故事。
+					</Typography>
+					<Stack
+						direction={{ xs: 'column', sm: 'row' }}
+						spacing={3}
+					>
+						<PrimaryButton
+							href="#items"
+							size="large"
+							endIcon={
+								<span
+									className="material-symbols-outlined"
+									style={{ transition: 'transform 0.2s' }}
+								>
+									arrow_forward
+								</span>
+							}
+						>
+							瀏覽菜單
+						</PrimaryButton>
+						<OutlineButton href="#menu" size="large">
+							加入會員
+						</OutlineButton>
+					</Stack>
+				</Box>
+				<ScrollIndicator>
+					<span
+						className="material-symbols-outlined"
+						style={{
+							fontSize: '3rem',
+							color: 'rgba(255, 255, 255, 0.75)',
+						}}
+					>
+						arrow_downward
+					</span>
+				</ScrollIndicator>
+			</Container>
+		</HeroHeader>
+	);
 };
 
 export default Hero;

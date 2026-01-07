@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { auth } from '../utils/auth'
+import { auth } from '@/utils/auth'
 import { useNavigate, Link } from 'react-router-dom'
 const NAV_LIST = [
   {

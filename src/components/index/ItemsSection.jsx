@@ -1,80 +1,155 @@
-const ItemsSection = ({ palette, items }) => (
-	<section id="items" className="py-5">
-		<div className="container">
-			<div className="text-center mb-4">
-				<span className="fw-bold text-uppercase" style={{ color: palette.clay, letterSpacing: '0.25em' }}>
-					屋台の品々
-				</span>
-				<h2 className="display-6 fw-bold mt-2" style={{ color: palette.ink }}>
-					職人の逸品
-				</h2>
-				<div
-					className="mx-auto mt-3"
-					style={{
-						width: '80px',
-						height: '4px',
-						backgroundColor: palette.earth,
-						borderRadius: '8px',
-					}}
-				></div>
-			</div>
+import { useEffect, useState } from 'react';
+import { Box, Container, Typography, Link, useTheme, CircularProgress } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { getProductsAPI } from '@/api/products';
+import ProductCard from '@/components/ProductCard';
 
-			<div className="row g-4">
-				{items.map((item) => (
-					<div key={item.title} className="col-12 col-sm-6 col-lg-3">
-						<div
-							className="card h-100 shadow-sm border-0 position-relative overflow-hidden"
+const SectionBox = styled(Box)(({ theme }) => ({
+	padding: theme.spacing(5, 0),
+}));
+
+const Divider = styled(Box)(({ theme }) => ({
+	width: '80px',
+	height: '4px',
+	backgroundColor: theme.palette.secondary.main,
+	borderRadius: '8px',
+	margin: theme.spacing(3, 'auto', 0),
+}));
+
+const ViewAllLink = styled(Link)(({ theme }) => ({
+	fontWeight: 'bold',
+	textDecoration: 'none',
+	color: theme.palette.text.primary,
+	display: 'inline-flex',
+	alignItems: 'center',
+	gap: theme.spacing(0.5),
+	marginTop: theme.spacing(4),
+	'&:hover': {
+		color: theme.palette.primary.main,
+	},
+}));
+
+const ItemsSection = () => {
+	const theme = useTheme();
+	const [products, setProducts] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
+
+	useEffect(() => {
+		const fetchProducts = async () => {
+			try {
+				setLoading(true);
+				const response = await getProductsAPI();
+				const productsData = Array.isArray(response) 
+					? response.slice(0, 5)
+					: (response.products || []).slice(0, 5);
+				setProducts(productsData);
+			} catch (err) {
+				setError(err.message);
+			} finally {
+				setLoading(false);
+			}
+		};
+		fetchProducts();
+	}, []);
+
+	return (
+		<SectionBox component="section" id="items">
+			<Container>
+				<Box sx={{ textAlign: 'center', marginBottom: 4 }}>
+					<Typography
+						variant="overline"
+						sx={{
+							fontWeight: 'bold',
+							textTransform: 'uppercase',
+							color: theme.palette.primary.main,
+							letterSpacing: '0.25em',
+							display: 'block',
+						}}
+					>
+						人氣料理新推出
+					</Typography>
+					<Typography
+						variant="h3"
+						sx={{
+							fontWeight: 'bold',
+							marginTop: 2,
+							color: theme.palette.text.primary,
+						}}
+					>
+						菜單介紹
+					</Typography>
+					<Divider />
+				</Box>
+
+				{loading ? (
+					<Box sx={{ display: 'flex', justifyContent: 'center', padding: 4 }}>
+						<CircularProgress />
+					</Box>
+				) : error ? (
+					<Box sx={{ textAlign: 'center', padding: 4 }}>
+						<Typography color="error">載入產品時發生錯誤：{error}</Typography>
+					</Box>
+				) : products.length > 0 ? (
+					<Box sx={{ position: 'relative', padding: { xs: 0, md: 2 } }}>
+						<Swiper
+							modules={[Navigation, Pagination]}
+							spaceBetween={32}
+							slidesPerView={1}
+							breakpoints={{
+								640: {
+									slidesPerView: 1,
+									spaceBetween: 24,
+								},
+								900: {
+									slidesPerView: 2,
+									spaceBetween: 32,
+								},
+								1280: {
+									slidesPerView: 3,
+									spaceBetween: 32,
+								},
+							}}
+							navigation
+							pagination={{ clickable: true }}
 							style={{
-								backgroundColor: 'rgba(255,255,255,0.8)',
-								borderRadius: '14px',
+								'--swiper-navigation-color': theme.palette.primary.main,
+								'--swiper-pagination-color': theme.palette.primary.main,
+								paddingBottom: '40px',
 							}}
 						>
-							<span
-								className="badge position-absolute top-0 start-0 m-3 text-uppercase fw-bold"
-								style={{
-									backgroundColor: item.badgeColor,
-									color: '#fff',
-									borderRadius: '999px',
-									letterSpacing: '0.08em',
-								}}
-							>
-								{item.badge}
-							</span>
-							<div className="ratio ratio-4x3">
-								<img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover" />
-							</div>
-							<div className="card-body d-flex flex-column gap-2">
-								<h5 className="card-title fw-bold" style={{ color: palette.ink }}>
-									{item.title}
-								</h5>
-								<p className="text-muted small mb-0" style={{ minHeight: '48px' }}>
-									{item.desc}
-								</p>
-								<div className="d-flex justify-content-between align-items-center mt-2">
-									<span className="fw-bold fs-5" style={{ color: palette.clay }}>
-										{item.price}
-									</span>
-									<button className="btn btn-sm btn-outline-dark rounded-circle">
-										<span className="material-symbols-outlined">add_shopping_cart</span>
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				))}
-			</div>
+							{products.map((product) => (
+								<SwiperSlide key={product.id || product._id}>
+									<Box sx={{ height: '100%', display: 'flex', justifyContent: 'center' }}>
+										<ProductCard product={product} />
+									</Box>
+								</SwiperSlide>
+							))}
+						</Swiper>
+					</Box>
+				) : (
+					<Box sx={{ textAlign: 'center', padding: 4 }}>
+						<Typography>目前沒有產品</Typography>
+					</Box>
+				)}
 
-			<div className="text-center mt-4">
-				<a className="fw-bold text-decoration-none" style={{ color: palette.ink }} href="#cta">
-					全ての品を見る
-					<span className="material-symbols-outlined align-middle ms-1" style={{ fontSize: '18px' }}>
-						arrow_forward_ios
-					</span>
-				</a>
-			</div>
-		</div>
-	</section>
-);
+				<Box sx={{ textAlign: 'center' }}>
+					<ViewAllLink href="#cta">
+						全ての品を見る
+						<span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+							arrow_forward_ios
+						</span>
+					</ViewAllLink>
+				</Box>
+			</Container>
+		</SectionBox>
+	);
+};
 
 export default ItemsSection;
 

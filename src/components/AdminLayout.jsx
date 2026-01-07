@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import AdminHeader from './AdminHeader';
-import CommonFooter from './CommonFooter';
+import AdminHeader from '@/components/header/AdminHeader';
+import CommonFooter from '@/components/footer/CommonFooter';
 
 /**
  * 後台共用佈局組件

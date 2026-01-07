@@ -1,102 +1,143 @@
-const OfferSection = ({ palette }) => (
-	<section
-		id="cta"
-		className="py-5"
-		style={{
-			background: `linear-gradient(135deg, ${palette.ink} 0%, ${palette.wood} 100%)`,
-			color: '#fff',
-		}}
-	>
-		<div className="container">
-			<div className="row g-4 align-items-center">
-				<div className="col-lg-6">
-					<div
-						className="p-4 rounded-4 shadow-lg h-100"
-						style={{
-							backgroundColor: 'rgba(255,255,255,0.08)',
-							border: '1px solid rgba(255,255,255,0.15)',
+import { Box, Container, Typography, Button, useTheme } from '@mui/material';
+import { styled, keyframes } from '@mui/material/styles';
+
+const bounce = keyframes`
+	0%, 100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+`;
+
+const SectionBox = styled(Box)(({ theme }) => ({
+	padding: theme.spacing(20, 0),
+	backgroundColor: theme.palette.primary.main,
+	color: '#fff',
+	position: 'relative',
+	overflow: 'hidden',
+}));
+
+const PatternBackground = styled(Box)({
+	position: 'absolute',
+	inset: 0,
+	backgroundImage: 'url(/jp_patten1.jpg)',
+	backgroundSize: 'contain',
+	backgroundRepeat: 'repeat',
+	opacity: 0.2,
+	zIndex: 0,
+});
+
+const ContentBox = styled(Box)(({ theme }) => ({
+	maxWidth: '896px',
+	margin: '0 auto',
+	border: `4px double ${theme.palette.secondary.main}40`,
+	padding: theme.spacing(4, 3),
+	[theme.breakpoints.up('md')]: {
+		padding: theme.spacing(6, 4),
+	},
+	backgroundColor: `${theme.palette.primary.main}CC`,
+	backdropFilter: 'blur(4px)',
+	textAlign: 'center',
+	position: 'relative',
+	zIndex: 10,
+}));
+
+const IconBox = styled(Box)(({ theme }) => ({
+	fontSize: '3rem',
+	marginBottom: theme.spacing(4),
+	color: theme.palette.primary.main,
+	animation: `${bounce} 2s infinite`,
+	[theme.breakpoints.up('md')]: {
+		fontSize: '3.5rem',
+	},
+}));
+
+const CouponContainer = styled(Box)(({ theme }) => ({
+	display: 'inline-flex',
+	flexDirection: 'column',
+	alignItems: 'center',
+	gap: theme.spacing(2),
+	backgroundColor: '#fff',
+	color: theme.palette.primary.main,
+	padding: theme.spacing(1),
+	borderRadius: '4px',
+	boxShadow: theme.shadows[8],
+	[theme.breakpoints.up('md')]: {
+		flexDirection: 'row',
+	},
+}));
+
+const CouponCode = styled(Box)(({ theme }) => ({
+	padding: theme.spacing(1, 3),
+	border: `2px dashed ${theme.palette.secondary.main}4D`,
+	fontFamily: 'monospace',
+	fontSize: '1.25rem',
+	fontWeight: 'bold',
+	letterSpacing: '0.2em',
+	backgroundColor: 'rgba(0,0,0,0.05)',
+}));
+
+const OfferSection = () => {
+	const theme = useTheme();
+
+	return (
+		<SectionBox component="section" id="cta">
+			<PatternBackground />
+			<Container sx={{ position: 'relative', zIndex: 10 }}>
+				<ContentBox>
+					<IconBox>
+						<span className="material-symbols-outlined">local_offer</span>
+					</IconBox>
+					<Typography
+						variant="h3"
+						sx={{
+							fontSize: { xs: '1.875rem', md: '3rem' },
+							fontWeight: 'bold',
+							marginBottom: 3,
+							fontFamily: "'Kaisei Opti', serif",
 						}}
 					>
-						<div className="d-flex justify-content-between align-items-start mb-3">
-							<div>
-								<span className="badge rounded-pill text-uppercase fw-bold mb-2" style={{ backgroundColor: palette.earth }}>
-									新規のお客様へ
-								</span>
-								<h3 className="h3 fw-bold mb-2">歓迎の贈り物</h3>
-								<p className="text-white-50 mb-0">初回注文で特別割引が適用されます。</p>
-							</div>
-							<div
-								className="d-flex align-items-center justify-content-center rounded-circle shadow"
-								style={{
-									width: '80px',
-									height: '80px',
-									backgroundColor: '#fff',
-									color: palette.clay,
-									fontWeight: 700,
-									fontSize: '22px',
-									transform: 'rotate(6deg)',
-								}}
-							>
-								¥50
-							</div>
-						</div>
-						<div
-							className="d-flex justify-content-between align-items-center p-3 rounded-3 mb-3"
-							style={{
-								border: '2px dashed rgba(255,255,255,0.2)',
-								backgroundColor: 'rgba(0,0,0,0.15)',
+						初回のお客様へ、歓迎の印
+					</Typography>
+					<Typography
+						variant="h6"
+						sx={{
+							fontSize: { xs: '1.125rem', md: '1.25rem' },
+							fontWeight: 300,
+							marginBottom: 4,
+							color: 'rgba(255,255,255,0.8)',
+							lineHeight: 1.75,
+						}}
+					>
+						暖簾をくぐってくださった感謝を込めて。
+						<br />
+						初めてのお買い物が少し特別なものになりますように。
+					</Typography>
+					<CouponContainer>
+						<CouponCode>WELCOME50</CouponCode>
+						<Button
+							variant="contained"
+							sx={{
+								backgroundColor: theme.palette.primary.main,
+								color: '#fff',
+								fontWeight: 'bold',
+								padding: theme.spacing(1.5, 4),
+								boxShadow: theme.shadows[4],
+								'&:hover': {
+									backgroundColor: theme.palette.secondary.main,
+									boxShadow: theme.shadows[6],
+								},
 							}}
 						>
-							<span className="fw-bold fs-5" style={{ letterSpacing: '0.2em' }}>
-								WELCOME50
-							</span>
-							<button className="btn btn-sm btn-outline-light">コピー</button>
-						</div>
-						<button className="btn btn-light w-100 fw-bold py-2" style={{ color: palette.ink }}>
-							¥50割引クーポンを受け取る
-						</button>
-					</div>
-				</div>
-
-				<div className="col-lg-6">
-					<div className="text-center text-lg-start">
-						<div className="d-flex justify-content-center justify-content-lg-start align-items-center gap-2 text-warning mb-3">
-							<span className="material-symbols-outlined">timer</span>
-							<span className="fw-bold text-uppercase">限定セール終了まで</span>
-						</div>
-						<h3 className="display-5 fw-bold mb-4">週末特別御膳</h3>
-						<div className="d-flex gap-3 justify-content-center justify-content-lg-start mb-4">
-							{[
-								{ label: '時間', value: '08' },
-								{ label: '分', value: '45' },
-								{ label: '秒', value: '12' },
-							].map((item) => (
-								<div
-									key={item.label}
-									className="text-center p-3 rounded-3"
-									style={{
-										backgroundColor: 'rgba(0,0,0,0.2)',
-										minWidth: '88px',
-										border: '1px solid rgba(255,255,255,0.1)',
-									}}
-								>
-									<div className="display-6 fw-bold font-monospace">{item.value}</div>
-									<small className="text-white-50 text-uppercase">{item.label}</small>
-								</div>
-							))}
-						</div>
-						<p className="lead text-white-75 mb-4">
-							特別ファミリーセットが30%OFF。本場の味をご自宅までお届けします。
-						</p>
-						<a className="btn btn-lg fw-bold px-4" style={{ backgroundColor: palette.earth, color: '#fff' }} href="#items">
-							お得な情報を見る
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-);
+							¥50引きクーポンを使う
+						</Button>
+					</CouponContainer>
+				</ContentBox>
+			</Container>
+		</SectionBox>
+	);
+};
 
 export default OfferSection;
 
