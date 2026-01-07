@@ -1,6 +1,6 @@
 // API 配置
 export const API_CONFIG = {
   BASE_URL: import.meta.env.VITE_API_BASE,
-  API_KEY: import.meta.env.VITE_API_KEY
+  API_KEY: import.meta.env.VITE_API_PATH
 }
 
