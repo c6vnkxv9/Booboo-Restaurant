@@ -4,7 +4,7 @@ import { API_CONFIG } from '../config/api'
 import { auth } from '../utils/auth'
 const baseUrl = API_CONFIG.BASE_URL
 export const adminSigninAPI = async (username, password) => {
-  
+
   const response = await axios.post(
     `${baseUrl}admin/signin`,
     {
