@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 export default function ProductCard({ product, onEdit, onDelete }) {
   return (
-    <div className="col-12 col-sm-6 col-lg-4">
+    <div>
       <div className="product-card-group-new">
         <Link
           to={`/products/${product.id}`}

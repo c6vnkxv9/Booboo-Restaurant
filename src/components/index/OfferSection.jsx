@@ -11,7 +11,7 @@ const bounce = keyframes`
 `;
 
 const SectionBox = styled(Box)(({ theme }) => ({
-	padding: theme.spacing(20, 0),
+	padding: theme.spacing(12, 0),
 	backgroundColor: theme.palette.primary.main,
 	color: '#fff',
 	position: 'relative',
@@ -105,7 +105,7 @@ const OfferSection = () => {
 						sx={{
 							fontSize: { xs: '1.125rem', md: '1.25rem' },
 							fontWeight: 300,
-							marginBottom: 4,
+							marginBottom: 5,
 							color: 'rgba(255,255,255,0.8)',
 							lineHeight: 1.75,
 						}}

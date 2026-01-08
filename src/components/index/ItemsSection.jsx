@@ -7,30 +7,70 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { getProductsAPI } from '@/api/products';
+import { Link as RouterLink } from 'react-router-dom';
 import ProductCard from '@/components/ProductCard';
-
 const SectionBox = styled(Box)(({ theme }) => ({
-	padding: theme.spacing(5, 0),
+	padding: theme.spacing(12, 0),
+	position: 'relative',
+	backgroundColor: theme.palette.background.default,
 }));
-
-const Divider = styled(Box)(({ theme }) => ({
-	width: '80px',
-	height: '4px',
-	backgroundColor: theme.palette.secondary.main,
-	borderRadius: '8px',
-	margin: theme.spacing(3, 'auto', 0),
+const DecorativeCircle = styled(Box)(({ theme }) => ({
+	position: 'absolute',
+	top: 0,
+	right: 0,
+	width: '256px',
+	height: '256px',
+	backgroundColor: `${theme.palette.primary.main}0D`,
+	borderRadius: '0 0 0 100%',
+	pointerEvents: 'none',
+}));
+const SwiperWrapper = styled(Box)(({ theme }) => ({
+	position: 'relative',
+	'& .swiper-button-next, & .swiper-button-prev': {
+		backgroundColor: '#fff',
+		width: '40px',
+		height: '40px',
+		borderRadius: '50%',
+		boxShadow: theme.shadows[4],
+		color: theme.palette.text.secondary,
+		'&:hover': {
+			color: theme.palette.primary.main,
+		},
+		'&::after': {
+			fontSize: '1.5rem',
+		},
+		display: { xs: 'none', md: 'flex' },
+	},
+	'& .swiper-pagination': {
+		bottom: '0 !important',
+		marginTop: theme.spacing(3),
+	},
+	'& .swiper-pagination-bullet': {
+		width: '8px',
+		height: '8px',
+		backgroundColor: '#d1d5db',
+		opacity: 1,
+	},
+	'& .swiper-pagination-bullet-active': {
+		backgroundColor: theme.palette.primary.main,
+	},
 }));
 
 const ViewAllLink = styled(Link)(({ theme }) => ({
 	fontWeight: 'bold',
 	textDecoration: 'none',
-	color: theme.palette.text.primary,
+	fontSize: '0.875rem',
+	color: theme.palette.text.secondary,
 	display: 'inline-flex',
 	alignItems: 'center',
 	gap: theme.spacing(0.5),
-	marginTop: theme.spacing(4),
+	marginTop: theme.spacing(6),
+	transition: 'color 0.3s',
 	'&:hover': {
 		color: theme.palette.primary.main,
+		'& .arrow-icon': {
+			transform: 'translateX(4px)',
+		},
 	},
 }));
 
@@ -46,8 +86,8 @@ const ItemsSection = () => {
 				setLoading(true);
 				const response = await getProductsAPI();
 				const productsData = Array.isArray(response) 
-					? response.slice(0, 5)
-					: (response.products || []).slice(0, 5);
+					? response.slice(0, 9)
+					: (response.products || []).slice(0, 9);
 				setProducts(productsData);
 			} catch (err) {
 				setError(err.message);
@@ -59,32 +99,36 @@ const ItemsSection = () => {
 	}, []);
 
 	return (
-		<SectionBox component="section" id="items">
-			<Container>
-				<Box sx={{ textAlign: 'center', marginBottom: 4 }}>
+		<SectionBox component="section" id="seasonal-menu">
+			<DecorativeCircle />
+			<Container maxWidth="xl" sx={{ px: { xs: 2, sm: 3, lg: 4 } }}>
+				<Box sx={{ textAlign: 'center', marginBottom: 8 }}>
 					<Typography
 						variant="overline"
 						sx={{
+							fontSize: '0.75rem',
 							fontWeight: 'bold',
 							textTransform: 'uppercase',
 							color: theme.palette.primary.main,
-							letterSpacing: '0.25em',
+							letterSpacing: '0.3em',
 							display: 'block',
+							marginBottom: 1.5,
 						}}
 					>
-						人氣料理新推出
+						季節限定
 					</Typography>
 					<Typography
-						variant="h3"
+						variant="h2"
 						sx={{
+							fontFamily: "'Kaisei Opti', serif",
+							fontSize: { xs: '1.875rem', md: '2.25rem' },
 							fontWeight: 'bold',
-							marginTop: 2,
 							color: theme.palette.text.primary,
+							letterSpacing: '0.05em',
 						}}
 					>
-						菜單介紹
+						此時此刻的美味
 					</Typography>
-					<Divider />
 				</Box>
 
 				{loading ? (
@@ -96,7 +140,7 @@ const ItemsSection = () => {
 						<Typography color="error">載入產品時發生錯誤：{error}</Typography>
 					</Box>
 				) : products.length > 0 ? (
-					<Box sx={{ position: 'relative', padding: { xs: 0, md: 2 } }}>
+					<SwiperWrapper sx={{ px: { xs: 2, md: 6 } }}>
 						<Swiper
 							modules={[Navigation, Pagination]}
 							spaceBetween={32}
@@ -126,12 +170,17 @@ const ItemsSection = () => {
 							{products.map((product) => (
 								<SwiperSlide key={product.id || product._id}>
 									<Box sx={{ height: '100%', display: 'flex', justifyContent: 'center' }}>
-										<ProductCard product={product} />
+										<RouterLink
+											to={`/products/${product.id || product._id}`}
+											style={{ textDecoration: 'none', width: '100%' }}
+										>
+											<ProductCard product={product} />
+										</RouterLink>
 									</Box>
 								</SwiperSlide>
 							))}
 						</Swiper>
-					</Box>
+					</SwiperWrapper>
 				) : (
 					<Box sx={{ textAlign: 'center', padding: 4 }}>
 						<Typography>目前沒有產品</Typography>
@@ -139,10 +188,10 @@ const ItemsSection = () => {
 				)}
 
 				<Box sx={{ textAlign: 'center' }}>
-					<ViewAllLink href="#cta">
-						全ての品を見る
-						<span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-							arrow_forward_ios
+					<ViewAllLink component={RouterLink} to="/products">
+						查看完整菜單
+						<span className="material-symbols-outlined arrow-icon" style={{ fontSize: '1rem', marginLeft: '4px', transition: 'transform 0.3s' }}>
+							chevron_right
 						</span>
 					</ViewAllLink>
 				</Box>

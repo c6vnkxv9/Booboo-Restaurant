@@ -20,35 +20,49 @@ const REVIEWS = [
 	},
 ];
 const SectionBox = styled(Box)(({ theme }) => ({
-	padding: theme.spacing(5, 0),
+	padding: theme.spacing(24, 0),
+	borderTop: `1px solid ${theme.palette.divider || 'rgba(0, 0, 0, 0.1)'}`,
 }));
-
+const PatternBackground = styled(Box)({
+	position: 'absolute',
+	inset: 0,
+	backgroundImage: 'url(/japanese-paper.jpg)',
+	backgroundRepeat: 'repeat',
+	backgroundSize: '300px 300px',
+	opacity: 0.5,
+	pointerEvents: 'none',
+	zIndex: -1,
+});
 const TestimonialCard = styled(Box)(({ theme }) => ({
 	height: '100%',
-	padding: theme.spacing(4),
-	borderRadius: theme.spacing(2),
-	boxShadow: theme.shadows[1],
-	backgroundColor: 'rgba(107,66,38,0.08)',
-	border: `1px solid ${theme.palette.primary.main}33`,
+	padding: theme.spacing(8),
+	backgroundColor: theme.palette.background.paper || '#FAEDE7',
+	border: `1px solid ${theme.palette.divider || 'rgba(0, 0, 0, 0.1)'}`,
+	position: 'relative',
+	transition: 'all 0.3s',
+	'&:hover': {
+		boxShadow: theme.shadows[4],
+	},
 }));
 
 const StarRating = ({ rating }) => {
+	const theme = useTheme();
 	const full = Math.floor(rating);
 	const half = rating % 1 >= 0.5;
 
 	return (
-		<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#ffc107' }}>
+		<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25, color: theme.palette.secondary.main, fontSize: '0.75rem', marginBottom: 3 }}>
 			{Array.from({ length: full }).map((_, idx) => (
 				<span
 					key={`full-${idx}`}
 					className="material-symbols-outlined"
-					style={{ fontSize: '18px' }}
+					style={{ fontSize: '14px', fill: 'currentColor' }}
 				>
 					star
 				</span>
 			))}
 			{half && (
-				<span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+				<span className="material-symbols-outlined" style={{ fontSize: '14px' }}>
 					star_half
 				</span>
 			)}
@@ -64,25 +78,28 @@ const TestimonialsSection = () => {
 	const theme = useTheme();
 
 	return (
-		<SectionBox component="section">
-			<Container>
-				<Box sx={{ textAlign: 'center', marginBottom: 4 }}>
+		<SectionBox component="section" sx={{ position: 'relative' }}>
+			<PatternBackground />
+			<Container maxWidth="xl" sx={{ px: { xs: 3, lg: 6 } }}>
+				<Box sx={{ textAlign: 'center', marginBottom: 16 }}>
 					<span
 						className="material-symbols-outlined"
 						style={{
-							fontSize: '3rem',
-							marginBottom: theme.spacing(3),
-							color: theme.palette.secondary.main,
+							fontSize: '2.5rem',
+							marginBottom: theme.spacing(4),
+							color: `${theme.palette.secondary.main}80`,
 							display: 'block',
 						}}
 					>
 						format_quote
 					</span>
 					<Typography
-						variant="h3"
+						variant="h2"
 						sx={{
+							fontSize: { xs: '1.875rem', md: '2.25rem' },
 							fontWeight: 'bold',
 							color: theme.palette.text.primary,
+							fontFamily: "'Kaisei Opti', serif",
 						}}
 					>
 						お客様の声
@@ -90,42 +107,52 @@ const TestimonialsSection = () => {
 				</Box>
 
 				<Grid container spacing={4}>
-					{REVIEWS.map((t) => (
-						<Grid item xs={12} md={4} key={t.name || t.id}>
+					{REVIEWS.map((t, index) => (
+						<Grid item xs={12} md={4} key={t.name || t.id || index}>
 							<TestimonialCard>
-								<Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 3 }}>
-									<Avatar
-										src={t.image}
-										alt={t.name}
-										sx={{
-											width: 56,
-											height: 56,
-											marginRight: 2,
-											border: `2px solid ${theme.palette.primary.main}`,
-										}}
-									/>
-									<Box>
-										<Typography
-											sx={{
-												fontWeight: 'bold',
-												color: theme.palette.text.primary,
-												marginBottom: 0.5,
-											}}
-										>
-											{t.name}
-										</Typography>
-										<StarRating rating={t.rating} />
-									</Box>
-								</Box>
+								<StarRating rating={t.rating} />
 								<Typography
 									sx={{
 										fontStyle: 'italic',
-										marginBottom: 0,
+										marginBottom: 3,
 										color: theme.palette.text.secondary || 'rgba(0, 0, 0, 0.6)',
+										lineHeight: 1.75,
+										fontFamily: 'serif',
 									}}
 								>
 									&ldquo;{t.quote || t.comment}&rdquo;
 								</Typography>
+								<Box
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+										borderTop: `1px solid ${theme.palette.divider || 'rgba(0, 0, 0, 0.1)'}`,
+										paddingTop: 2,
+									}}
+								>
+									<Avatar
+										src={t.image}
+										alt={t.name}
+										sx={{
+											width: 40,
+											height: 40,
+											marginRight: 1.5,
+											filter: 'grayscale(100%)',
+										}}
+									/>
+									<Typography
+										sx={{
+											fontWeight: 'bold',
+											fontSize: '0.875rem',
+											color: theme.palette.text.primary,
+											textTransform: 'uppercase',
+											letterSpacing: '0.1em',
+											fontFamily: "'Kaisei Opti', serif",
+										}}
+									>
+										{t.name}
+									</Typography>
+								</Box>
 							</TestimonialCard>
 						</Grid>
 					))}

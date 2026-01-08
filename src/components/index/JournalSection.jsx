@@ -9,16 +9,7 @@ const SectionBox = styled(Box)(({ theme }) => ({
 	position: 'relative',
 }));
 
-const PatternBackground = styled(Box)({
-	position: 'absolute',
-	inset: 0,
-	backgroundImage: 'url(/japanese-paper.jpg)',
-	backgroundRepeat: 'repeat',
-	backgroundSize: '300px 300px',
-	opacity: 0.5,
-	pointerEvents: 'none',
-	zIndex: 0,
-});
+
 
 const ImageContainer = styled(Box)(({ theme, rotate }) => ({
 	position: 'relative',
@@ -146,8 +137,7 @@ const JournalSection = () => {
 
 	return (
 		<SectionBox component="section" id="journal">
-			<PatternBackground />
-			<Container sx={{ position: 'relative', zIndex: 10 }}>
+			<Container >
 				<Box
 					sx={{
 						display: 'flex',
@@ -183,7 +173,7 @@ const JournalSection = () => {
 							}}
 						>
 							市場の
-							<br sx={{ display: { xs: 'block', md: 'none' } }} />
+							<br style={{ display: { xs: 'block', md: 'none' } }} />
 							物語
 						</Typography>
 					</Box>

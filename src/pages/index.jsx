@@ -20,11 +20,10 @@ export default function IndexPage() {
 				<SectionDivider/>
 				<OfferSection />
 				<SectionDivider />
-				<TestimonialsSection/> 
+				<StorySection />
 				<JournalSection />
 				<SectionDivider />
-				<StorySection />
-				<SectionDivider />
+				<TestimonialsSection/> 
 			</main>
 			<FooterSection/> 
 		</div>

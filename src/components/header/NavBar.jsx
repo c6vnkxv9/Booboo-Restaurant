@@ -163,7 +163,10 @@ const NavBar = () => {
 						}}
 					>
 						<NavLink href="#items">菜單</NavLink>
+						<NavLink href="#story">常見問題</NavLink>
 						<NavLink href="#story">關於我們</NavLink>
+						<NavLink href="#story">優惠券列表</NavLink>
+						<NavLink href="#story">查詢訂單</NavLink>
 						<NavLink href="#journal">部落格</NavLink>
 						<OrderButton href="#login">登入</OrderButton>
 					</Box>

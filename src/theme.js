@@ -28,7 +28,15 @@ const theme = createTheme({
       'Arial',
       'sans-serif',
     ].join(','),
+    title: {
+      fontSize: { xs: '2rem', md: '5rem' },
+      fontFamily: "'Kaisei Opti', serif",
+      fontWeight: 300,
+      lineHeight: 'tight',
+      letterSpacing: '0.05em',
+    },
   },
+  
 });
 
 export default theme;

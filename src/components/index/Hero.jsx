@@ -1,133 +1,181 @@
 import { Box, Container, Typography, Button, Stack, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-const heroImage = '/jp_patten2.jpg';
-const HeroHeader = styled(Box)(({ heroImage }) => ({
+const heroVideo = '/banner.mp4';
+const HeroHeader = styled(Box)({
 	position: 'relative',
 	color: '#fff',
-    marginTop: '80px',
-	height: '',
-	backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.25)), url(${heroImage})`,
-	backgroundSize: 'cover',
-	backgroundPosition: 'center',
-}));
-
-const BorderAccent = styled(Box)(({ theme }) => ({
-	borderLeft: `4px solid ${theme.palette.secondary.main}`,
-	paddingLeft: theme.spacing(2),
-	marginBottom: theme.spacing(3),
-}));
-
-const HeroTitle = styled(Typography)({
-	fontFamily: "'Kaisei Opti', serif",
-	fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
-	textShadow: '0 6px 24px rgba(0,0,0,0.35)',
-	fontWeight: 'bold',
-	lineHeight: 'tight',
-	marginBottom: theme => theme.spacing(3),
+    marginTop: 'var(--header-height)',
+	height: 'calc(100vh - var(--header-height))',
+	overflow: 'hidden',
 });
+
+const VideoBackground = styled('video')({
+	position: 'absolute',
+	top: 0,
+	left: 0,
+	width: '100%',
+	height: '100%',
+	objectFit: 'cover',
+	zIndex: 0,
+});
+
+const VideoOverlay = styled(Box)({
+	position: 'absolute',
+	top: 0,
+	left: 0,
+	width: '100%',
+	height: '100%',
+	background: 'linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.5))',
+	zIndex: 1,
+});
+
+const HeroTitle = styled(Typography)(({ theme }) => ({
+	fontFamily: theme.typography.title.fontFamily,
+	fontWeight: theme.typography.title.fontWeight,
+	lineHeight: theme.typography.title.lineHeight,
+	letterSpacing: theme.typography.title.letterSpacing,
+	fontSize: theme.typography.title.fontSize.xs,
+	textShadow: '0 6px 24px rgba(0,0,0,0.35)',
+	marginBottom: theme.spacing(2),
+	[theme.breakpoints.up('md')]: {
+		fontSize: theme.typography.title.fontSize.md,
+	},
+}));
 
 const PrimaryButton = styled(Button)(({ theme }) => ({
 	backgroundColor: theme.palette.primary.main,
 	color: '#fff',
-	borderRadius: '4px',
-	letterSpacing: '0.08em',
+	borderRadius: '2px',
+	letterSpacing: '0.2em',
 	fontWeight: 'bold',
-	padding: theme.spacing(1.5, 2),
-	boxShadow: theme.shadows[4],
+	fontSize: '0.75rem',
+	textTransform: 'uppercase',
+	padding: theme.spacing(1.5, 3.75),
+	transition: 'all 0.3s',
 	'&:hover': {
-		backgroundColor: theme.palette.primary.main,
-		opacity: 0.9,
+		backgroundColor: 'rgba(255, 255, 255, 0.9)',
 	},
 }));
 
-const OutlineButton = styled(Button)({
-	border: '2px solid #fff',
-	color: '#fff',
-	borderRadius: '4px',
-	letterSpacing: '0.08em',
-	fontWeight: 'bold',
-	backgroundColor: 'transparent',
-	padding: theme => theme.spacing(1.5, 2),
-	boxShadow: theme => theme.shadows[4],
-	'&:hover': {
-		border: '2px solid #fff',
-		backgroundColor: 'rgba(255, 255, 255, 0.1)',
-	},
-});
-
-const ScrollIndicator = styled(Box)({
-	position: 'absolute',
-	bottom: 0,
-	left: '50%',
-	transform: 'translateX(-50%)',
-	paddingBottom: theme => theme.spacing(3),
-});
+const DecorateText = styled(Box)(({ theme }) => ({
+	writingMode: 'vertical-rl',
+	textOrientation: 'mixed',
+	color: 'rgba(255, 255, 255, 0.6)',
+	fontFamily: "'Kaisei Opti', serif",
+	fontSize: '0.875rem',
+	letterSpacing: '0.5em',
+	height: '256px',
+	borderLeft: '1px solid rgba(255, 255, 255, 0.2)',
+	paddingLeft: theme.spacing(1),
+}));
 
 const Hero = () => {
 	const theme = useTheme();
 	
 	return (
-		<HeroHeader component="header" heroImage={heroImage}>
+		<HeroHeader component="header">
+			<VideoBackground
+				autoPlay
+				muted
+				playsInline
+			>
+				<source src={heroVideo} type="video/mp4" />
+			</VideoBackground>
+			<VideoOverlay />
 			<Container
 				sx={{
 					position: 'relative',
+					zIndex: 10,
+					maxWidth: '1280px',
+					px: 3,
+					width: '100%',
+					color: '#fff',
 					height: '100%',
 					display: 'flex',
 					alignItems: 'center',
-					py: 5,
+					justifyContent: { xs: 'center', md: 'space-between' },
+					flexDirection: { xs: 'column', md: 'row' },
+					pb: 3,
 				}}
 			>
 				<Box
 					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'flex-start',
-						justifyContent: 'center',
-						width: { xs: '100%', lg: '75%', xl: '58.33%' },
-						gap: 3,
+						maxWidth: '768px',
+						mb: { xs: 3, md: 0 },
 					}}
 				>
-					<BorderAccent>
-						<Typography
-							variant="body2"
+					<Box
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							gap: 2,
+							mb: 4,
+						}}
+					>
+						<Box
 							sx={{
+								height: '1px',
+								width: '48px',
+								backgroundColor: 'rgba(255, 255, 255, 0.6)',
+							}}
+						/>
+						<Typography
+							sx={{
+								fontSize: '0.75rem',
+								letterSpacing: '0.3em',
 								textTransform: 'uppercase',
-								marginBottom: 0,
-								fontWeight: 600,
-								letterSpacing: '0.2em',
+								color: 'rgba(255, 255, 255, 0.9)',
+								fontWeight: 300,
 							}}
 						>
-							日本料理
+							季節探索
 						</Typography>
-					</BorderAccent>
-					<HeroTitle variant="h1">
+					</Box>
+					<HeroTitle variant="h1" sx={{ textAlign: { xs: 'center', md: 'left' } }}>
 						一期一會的
 						<br />
-						<span style={{ color: theme.palette.primary.main }}>旬之味</span>
+						<Box
+							component="span"
+							sx={{
+								fontWeight: 500,
+								fontStyle: 'italic',
+								ml: { xs: 0, md: 3 },
+								mt: 0.5,
+								display: 'block',
+								color: theme.palette.primary.main,
+							}}
+						>
+							旬之味
+						</Box>
 					</HeroTitle>
 					<Typography
-						variant="h6"
 						sx={{
-							maxWidth: '640px',
-							lineHeight: 1.7,
+							fontSize: { xs: '1rem', md: '1.125rem' },
 							color: 'rgba(255, 255, 255, 0.9)',
-							marginBottom: 4,
+							mb: 3,
+							lineHeight: 1.8,
+							fontWeight: 300,
+							letterSpacing: '0.05em',
+							maxWidth: '576px',
 						}}
 					>
 						體驗四季旬味的無常美感，以匠心與傳承細膩呈現。
+						<br />
 						每一碗皆蘊藏時間與技藝的故事。
 					</Typography>
 					<Stack
 						direction={{ xs: 'column', sm: 'row' }}
-						spacing={3}
+						spacing={1.5}
 					>
 						<PrimaryButton
 							href="#items"
-							size="large"
 							endIcon={
 								<span
 									className="material-symbols-outlined"
-									style={{ transition: 'transform 0.2s' }}
+									style={{ 
+										transition: 'transform 0.2s',
+										fontSize: '1rem',
+									}}
 								>
 									arrow_forward
 								</span>
@@ -135,22 +183,25 @@ const Hero = () => {
 						>
 							瀏覽菜單
 						</PrimaryButton>
-						<OutlineButton href="#menu" size="large">
+						<PrimaryButton
+							href="#menu"
+							sx={{
+								backgroundColor: 'transparent',
+								color: '#fff',
+								border: '2px solid #fff',
+								'&:hover': {
+									backgroundColor: 'rgba(255, 255, 255, 0.1)',
+									border: '2px solid #fff',
+								},
+							}}
+						>
 							加入會員
-						</OutlineButton>
+						</PrimaryButton>
 					</Stack>
 				</Box>
-				<ScrollIndicator>
-					<span
-						className="material-symbols-outlined"
-						style={{
-							fontSize: '3rem',
-							color: 'rgba(255, 255, 255, 0.75)',
-						}}
-					>
-						arrow_downward
-					</span>
-				</ScrollIndicator>
+				<DecorateText sx={{ display: { xs: 'none', md: 'block' } }}>
+					二十四節氣 七十二候
+				</DecorateText>
 			</Container>
 		</HeroHeader>
 	);
