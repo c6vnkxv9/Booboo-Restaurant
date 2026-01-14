@@ -1,6 +1,19 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { auth } from '../utils/auth'
-import { useNavigate, Link } from 'react-router-dom'
+import { useLocation, useNavigate, Link as RouterLink } from 'react-router-dom'
+import { alpha } from '@mui/material/styles'
+import {
+  Box,
+  Button,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemText,
+  Stack,
+  Typography,
+} from '@mui/material'
 const NAV_LIST = [
   {
     name: '產品一覽',
@@ -23,6 +36,7 @@ export default function AdminHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const username = auth.getUsername()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const onLogout = () => {
     auth.logout()
@@ -31,79 +45,206 @@ export default function AdminHeader() {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
+  const activePath = useMemo(() => location.pathname, [location.pathname])
+
   return (
-    <header className="position-relative mb-4">
-      <div className="d-flex align-items-center justify-content-between text-nowrap px-4 py-3">
-        <div className="d-flex align-items-center gap-3">
-          <Link to="/products" className="d-flex align-items-center gap-3 text-decoration-none">
-            <img src="/logo.png" alt="BooBoo食堂" className="img-fluid" style={{ width: '40px', height: '40px', backgroundSize: 'contain', backgroundRepeat: 'repeat' }} />
-            <h2 className="text-dark fs-5 fw-bold mb-0">
-              BooBoo食堂後台系統
-            </h2>
-          </Link>
-        </div>
-        <div className="d-none d-md-flex flex-grow-1 justify-content-end align-items-center gap-4">
-          <nav 
-            className="d-flex align-items-center gap-4 px-4 py-2 rounded-pill border bg-white shadow-sm"
-            style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', backdropFilter: 'blur(4px)' }}
-          >
-            {NAV_LIST.map((item) => (
-              <Link className="text-dark text-decoration-none small fw-medium link-primary transition-colors" to={item.path} key={item.name}>{item.name}</Link>
-            ))}
-          </nav>
-
-          <div className="d-flex align-items-center gap-2 ">
-            <span className="text-muted d-none d-lg-block me-2">歡迎，{username}</span>
-            <button 
-              onClick={onLogout}
-              className="btn btn-dark rounded-pill px-4 fw-bold shadow-sm"
-              style={{ fontSize: '0.875rem' }}
-            >
-              登出
-            </button>
-          </div>
-        </div>
-
-        <button 
-          className="d-md-none btn p-2 text-dark border-0"
-          onClick={toggleMenu}
-        >
-          <span className="material-symbols-outlined">
-            {isMenuOpen ? 'close' : 'menu'}
-          </span>
-        </button>
-      </div>
-
-      {/* 手機版選單 */}
-      {isMenuOpen && (
-        <div 
-          className="d-md-none bg-white border-top px-4 py-3 shadow-sm"
-          style={{
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            right: 0,
-            zIndex: 1050
+    <Box component="header" sx={{ mb: { xs: 2.5, md: 4 } }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{
+          px: { xs: 1, md: 2 },
+          py: { xs: 1.25, md: 1.75 },
+        }}
+      >
+        {/* 左側 Logo + Title */}
+        <Stack
+          component={RouterLink}
+          to="/products"
+          direction="row"
+          alignItems="center"
+          spacing={1.5}
+          sx={{
+            textDecoration: 'none',
+            color: 'text.primary',
+            minWidth: 0,
           }}
         >
-          <nav className="d-flex flex-column gap-3 mb-4">
-            {NAV_LIST.map((item) => (
-              <Link className="text-dark text-decoration-none small fw-medium py-2" to={item.path} key={item.name} onClick={() => setIsMenuOpen(false)}>{item.name}</Link>
-            ))}
-          </nav>
-          <div className="d-flex align-items-center justify-content-between pt-3 border-top">
-            <span className="text-muted small">歡迎，{username}</span>
-            <button 
+          <Box
+            component="img"
+            src="/logo.png"
+            alt="BooBoo食堂"
+            sx={{ width: 40, height: 40, objectFit: 'contain', flexShrink: 0 }}
+          />
+          <Typography
+            variant="h6"
+            sx={(theme) => ({
+              fontWeight: 900,
+              fontFamily: theme.typography.title?.fontFamily || "'Kaisei Opti', serif",
+              letterSpacing: theme.typography.title?.letterSpacing || '0.04em',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            })}
+          >
+            BooBoo食堂後台系統
+          </Typography>
+        </Stack>
+
+        {/* 桌機：導覽 + 右側使用者/登出 */}
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={2}
+          sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, justifyContent: 'flex-end' }}
+        >
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={0.5}
+            sx={(theme) => ({
+              px: 2,
+              py: 1,
+              borderRadius: 999,
+              border: `1px solid ${alpha(theme.palette.common.white, 0.35)}`,
+              bgcolor: alpha(theme.palette.common.white, 0.55),
+              backdropFilter: 'blur(6px)',
+              boxShadow: theme.shadows[1],
+            })}
+          >
+            {NAV_LIST.map((item) => {
+              const selected = activePath === item.path || activePath.startsWith(`${item.path}/`)
+              return (
+                <Button
+                  key={item.name}
+                  component={RouterLink}
+                  to={item.path}
+                  size="small"
+                  sx={(theme) => ({
+                    fontWeight: selected ? 900 : 700,
+                    color: selected ? theme.palette.primary.main : theme.palette.text.primary,
+                    borderRadius: 999,
+                    px: 1.5,
+                    '&:hover': {
+                      bgcolor: alpha(theme.palette.primary.main, 0.08),
+                    },
+                  })}
+                >
+                  {item.name}
+                </Button>
+              )
+            })}
+          </Stack>
+
+          <Stack direction="row" alignItems="center" spacing={1.25}>
+            <Typography
+              variant="body2"
+              sx={{ color: 'text.secondary', display: { xs: 'none', lg: 'block' } }}
+            >
+              歡迎，{username}
+            </Typography>
+            <Button
               onClick={onLogout}
-              className="btn btn-dark rounded-pill px-4 fw-bold shadow-sm"
-              style={{ fontSize: '0.875rem' }}
+              variant="contained"
+              sx={{
+                borderRadius: 999,
+                px: 3,
+                fontWeight: 900,
+                bgcolor: 'text.primary',
+                '&:hover': { bgcolor: 'text.primary' },
+              }}
             >
               登出
-            </button>
-          </div>
-        </div>
-      )}
-    </header>
+            </Button>
+          </Stack>
+        </Stack>
+
+        {/* 手機：menu */}
+        <IconButton
+          onClick={toggleMenu}
+          sx={{ display: { xs: 'inline-flex', md: 'none' } }}
+          aria-label={isMenuOpen ? '關閉選單' : '開啟選單'}
+        >
+          <span className="material-symbols-outlined">{isMenuOpen ? 'close' : 'menu'}</span>
+        </IconButton>
+      </Stack>
+
+      {/* 手機 Drawer */}
+      <Drawer
+        anchor="right"
+        open={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        PaperProps={{
+          sx: (theme) => ({
+            width: 320,
+            bgcolor: alpha(theme.palette.common.white, 0.92),
+            backdropFilter: 'blur(10px)',
+          }),
+        }}
+      >
+        <Box sx={{ p: 2 }}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 900 }}>
+              選單
+            </Typography>
+            <IconButton onClick={() => setIsMenuOpen(false)} aria-label="關閉選單">
+              <span className="material-symbols-outlined">close</span>
+            </IconButton>
+          </Stack>
+
+          <List disablePadding sx={{ mt: 1 }}>
+            {NAV_LIST.map((item) => {
+              const selected = activePath === item.path || activePath.startsWith(`${item.path}/`)
+              return (
+                <ListItemButton
+                  key={item.name}
+                  component={RouterLink}
+                  to={item.path}
+                  selected={selected}
+                  onClick={() => setIsMenuOpen(false)}
+                  sx={(theme) => ({
+                    borderRadius: 2,
+                    mb: 0.5,
+                    '&.Mui-selected': {
+                      bgcolor: alpha(theme.palette.primary.main, 0.10),
+                      color: theme.palette.primary.main,
+                      '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.14) },
+                    },
+                  })}
+                >
+                  <ListItemText
+                    primary={item.name}
+                    primaryTypographyProps={{ fontWeight: selected ? 900 : 700 }}
+                  />
+                </ListItemButton>
+              )
+            })}
+          </List>
+
+          <Divider sx={{ my: 2 }} />
+
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 700 }}>
+              歡迎，{username}
+            </Typography>
+            <Button
+              onClick={onLogout}
+              variant="contained"
+              sx={{
+                borderRadius: 999,
+                px: 2.5,
+                fontWeight: 900,
+                bgcolor: 'text.primary',
+                '&:hover': { bgcolor: 'text.primary' },
+              }}
+            >
+              登出
+            </Button>
+          </Stack>
+        </Box>
+      </Drawer>
+    </Box>
   )
 }
 

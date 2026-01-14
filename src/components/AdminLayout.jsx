@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom'
+import { Box, Container } from '@mui/material'
 import AdminHeader from './AdminHeader'
 import AdminFooter from './AdminFooter'
 
@@ -8,15 +9,24 @@ import AdminFooter from './AdminFooter'
  */
 export default function AdminLayout() {
   return (
-    <div className="d-flex flex-column min-vh-100" style={{ backgroundImage: 'url(/japanese-paper.jpg)', backgroundSize: '200px 200px', backgroundRepeat: 'repeat' }}>
-      <div className="container py-4 flex-grow-1">
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundImage: 'url(/japanese-paper.jpg)',
+        backgroundSize: '200px 200px',
+        backgroundRepeat: 'repeat',
+      }}
+    >
+      <Container maxWidth="lg" sx={{ py: { xs: 2.5, md: 4 }, flexGrow: 1 }}>
         <AdminHeader />
-        <main className="mt-4">
+        <Box component="main" sx={{ mt: { xs: 2.5, md: 4 } }}>
           <Outlet />
-        </main>
-      </div>
+        </Box>
+      </Container>
       <AdminFooter />
-    </div>
+    </Box>
   )
 }
 
