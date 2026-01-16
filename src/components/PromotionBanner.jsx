@@ -1,49 +1,66 @@
 /**
  * 促銷橫幅組件
  */
+import { alpha } from '@mui/material/styles'
+import { Box, Button, Card, CardContent, Typography } from '@mui/material'
+
 export default function PromotionBanner() {
   return (
-    <div 
-      className="card border-0 text-white shadow-md position-relative overflow-hidden"
-      style={{ 
-        backgroundColor: 'var(--bs-dark)',
-        minHeight: '200px'
-      }}
+    <Card
+      elevation={2}
+      sx={(theme) => ({
+        position: 'relative',
+        overflow: 'hidden',
+        minHeight: 200,
+        borderRadius: 2,
+        bgcolor: theme.palette.grey[900],
+        color: theme.palette.common.white,
+      })}
     >
-      <div 
-        className="position-absolute top-0 start-0 w-100 h-100 opacity-30"
-        style={{
-          backgroundImage: 'url(https://lh3.googleusercontent.com/aida-public/AB6AXuBvWcIFX7fTsijP8vJABjxP4toU5fxUS2WSTv01IIAZjnz1ZPGS5bIzjSdfY9xGgQJJTHV0u9hvlFY2HlbcZBqIkMQo3ez7SNl4qBrB53_7Zw8LX19P5xVqnwQVu2o-t33lQY6wfnLXE69aQYCJxjl9g-lklH5FFKIQTzEZ7sfEKTTq7sM97L5PPF410UBC5NH0pLsjQPkhrodQobJWfBKYzOJ3AtyA6mOTu1lE7F7KwQKf-tLYBacwKxi-BugfMApUrJNAl9PNznI)',
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.30,
+          backgroundImage:
+            'url(https://lh3.googleusercontent.com/aida-public/AB6AXuBvWcIFX7fTsijP8vJABjxP4toU5fxUS2WSTv01IIAZjnz1ZPGS5bIzjSdfY9xGgQJJTHV0u9hvlFY2HlbcZBqIkMQo3ez7SNl4qBrB53_7Zw8LX19P5xVqnwQVu2o-t33lQY6wfnLXE69aQYCJxjl9g-lklH5FFKIQTzEZ7sfEKTTq7sM97L5PPF410UBC5NH0pLsjQPkhrodQobJWfBKYzOJ3AtyA6mOTu1lE7F7KwQKf-tLYBacwKxi-BugfMApUrJNAl9PNznI)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
         }}
       />
-      <div className="card-body p-4 position-relative" style={{ zIndex: 1 }}>
-        <div className="text-center">
-          <div className="mb-2" style={{ fontSize: '40px' }}>🎁</div>
-          <h4 className="fw-bold h5 mb-2">會員專屬優惠</h4>
-          <p className="small mb-4 opacity-90">
+
+      <CardContent sx={{ p: 3, position: 'relative' }}>
+        <Box sx={{ textAlign: 'center' }}>
+          <Box sx={{ fontSize: 40, mb: 1, lineHeight: 1 }}>🎁</Box>
+          <Typography variant="h6" sx={{ fontWeight: 900, mb: 0.5 }}>
+            會員專屬優惠
+          </Typography>
+          <Typography variant="body2" sx={{ opacity: 0.90, mb: 2 }}>
             加入會員即送
             <br />
             季節小菜一份
-          </p>
-          <button 
-            className="btn w-100 rounded-pill fw-bold text-dark border-0"
-            style={{ 
-              backgroundColor: 'var(--bs-light)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f0f0f0'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--bs-light)'
-            }}
+          </Typography>
+
+          <Button
+            fullWidth
+            variant="contained"
+            sx={(theme) => ({
+              borderRadius: 999,
+              fontWeight: 900,
+              color: theme.palette.text.primary,
+              bgcolor: theme.palette.background.paper,
+              boxShadow: 'none',
+              '&:hover': {
+                bgcolor: alpha(theme.palette.background.paper, 0.92),
+                boxShadow: 'none',
+              },
+            })}
           >
             立即註冊
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Box>
+      </CardContent>
+    </Card>
   )
 }
 

@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types'
+import { alpha } from '@mui/material/styles'
+import { Box, List, ListItemButton, ListItemText, Paper, Stack, Typography } from '@mui/material'
 
 /**
  * 通用的分類導航組件
@@ -18,59 +20,82 @@ export default function CategorySidebar({
   extra
 }) {
   return (
-    <div className="d-flex flex-column gap-4">
-      {/* 分類導航 */}
-      <div 
-        className="card shadow-sm border-0" 
-        style={{ backgroundColor: 'var(--bs-light)' }}
+    <Stack spacing={2}>
+      <Paper
+        elevation={1}
+        sx={(theme) => ({
+          borderRadius: 2,
+          bgcolor: theme.palette.background.paper,
+          border: `1px solid ${alpha(theme.palette.primary.main, 0.10)}`,
+        })}
       >
-        <div className="card-body p-4">
-          <h3 className="h5 fw-bold mb-1" style={{ color: 'var(--bs-dark)' }}>
+        <Box sx={{ p: 3 }}>
+          <Typography variant="h6" sx={{ fontWeight: 900 }}>
             {title}
-          </h3>
-          <p className="small mb-4" style={{ color: 'var(--bs-accent)' }}>
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25, mb: 2 }}>
             {subtitle}
-          </p>
-          <nav className="d-flex flex-column gap-1">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => onCategoryChange(category.id)}
-                className={`btn text-start d-flex align-items-center gap-3 px-3 py-2 rounded border-0 ${
-                  activeCategory === category.id
-                    ? 'fw-bold'
-                    : ''
-                }`}
-                style={{
-                  backgroundColor: activeCategory === category.id 
-                    ? 'rgba(230, 172, 163, 0.1)' 
-                    : 'transparent',
-                  color: activeCategory === category.id 
-                    ? 'var(--bs-primary)' 
-                    : 'var(--bs-dark)',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={(e) => {
-                  if (activeCategory !== category.id) {
-                    e.currentTarget.style.backgroundColor = 'var(--bs-secondary)'
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (activeCategory !== category.id) {
-                    e.currentTarget.style.backgroundColor = 'transparent'
-                  }
-                }}
-              >
-                <span style={{ fontSize: '20px' }}>{category.icon}</span>
-                <span>{category.name}</span>
-              </button>
-            ))}
-          </nav>
-        </div>
-      </div>
+          </Typography>
 
-      {extra}
-    </div>
+          <List dense disablePadding sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+            {categories.map((category) => {
+              const selected = activeCategory === category.id
+              return (
+                <ListItemButton
+                  key={category.id}
+                  selected={selected}
+                  onClick={() => onCategoryChange(category.id)}
+                  sx={(theme) => ({
+                    position: 'relative',
+                    borderRadius: 2,
+                    px: 2,
+                    py: 1,
+                    gap: 1.5,
+                    alignItems: 'center',
+                    transition: theme.transitions.create(['background-color', 'color'], {
+                      duration: theme.transitions.duration.shortest,
+                    }),
+                    '&.Mui-selected': {
+                      bgcolor: alpha(theme.palette.primary.light, 0.10),
+                      color: theme.palette.primary.main,
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        left: 0,
+                        top: 8,
+                        bottom: 8,
+                        width: 4,
+                        borderRadius: 999,
+                        backgroundColor: theme.palette.primary.main,
+                      },
+                      '&:hover': {
+                        bgcolor: alpha(theme.palette.primary.light, 0.14),
+                      },
+                    },
+                    '&:hover': {
+                      bgcolor: theme.palette.action.hover,
+                    },
+                  })}
+                >
+                  <Box component="span" sx={{ fontSize: 20, lineHeight: 1 }}>
+                    {category.icon}
+                  </Box>
+                  <ListItemText
+                    primary={category.name}
+                    primaryTypographyProps={{
+                      fontWeight: selected ? 900 : 600,
+                      color: selected ? 'inherit' : 'text.primary',
+                    }}
+                  />
+                </ListItemButton>
+              )
+            })}
+          </List>
+        </Box>
+      </Paper>
+
+      {extra ? <Box>{extra}</Box> : null}
+    </Stack>
   )
 }
 

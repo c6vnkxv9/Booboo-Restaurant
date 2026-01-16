@@ -1,61 +1,160 @@
+import { alpha } from '@mui/material/styles';
+import {
+	Box,
+	Container,
+	Divider,
+	Grid,
+	Stack,
+	Typography,
+} from '@mui/material';
+
 export default function AdminFooter() {
-  return (
-    <footer className="py-5 text-white-50 mt-auto" style={{ backgroundColor: 'var(--bs-dark)' }}>
-      <div className="container">
-        <div className="row g-5">
-          <div className="col-12 col-md-6 col-lg-3">
-            <div className="d-flex align-items-center gap-2 text-white mb-3">
-              <span className="material-symbols-outlined fs-2">ramen_dining</span>
-              <h6 className="fs-6 fw-bold mb-0">BooBoo食堂</h6>
-            </div>
-            <p className="small lh-lg mb-0" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
-              用心製作每一道料理，帶給您最溫暖的日式風味。選用當季新鮮食材，保留食物最原始的美味。
-            </p>
-          </div>    
+	const year = new Date().getFullYear();
 
-          <div className="col-12 col-md-6 col-lg-3">
-            <h6 className="fs-6 fw-bold text-white mb-3">聯絡我們</h6>
-            <div className="d-flex flex-column gap-2 small" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
-              <p className="d-flex align-items-center gap-2 mb-0">
-                <span className="material-symbols-outlined fs-6">location_on</span> 
-                台北市大安區美食路一段88號
-              </p>
-              <p className="d-flex align-items-center gap-2 mb-0">
-                <span className="material-symbols-outlined fs-6">call</span> 
-                (02) 2345-6789
-              </p>
-              <p className="d-flex align-items-center gap-2 mb-0">
-                <span className="material-symbols-outlined fs-6">mail</span> 
-                service@japanesecanteen.com
-              </p>
-            </div>
-          </div>
+	return (
+		<Box
+			component="footer"
+			sx={(theme) => ({
+				mt: 'auto',
+				py: { xs: 5, md: 6 },
+				color: alpha(theme.palette.common.white, 0.72),
+				background: `linear-gradient(180deg, ${alpha(
+					theme.palette.text.primary,
+					0.92
+				)} 0%, ${alpha(theme.palette.text.primary, 0.98)} 100%)`,
+			})}
+		>
+			<Container maxWidth="lg">
+				<Grid container spacing={4}>
+					<Grid item xs={12} md={6} lg={3}>
+						<Stack spacing={1.25}>
+							<Stack
+								direction="row"
+								spacing={1}
+								alignItems="center"
+								sx={{ color: '#fff' }}
+							>
+								<span
+									className="material-symbols-outlined"
+									style={{ fontSize: 30 }}
+								>
+									ramen_dining
+								</span>
+								<Typography
+									variant="subtitle1"
+									sx={(theme) => ({
+										fontWeight: 900,
+										color: '#fff',
+										fontFamily:
+											theme.typography.title?.fontFamily || "'Kaisei Opti', serif",
+										letterSpacing: theme.typography.title?.letterSpacing || '0.04em',
+									})}
+								>
+									BooBoo食堂
+								</Typography>
+							</Stack>
+							<Typography
+								variant="body2"
+								sx={{ lineHeight: 1.8, color: alpha('#fff', 0.62) }}
+							>
+								用心製作每一道料理，帶給您最溫暖的日式風味。選用當季新鮮食材，保留食物最原始的美味。
+							</Typography>
+						</Stack>
+					</Grid>
 
-          {/* 營業時間 */}
-          <div className="col-12 col-md-6 col-lg-3">
-            <h6 className="fs-6 fw-bold text-white mb-3">營業時間</h6>
-            <div className="d-flex flex-column gap-2 small" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
-              <p className="mb-0">週一至週五: 11:00 - 14:30, 17:00 - 21:00</p>
-              <p className="mb-0">週六至週日: 11:00 - 21:30</p>
-            </div>
-          </div>
+					<Grid item xs={12} md={6} lg={3}>
+						<Stack spacing={1.5}>
+							<Typography
+								variant="subtitle2"
+								sx={{ fontWeight: 900, color: '#fff' }}
+							>
+								聯絡我們
+							</Typography>
+							<Stack spacing={1} sx={{ color: alpha('#fff', 0.62) }}>
+								<Stack direction="row" spacing={1} alignItems="center">
+									<span
+										className="material-symbols-outlined"
+										style={{ fontSize: 18 }}
+									>
+										location_on
+									</span>
+									<Typography variant="body2">
+										台北市大安區美食路一段88號
+									</Typography>
+								</Stack>
+								<Stack direction="row" spacing={1} alignItems="center">
+									<span
+										className="material-symbols-outlined"
+										style={{ fontSize: 18 }}
+									>
+										call
+									</span>
+									<Typography variant="body2">(02) 2345-6789</Typography>
+								</Stack>
+								<Stack direction="row" spacing={1} alignItems="center">
+									<span
+										className="material-symbols-outlined"
+										style={{ fontSize: 18 }}
+									>
+										mail
+									</span>
+									<Typography variant="body2">
+										service@japanesecanteen.com
+									</Typography>
+								</Stack>
+							</Stack>
+						</Stack>
+					</Grid>
 
-          {/* 訂閱電子報 */}
-          <div className="col-12 col-md-6 col-lg-3">
-            <h6 className="fs-6 fw-bold text-white mb-3">訂閱電子報</h6>
-            <p className="small mb-3" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
-              訂閱以獲取最新菜單和優惠資訊。
-            </p>
-          </div>
-        </div>
+					<Grid item xs={12} md={6} lg={3}>
+						<Stack spacing={1.5}>
+							<Typography
+								variant="subtitle2"
+								sx={{ fontWeight: 900, color: '#fff' }}
+							>
+								營業時間
+							</Typography>
+							<Stack spacing={1} sx={{ color: alpha('#fff', 0.62) }}>
+								<Typography variant="body2">
+									週一至週五: 11:00 - 14:30, 17:00 - 21:00
+								</Typography>
+								<Typography variant="body2">
+									週六至週日: 11:00 - 21:30
+								</Typography>
+							</Stack>
+						</Stack>
+					</Grid>
 
-        <div className="mt-5 pt-4 border-top border-white-10 text-center">
-          <p className="small mb-0" style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.75rem' }}>
-            © 2026 BooBoo食堂. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
-  )
+					<Grid item xs={12} md={6} lg={3}>
+						<Stack spacing={1.5}>
+							<Typography
+								variant="subtitle2"
+								sx={{ fontWeight: 900, color: '#fff' }}
+							>
+								訂閱電子報
+							</Typography>
+							<Typography variant="body2" sx={{ color: alpha('#fff', 0.62) }}>
+								訂閱以獲取最新菜單和優惠資訊。
+							</Typography>
+						</Stack>
+					</Grid>
+				</Grid>
+
+				<Divider
+					sx={{ my: { xs: 4, md: 5 }, borderColor: alpha('#fff', 0.12) }}
+				/>
+
+				<Typography
+					variant="caption"
+					sx={{
+						display: 'block',
+						textAlign: 'center',
+						color: alpha('#fff', 0.45),
+					}}
+				>
+					© {year} BooBoo食堂. All rights reserved.
+				</Typography>
+			</Container>
+		</Box>
+	);
 }
-
