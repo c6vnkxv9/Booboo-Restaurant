@@ -103,7 +103,6 @@ export default function Products() {
 		setEditingProduct(null);
 		setShowEditModal(true);
 	};
-
 	// 處理編輯商品
 	const handleEditProduct = (product) => {
 		setEditingProduct(product);
@@ -158,7 +157,6 @@ export default function Products() {
 	// 處理保存商品
 	const handleSaveProduct = async (formData) => {
 		try {
-			// API 需要將數據包裝在 data 物件中
 			const requestData = {
 				data: {
 					...formData,
@@ -179,7 +177,6 @@ export default function Products() {
 				setPermissionError(err);
 				throw err;
 			} else {
-				// 處理錯誤訊息陣列
 				const errorMessage = err.response?.data?.message;
 				const errorText = Array.isArray(errorMessage)
 					? errorMessage.join(', ')
@@ -260,7 +257,6 @@ export default function Products() {
 				/>
 			}
 		>
-			{/* 篩選和排序工具欄 */}
 			<Stack
 				direction={{ xs: 'column', sm: 'row' }}
 				justifyContent="space-between"

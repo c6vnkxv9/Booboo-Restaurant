@@ -32,6 +32,21 @@ import { uploadAdminImageAPI } from '@/api/imgUpload';
  * @param {Function} onClose - 關閉Modal的回調
  * @param {Function} onSave - 保存的回調，接收更新後的產品數據
  */
+const DEFAULT_CATEGORY_ID = 'default';
+const DEFAULT_CATEGORY_LABEL = '請選擇分類';
+const DEFAULT_CATEGORY = {
+	id: DEFAULT_CATEGORY_ID,
+	name: DEFAULT_CATEGORY_LABEL,
+	disabled: true,
+};
+const categories = [
+	DEFAULT_CATEGORY,
+	...CATEGORIES.filter((cat) => cat.id !== 'all').map((cat) => ({
+		id: cat.id,
+		name: cat.name,
+		disabled: false,
+	})),
+];
 export default function ProductEditModal({ show, product, onClose, onSave }) {
 	const initialFormData = useMemo(
 		() => ({
@@ -39,8 +54,8 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 			description: '',
 			content: '',
 			category: '',
-			price: 0,
-			origin_price: 0,
+			price: null,
+			origin_price: null,
 			unit: '',
 			is_enabled: 1,
 			imageUrl: '',
@@ -56,7 +71,6 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 	const [localPreviewUrl, setLocalPreviewUrl] = useState('');
 	const fileInputRef = useRef(null);
 
-	// 當產品數據變化時，更新表單數據
 	useEffect(() => {
 		if (product) {
 			setFormData({
@@ -100,8 +114,23 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 		setError(null);
 
 		try {
+			const normalizedFormData = {
+				...formData,
+				price:
+					formData.price === '' ||
+					formData.price === null ||
+					formData.price === undefined
+						? 0
+						: Number(formData.price),
+				origin_price:
+					formData.origin_price === '' ||
+					formData.origin_price === null ||
+					formData.origin_price === undefined
+						? 0
+						: Number(formData.origin_price),
+			};
 			// 調用父組件的 onSave 回調
-			await onSave(formData);
+			await onSave(normalizedFormData);
 			onClose();
 		} catch (err) {
 			setError(err.message || '保存失敗，請稍後再試');
@@ -134,11 +163,9 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 
 	const handleFileChange = async (e) => {
 		const file = e.target.files?.[0];
-		// 允許再次選到同一張
 		e.target.value = '';
 		if (!file) return;
 
-		// 基本檢查
 		const isImage = file.type.startsWith('image/');
 		if (!isImage) {
 			setError('請選擇圖片檔（JPG / PNG）');
@@ -150,7 +177,6 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 			return;
 		}
 
-		// 本地預覽
 		if (localPreviewUrl) URL.revokeObjectURL(localPreviewUrl);
 		const objectUrl = URL.createObjectURL(file);
 		setLocalPreviewUrl(objectUrl);
@@ -205,10 +231,10 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 			scroll="paper"
 			PaperProps={{
 				sx: (theme) => ({
-					borderRadius: 6, // rounded-3xl 느낌
+					borderRadius: 6,
 					overflow: 'hidden',
 					boxShadow: '0 24px 60px rgba(0,0,0,0.25)',
-					border: `1px solid ${alpha(theme.palette.primary.main, 0.20)}`,
+					border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
 				}),
 			}}
 		>
@@ -308,7 +334,6 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 							direction={{ xs: 'column', md: 'row' }}
 							spacing={{ xs: 3, md: 5 }}
 						>
-							{/* 左側：照片區（僅樣式，無上傳功能） */}
 							<Box sx={{ width: { xs: '100%', md: '33%' } }}>
 								<Stack spacing={1.5}>
 									<Typography
@@ -489,14 +514,6 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 										onChange={handleFileChange}
 										disabled={loading || uploadingImage}
 									/>
-
-									<Typography
-										variant="caption"
-										sx={{ color: 'text.disabled', lineHeight: 1.6 }}
-									>
-										建議尺寸 800 x 800 px，檔案大小不超過 2MB。格式支援 JPG,
-										PNG。
-									</Typography>
 								</Stack>
 							</Box>
 
@@ -525,12 +542,14 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 													label="分類"
 													value={formData.category}
 													onChange={(e) => setField('category', e.target.value)}
+													style={{ minWidth: '90px' }}
 												>
-													<MenuItem value="">
-														<em>請選擇分類</em>
-													</MenuItem>
-													{CATEGORIES.map((cat) => (
-														<MenuItem key={cat.id} value={cat.id}>
+													{categories.map((cat) => (
+														<MenuItem
+															key={cat.id}
+															value={cat.id}
+															disabled={cat.disabled}
+														>
 															{cat.name}
 														</MenuItem>
 													))}
@@ -546,7 +565,9 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 										fullWidth
 										placeholder="描述商品特色與口感..."
 										multiline
-										minRows={3}
+										minRows={1}
+										maxRows={2}
+										inputProps={{ maxLength: 64 }}
 										sx={inputSx}
 									/>
 
@@ -555,18 +576,22 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 											<TextField
 												label="銷售價格"
 												value={formData.price}
-												onChange={(e) =>
-													setField('price', parseFloat(e.target.value) || 0)
-												}
+												onChange={(e) => {
+													const v = e.target.value;
+													if (v === '') setField('price', '');
+													else setField('price', v);
+												}}
+												placeholder="0"
 												required
 												fullWidth
 												type="number"
-												inputProps={{ min: 0, step: 1 }}
 												sx={(theme) => ({
 													...inputSx(theme),
 													'& input': { fontWeight: 900 },
 												})}
-												InputProps={{
+												inputProps={{
+													min: 0,
+													step: 1,
 													startAdornment: (
 														<InputAdornment
 															position="start"
@@ -582,41 +607,21 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 											<TextField
 												label="原價"
 												value={formData.origin_price}
-												onChange={(e) =>
-													setField(
-														'origin_price',
-														parseFloat(e.target.value) || 0
-													)
-												}
+												onChange={(e) => {
+													const v = e.target.value;
+													if (v === '') setField('origin_price', '');
+													else setField('origin_price', v);
+												}}
 												fullWidth
 												type="number"
-												inputProps={{ min: 0, step: 1 }}
+												placeholder="0"
 												sx={(theme) => ({
-													'& .MuiOutlinedInput-root': {
-														borderRadius: 3,
-														bgcolor: alpha(theme.palette.text.primary, 0.03),
-														'& fieldset': {
-															borderColor: alpha(
-																theme.palette.text.primary,
-																0.1
-															),
-														},
-														'&:hover fieldset': {
-															borderColor: alpha(
-																theme.palette.primary.main,
-																0.22
-															),
-														},
-														'&.Mui-focused fieldset': {
-															borderColor: theme.palette.primary.main,
-														},
-													},
-													'& .MuiInputLabel-root.Mui-focused': {
-														color: theme.palette.primary.main,
-													},
-													'& input': { color: theme.palette.text.secondary },
+													...inputSx(theme),
+													'& input': { fontWeight: 900 },
 												})}
-												InputProps={{
+												inputProps={{
+													min: 0,
+													step: 1,
 													startAdornment: (
 														<InputAdornment
 															position="start"
