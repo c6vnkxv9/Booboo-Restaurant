@@ -23,6 +23,8 @@ export default function ProductCard({ product, onView, onEdit, onDelete }) {
 	const description = product.description || '';
 	const price = Number(product.price || 0);
 	const enabled = product.is_enabled === 1 || product.is_enabled === true;
+	const rating = Number(product.rating || 0);
+	const isFeatured = product.is_featured === 1 || product.is_featured === true;
 
 	return (
 		<div className="col-12 col-sm-6 col-lg-4">
@@ -96,25 +98,52 @@ export default function ProductCard({ product, onView, onEdit, onDelete }) {
 							{title}
 						</Typography>
 
-						<Chip
-							size="small"
-							label={enabled ? '上架中' : '已下架'}
-							variant="outlined"
-							sx={(theme) => ({
-								fontWeight: 900,
-								flexShrink: 0,
-								borderColor: enabled
-									? alpha(theme.palette.primary.main, 0.35)
-									: alpha(theme.palette.text.primary, 0.2),
-								color: enabled
-									? theme.palette.primary.main
-									: theme.palette.text.secondary,
-								bgcolor: enabled
-									? alpha(theme.palette.primary.main, 0.08)
-									: 'transparent',
-							})}
-						/>
+						<Stack direction="row" spacing={0.5} alignItems="center">
+							<Chip
+								size="small"
+								label={enabled ? '上架中' : '已下架'}
+								variant="outlined"
+								sx={(theme) => ({
+									fontWeight: 900,
+									flexShrink: 0,
+									borderColor: enabled
+										? alpha(theme.palette.primary.main, 0.35)
+										: alpha(theme.palette.text.primary, 0.2),
+									color: enabled
+										? theme.palette.primary.main
+										: theme.palette.text.secondary,
+									bgcolor: enabled
+										? alpha(theme.palette.primary.main, 0.08)
+										: 'transparent',
+								})}
+							/>
+							{isFeatured ? (
+								<Chip
+									size="small"
+									label="精選"
+									variant="filled"
+									sx={(theme) => ({
+										fontWeight: 900,
+										bgcolor: alpha(theme.palette.secondary.main, 0.18),
+										color: theme.palette.secondary.main,
+										border: `1px solid ${alpha(
+											theme.palette.secondary.main,
+											0.35
+										)}`,
+									})}
+								/>
+							) : null}
+						</Stack>
 					</Stack>
+
+					{rating > 0 ? (
+						<Typography
+							variant="caption"
+							sx={{ color: 'text.secondary', fontWeight: 700 }}
+						>
+							Rating: {rating}/5
+						</Typography>
+					) : null}
 
 					{description ? (
 						<Typography
@@ -235,6 +264,8 @@ ProductCard.propTypes = {
 		category: PropTypes.string,
 		price: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 		is_enabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+		rating: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+		is_featured: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
 		imageUrl: PropTypes.string,
 		image: PropTypes.string,
 		imagesUrl: PropTypes.arrayOf(PropTypes.string),
