@@ -77,17 +77,6 @@ export const getAdminProductsAPI = async (params = {}) => {
 }
 
 /**
- * 獲取單一產品詳情（管理控制台）
- * GET /v2/api/{api_path}/admin/product/{id}
- * @param {string|number} id - 產品 ID
- * @returns {Promise} API 響應
- */
-export const getAdminProductByIdAPI = async (id) => {
-  const response = await axiosInstance.get(`/admin/product/${id}`)
-  return response.data
-}
-
-/**
  * 創建產品（管理控制台）
  * POST /v2/api/{api_path}/admin/product
  * @param {Object} productData - 產品數據

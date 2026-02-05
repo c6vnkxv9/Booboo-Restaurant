@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
-import AdminHeader from '@/components/header/AdminHeader';
-import CommonFooter from '@/components/footer/CommonFooter';
+import { Box, Container } from '@mui/material';
+import AdminHeader from './AdminHeader';
+import AdminFooter from './AdminFooter';
 
 /**
  * 後台共用佈局組件
@@ -8,21 +9,23 @@ import CommonFooter from '@/components/footer/CommonFooter';
  */
 export default function AdminLayout() {
 	return (
-		<div
-			className="d-flex flex-column min-vh-100"
-			style={{
+		<Box
+			sx={{
+				minHeight: '100vh',
+				display: 'flex',
+				flexDirection: 'column',
 				backgroundImage: 'url(/japanese-paper.jpg)',
 				backgroundSize: '200px 200px',
 				backgroundRepeat: 'repeat',
 			}}
 		>
-			<div className="container py-4 flex-grow-1">
+			<Container maxWidth="lg" sx={{ py: { xs: 2.5, md: 4 }, flexGrow: 1 }}>
 				<AdminHeader />
-				<main className="mt-4">
+				<Box component="main" sx={{ mt: { xs: 2.5, md: 4 } }}>
 					<Outlet />
-				</main>
-			</div>
-			<CommonFooter />
-		</div>
+				</Box>
+			</Container>
+			<AdminFooter />
+		</Box>
 	);
 }

@@ -37,10 +37,21 @@ export const logoutAPI = async () => {
   }
 }
 
-// export const checkUserAPI = async () => {
-//   const response = await axiosInstance.post(`${baseUrl}/user/check`)
-//   return response.data
-// }
+// 驗證登入狀態（Hexschool: POST /v2/api/user/check）
+export const checkUserAPI = async () => {
+  const token = auth.getToken()
+  const response = await axios.post(
+    `${baseUrl}api/user/check`,
+    {},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: token } : {}),
+      },
+    }
+  )
+  return response.data
+}
 
 export const loginAPI = adminSigninAPI
 
