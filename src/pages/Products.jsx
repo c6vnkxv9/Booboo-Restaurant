@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import {
-	getAllAdminProductsAPI,
+	getAdminProductsAPI,
 	createAdminProductAPI,
 	updateAdminProductAPI,
 	deleteAdminProductAPI,
@@ -10,6 +10,8 @@ import CategorySidebar from '@/components/CategorySidebar';
 import ProductCard from '@/components/ProductCard';
 import ProductEditModal from '@/components/ProductEditModal';
 import ProductDetailModal from '@/components/ProductDetailModal';
+import Pagination from '@/components/Pagination';
+import DeleteModal from '@/components/DeleteModal';
 import PermissionDenied from '@/components/PermissionDenied';
 import EmptyState from '@/components/EmptyState';
 import { isPermissionDenied } from '@/utils/permissions';
@@ -19,10 +21,6 @@ import {
 	Box,
 	Button,
 	CircularProgress,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
 	FormControl,
 	MenuItem,
 	Paper,
@@ -38,6 +36,8 @@ export default function Products() {
 	const [permissionError, setPermissionError] = useState(null);
 	const [activeCategory, setActiveCategory] = useState('all');
 	const [sortBy, setSortBy] = useState('newest');
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [editingProduct, setEditingProduct] = useState(null);
 	const [detailOpen, setDetailOpen] = useState(false);
@@ -47,19 +47,31 @@ export default function Products() {
 	const [deletingProduct, setDeletingProduct] = useState(null);
 
 	useEffect(() => {
-		fetchProducts();
+		fetchProducts(1);
 	}, []);
-	const fetchProducts = async () => {
+
+	useEffect(() => {
+		setCurrentPage(1);
+		fetchProducts(1);
+	}, [activeCategory, sortBy]);
+
+	const fetchProducts = async (page = 1) => {
 		try {
 			setLoading(true);
 			setError(null);
 			setPermissionError(null);
-			const response = await getAllAdminProductsAPI();
-			const productsData = response.products || [];
+			const response = await getAdminProductsAPI({ page });
+			const productsData = response.products || response.data || [];
 			const productsArray = Array.isArray(productsData)
 				? productsData
 				: Object.values(productsData);
 			setAllProducts(productsArray);
+			const totalPagesFromAPI = response.pagination?.total_pages;
+			setTotalPages(
+				Number.isFinite(totalPagesFromAPI) && totalPagesFromAPI > 0
+					? totalPagesFromAPI
+					: 1
+			);
 		} catch (err) {
 			// 檢查是否為權限不足錯誤
 			if (isPermissionDenied(err)) {
@@ -132,7 +144,7 @@ export default function Products() {
 		try {
 			setDeleting(true);
 			await deleteAdminProductAPI(deletingProduct.id);
-			await fetchProducts();
+			await fetchProducts(currentPage);
 			setDeleteDialogOpen(false);
 			setDeletingProduct(null);
 		} catch (err) {
@@ -171,7 +183,7 @@ export default function Products() {
 				await createAdminProductAPI(requestData);
 			}
 			// 重新獲取產品列表
-			await fetchProducts();
+			await fetchProducts(currentPage);
 		} catch (err) {
 			if (isPermissionDenied(err)) {
 				setPermissionError(err);
@@ -355,30 +367,24 @@ export default function Products() {
 				</div>
 			)}
 
-			{/* 產品刪除 Modal */}
-			<Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-				<DialogTitle sx={{ fontWeight: 900 }}>確認刪除</DialogTitle>
-				<DialogContent>
-					<Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-						確定要刪除「
-						{deletingProduct?.title || deletingProduct?.name || '此商品'}
-						」嗎？此操作無法復原。
-					</Typography>
-				</DialogContent>
-				<DialogActions sx={{ px: 3, pb: 2 }}>
-					<Button onClick={handleCloseDeleteDialog} disabled={deleting}>
-						取消
-					</Button>
-					<Button
-						color="error"
-						variant="contained"
-						onClick={handleConfirmDelete}
-						disabled={deleting}
-					>
-						{deleting ? '刪除中...' : '確認刪除'}
-					</Button>
-				</DialogActions>
-			</Dialog>
+			<Pagination
+				page={currentPage}
+				totalPages={totalPages}
+				onChange={(page) => {
+					setCurrentPage(page);
+					fetchProducts(page);
+				}}
+			/>
+
+			<DeleteModal
+				open={deleteDialogOpen}
+				onClose={handleCloseDeleteDialog}
+				onConfirm={handleConfirmDelete}
+				loading={deleting}
+				description={`確定要刪除「${
+					deletingProduct?.title || deletingProduct?.name || '此商品'
+				}」嗎？此操作無法復原。`}
+			/>
 
 			<ProductEditModal
 				show={showEditModal}

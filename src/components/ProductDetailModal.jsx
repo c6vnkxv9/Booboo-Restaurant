@@ -26,6 +26,9 @@ export default function ProductDetailModal({ open, product, onClose }) {
 	const description = product?.description || '暫無描述';
 	const price = Number(product?.price || 0);
 	const enabled = product?.is_enabled === 1 || product?.is_enabled === true;
+	const rating = Number(product?.rating || 0);
+	const isFeatured =
+		product?.is_featured === 1 || product?.is_featured === true;
 	const categoryName =
 		CATEGORIES.find((cat) => cat.id === product?.category)?.name || '未分類';
 
@@ -231,6 +234,20 @@ export default function ProductDetailModal({ open, product, onClose }) {
 												borderColor: alpha('#000', 0.1),
 											}}
 										/>
+										{isFeatured ? (
+											<Chip
+												label="精選商品"
+												sx={(theme) => ({
+													fontWeight: 900,
+													bgcolor: alpha(theme.palette.secondary.main, 0.16),
+													color: theme.palette.secondary.main,
+													border: `1px solid ${alpha(
+														theme.palette.secondary.main,
+														0.35
+													)}`,
+												})}
+											/>
+										) : null}
 									</Stack>
 
 									<Divider />
@@ -272,6 +289,29 @@ export default function ProductDetailModal({ open, product, onClose }) {
 											})}
 										>
 											{description}
+										</Typography>
+									</Box>
+
+									<Box>
+										<Typography
+											variant="caption"
+											sx={(theme) => ({
+												color: theme.palette.secondary.main,
+												fontWeight: 900,
+											})}
+										>
+											自訂欄位
+										</Typography>
+										<Typography
+											variant="body2"
+											sx={(theme) => ({
+												color: theme.palette.secondary.main,
+												lineHeight: 1.7,
+												mt: 0.5,
+											})}
+										>
+											Rating: {rating || 0}/5 ・ 精選商品:{' '}
+											{isFeatured ? '是' : '否'}
 										</Typography>
 									</Box>
 

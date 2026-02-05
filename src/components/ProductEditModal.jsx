@@ -58,6 +58,8 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 			origin_price: null,
 			unit: '',
 			is_enabled: 1,
+			rating: 0,
+			is_featured: 0,
 			imageUrl: '',
 			imagesUrl: [],
 		}),
@@ -82,6 +84,14 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 				origin_price: product.origin_price || 0,
 				unit: product.unit || '',
 				is_enabled: product.is_enabled !== undefined ? product.is_enabled : 1,
+				rating:
+					product.rating === '' ||
+					product.rating === null ||
+					product.rating === undefined
+						? 0
+						: Number(product.rating),
+				is_featured:
+					product.is_featured === true || product.is_featured === 1 ? 1 : 0,
 				imageUrl:
 					product.imageUrl ||
 					product.image ||
@@ -128,6 +138,14 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 					formData.origin_price === undefined
 						? 0
 						: Number(formData.origin_price),
+				rating:
+					formData.rating === '' ||
+					formData.rating === null ||
+					formData.rating === undefined
+						? 0
+						: Number(formData.rating),
+				is_featured:
+					formData.is_featured === true || formData.is_featured === 1 ? 1 : 0,
 			};
 			// 調用父組件的 onSave 回調
 			await onSave(normalizedFormData);
@@ -642,6 +660,57 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 												fullWidth
 												sx={inputSx}
 											/>
+										</Grid>
+									</Grid>
+
+									<Grid container spacing={2}>
+										<Grid item xs={12} md={6}>
+											<FormControl fullWidth sx={inputSx}>
+												<InputLabel id="product-rating-label">
+													星級評分
+												</InputLabel>
+												<Select
+													labelId="product-rating-label"
+													label="星級評分"
+													value={formData.rating}
+													onChange={(e) => setField('rating', e.target.value)}
+												>
+													{[0, 1, 2, 3, 4, 5].map((value) => (
+														<MenuItem key={value} value={value}>
+															{value === 0 ? '未評分' : `${value} / 5`}
+														</MenuItem>
+													))}
+												</Select>
+											</FormControl>
+										</Grid>
+										<Grid item xs={12} md={6}>
+											<Stack
+												direction="row"
+												alignItems="center"
+												justifyContent="space-between"
+												sx={(theme) => ({
+													height: '100%',
+													borderRadius: 3,
+													bgcolor: '#fff',
+													border: `1px solid ${alpha(
+														theme.palette.text.primary,
+														0.12
+													)}`,
+													px: 2,
+													py: 1.5,
+												})}
+											>
+												<Typography sx={{ fontWeight: 700 }}>
+													精選商品
+												</Typography>
+												<Switch
+													checked={formData.is_featured === 1}
+													onChange={(e) =>
+														setField('is_featured', e.target.checked ? 1 : 0)
+													}
+													disabled={loading || uploadingImage}
+												/>
+											</Stack>
 										</Grid>
 									</Grid>
 
