@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Box, Container, Typography, Link, useTheme, CircularProgress } from '@mui/material';
+import {
+	Box,
+	Container,
+	Typography,
+	Link,
+	useTheme,
+	CircularProgress,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -8,7 +15,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { getProductsAPI } from '@/api/products';
 import { Link as RouterLink } from 'react-router-dom';
-import ProductCard from '@/components/ProductCard';
+import FrontProductCard from '@/components/FrontProductCard';
 const SectionBox = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(12, 0),
 	position: 'relative',
@@ -85,7 +92,7 @@ const ItemsSection = () => {
 			try {
 				setLoading(true);
 				const response = await getProductsAPI();
-				const productsData = Array.isArray(response) 
+				const productsData = Array.isArray(response)
 					? response.slice(0, 9)
 					: (response.products || []).slice(0, 9);
 				setProducts(productsData);
@@ -169,13 +176,14 @@ const ItemsSection = () => {
 						>
 							{products.map((product) => (
 								<SwiperSlide key={product.id || product._id}>
-									<Box sx={{ height: '100%', display: 'flex', justifyContent: 'center' }}>
-										<RouterLink
-											to={`/products/${product.id || product._id}`}
-											style={{ textDecoration: 'none', width: '100%' }}
-										>
-											<ProductCard product={product} />
-										</RouterLink>
+									<Box
+										sx={{
+											height: '100%',
+											display: 'flex',
+											justifyContent: 'center',
+										}}
+									>
+										<FrontProductCard product={product} />
 									</Box>
 								</SwiperSlide>
 							))}
@@ -190,7 +198,14 @@ const ItemsSection = () => {
 				<Box sx={{ textAlign: 'center' }}>
 					<ViewAllLink component={RouterLink} to="/products">
 						查看完整菜單
-						<span className="material-symbols-outlined arrow-icon" style={{ fontSize: '1rem', marginLeft: '4px', transition: 'transform 0.3s' }}>
+						<span
+							className="material-symbols-outlined arrow-icon"
+							style={{
+								fontSize: '1rem',
+								marginLeft: '4px',
+								transition: 'transform 0.3s',
+							}}
+						>
 							chevron_right
 						</span>
 					</ViewAllLink>
@@ -201,4 +216,3 @@ const ItemsSection = () => {
 };
 
 export default ItemsSection;
-

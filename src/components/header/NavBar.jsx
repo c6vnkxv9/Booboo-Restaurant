@@ -1,4 +1,12 @@
-import { AppBar, Toolbar, Box, Typography, Button, IconButton, useTheme } from '@mui/material';
+import {
+	AppBar,
+	Toolbar,
+	Box,
+	Typography,
+	Button,
+	IconButton,
+	useTheme,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -117,7 +125,9 @@ const NavBar = () => {
 					<Link to="/" style={{ textDecoration: 'none' }}>
 						<LogoContainer>
 							<IconWrapper className="icon-wrapper">
-								<span className="material-symbols-outlined icon">ramen_dining</span>
+								<span className="material-symbols-outlined icon">
+									ramen_dining
+								</span>
 							</IconWrapper>
 							<Box
 								sx={{
@@ -162,13 +172,18 @@ const NavBar = () => {
 							gap: 5,
 						}}
 					>
-						<NavLink href="#items">菜單</NavLink>
-						<NavLink href="#story">常見問題</NavLink>
-						<NavLink href="#story">關於我們</NavLink>
-						<NavLink href="#story">優惠券列表</NavLink>
-						<NavLink href="#story">查詢訂單</NavLink>
-						<NavLink href="#journal">部落格</NavLink>
-						<OrderButton href="#login">登入</OrderButton>
+						<NavLink component={Link} to="/">
+							首頁
+						</NavLink>
+						<NavLink component={Link} to="/products">
+							菜單
+						</NavLink>
+						<NavLink component={Link} to="/cart">
+							購物車
+						</NavLink>
+						<OrderButton component={Link} to="/login">
+							登入
+						</OrderButton>
 					</Box>
 
 					<Box
@@ -187,7 +202,10 @@ const NavBar = () => {
 								padding: 1,
 							}}
 						>
-							<span className="material-symbols-outlined" style={{ fontSize: '2rem' }}>
+							<span
+								className="material-symbols-outlined"
+								style={{ fontSize: '2rem' }}
+							>
 								menu
 							</span>
 						</IconButton>
@@ -205,16 +223,28 @@ const NavBar = () => {
 						gap: 2,
 					}}
 				>
-					<NavLink href="#items" onClick={() => setMobileOpen(false)}>
+					<NavLink component={Link} to="/" onClick={() => setMobileOpen(false)}>
+						首頁
+					</NavLink>
+					<NavLink
+						component={Link}
+						to="/products"
+						onClick={() => setMobileOpen(false)}
+					>
 						菜單
 					</NavLink>
-					<NavLink href="#story" onClick={() => setMobileOpen(false)}>
-						關於我們
+					<NavLink
+						component={Link}
+						to="/cart"
+						onClick={() => setMobileOpen(false)}
+					>
+						購物車
 					</NavLink>
-					<NavLink href="#journal" onClick={() => setMobileOpen(false)}>
-						部落格
-					</NavLink>
-					<OrderButton href="#login" onClick={() => setMobileOpen(false)}>
+					<OrderButton
+						component={Link}
+						to="/login"
+						onClick={() => setMobileOpen(false)}
+					>
 						登入
 					</OrderButton>
 				</Box>

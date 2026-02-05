@@ -98,7 +98,7 @@ const OfferSection = () => {
 							fontFamily: "'Kaisei Opti', serif",
 						}}
 					>
-						初回のお客様へ、歓迎の印
+						初見之緣｜首購禮遇
 					</Typography>
 					<Typography
 						variant="h6"
@@ -110,9 +110,9 @@ const OfferSection = () => {
 							lineHeight: 1.75,
 						}}
 					>
-						暖簾をくぐってくださった感謝を込めて。
+						感謝您掀開暖簾，與我們相遇。
 						<br />
-						初めてのお買い物が少し特別なものになりますように。
+						為了慶祝這份初次見面的緣分，我們準備了特別的招待。
 					</Typography>
 					<CouponContainer>
 						<CouponCode>WELCOME50</CouponCode>
@@ -130,7 +130,7 @@ const OfferSection = () => {
 								},
 							}}
 						>
-							¥50引きクーポンを使う
+							NT.50折扣券
 						</Button>
 					</CouponContainer>
 				</ContentBox>
@@ -140,4 +140,3 @@ const OfferSection = () => {
 };
 
 export default OfferSection;
-

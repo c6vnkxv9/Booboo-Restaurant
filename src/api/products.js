@@ -5,8 +5,8 @@ import axiosInstance from './axios'
  * 獲取產品列表
  * @returns {Promise} API 響應
  */
-export const getProductsAPI = async () => {
-  const response = await axiosInstance.get('/products')
+export const getProductsAPI = async (params = {}) => {
+  const response = await axiosInstance.get('/products', { params })
   return response.data
 }
 

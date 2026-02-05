@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Box, Container, Typography, Button, Link, useTheme, CircularProgress } from '@mui/material';
+import {
+	Box,
+	Container,
+	Typography,
+	Button,
+	Link,
+	useTheme,
+	CircularProgress,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { getArticlesAPI } from '@/api/article';
 
@@ -8,8 +16,6 @@ const SectionBox = styled(Box)(({ theme }) => ({
 	backgroundColor: theme.palette.background.paper || '#FAEDE7',
 	position: 'relative',
 }));
-
-
 
 const ImageContainer = styled(Box)(({ theme, rotate }) => ({
 	position: 'relative',
@@ -100,7 +106,7 @@ const JournalSection = () => {
 			try {
 				setLoading(true);
 				const response = await getArticlesAPI(1);
-				const articlesData = Array.isArray(response) 
+				const articlesData = Array.isArray(response)
 					? response.slice(0, 3)
 					: (response.articles || response.data || []).slice(0, 3);
 				setArticles(articlesData);
@@ -118,11 +124,13 @@ const JournalSection = () => {
 	const formatDate = (timestamp) => {
 		if (!timestamp) return '';
 		const date = new Date(timestamp * 1000);
-		return date.toLocaleDateString('ja-JP', {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-		}).replace(/\//g, '.');
+		return date
+			.toLocaleDateString('ja-JP', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+			})
+			.replace(/\//g, '.');
 	};
 
 	const getCategoryTag = (article) => {
@@ -137,7 +145,7 @@ const JournalSection = () => {
 
 	return (
 		<SectionBox component="section" id="journal">
-			<Container >
+			<Container>
 				<Box
 					sx={{
 						display: 'flex',
@@ -172,31 +180,41 @@ const JournalSection = () => {
 								fontFamily: "'Kaisei Opti', serif",
 							}}
 						>
-							市場の
+							柴米油鹽的
 							<br style={{ display: { xs: 'block', md: 'none' } }} />
 							物語
 						</Typography>
 					</Box>
 					<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-						{['全て', '料理', '職人', '文化'].map((category) => (
+						{['全部', '料理', '職人', '文化'].map((category) => (
 							<Button
 								key={category}
-								variant={selectedCategory === category ? 'contained' : 'outlined'}
+								variant={
+									selectedCategory === category ? 'contained' : 'outlined'
+								}
 								onClick={() => setSelectedCategory(category)}
 								sx={{
 									padding: theme.spacing(1, 3),
-									backgroundColor: selectedCategory === category ? theme.palette.primary.main : 'transparent',
-									color: selectedCategory === category ? '#fff' : theme.palette.secondary.main,
+									backgroundColor:
+										selectedCategory === category
+											? theme.palette.primary.main
+											: 'transparent',
+									color:
+										selectedCategory === category
+											? '#fff'
+											: theme.palette.secondary.main,
 									borderColor: theme.palette.secondary.main,
 									borderRadius: '999px',
 									fontWeight: 'bold',
 									fontSize: '0.875rem',
 									textTransform: 'none',
-									boxShadow: selectedCategory === category ? theme.shadows[2] : 'none',
+									boxShadow:
+										selectedCategory === category ? theme.shadows[2] : 'none',
 									'&:hover': {
-										backgroundColor: selectedCategory === category 
-											? theme.palette.primary.dark 
-											: theme.palette.background.paper || '#FAEDE7',
+										backgroundColor:
+											selectedCategory === category
+												? theme.palette.primary.dark
+												: theme.palette.background.paper || '#FAEDE7',
 										borderColor: theme.palette.secondary.main,
 									},
 								}}
@@ -248,15 +266,22 @@ const JournalSection = () => {
 									>
 										<TimelineLine className="top" />
 										<TimelineIcon>
-											<span className="material-symbols-outlined">{iconName}</span>
+											<span className="material-symbols-outlined">
+												{iconName}
+											</span>
 										</TimelineIcon>
 										<TimelineLine className="bottom" />
 									</Box>
 
 									{/* Image */}
-									<ImageContainer rotate={rotate} sx={{ order: { md: isEven ? 3 : 1 } }}>
+									<ImageContainer
+										rotate={rotate}
+										sx={{ order: { md: isEven ? 3 : 1 } }}
+									>
 										<ArticleImage
-											src={article.image || article.imageUrl || '/error-img.svg'}
+											src={
+												article.image || article.imageUrl || '/error-img.svg'
+											}
 											alt={article.title}
 											onError={(e) => {
 												e.target.src = '/error-img.svg';
@@ -274,7 +299,10 @@ const JournalSection = () => {
 											justifyContent: 'center',
 											padding: { xs: 2, md: 4 },
 											textAlign: { xs: 'left', md: isEven ? 'right' : 'left' },
-											alignItems: { xs: 'flex-start', md: isEven ? 'flex-end' : 'flex-start' },
+											alignItems: {
+												xs: 'flex-start',
+												md: isEven ? 'flex-end' : 'flex-start',
+											},
 											order: { md: 2 },
 										}}
 									>
@@ -288,11 +316,28 @@ const JournalSection = () => {
 												flexDirection: isEven ? 'row-reverse' : 'row',
 											}}
 										>
-											<Typography sx={{ fontSize: '0.875rem', fontWeight: 'bold', letterSpacing: '0.1em' }}>
+											<Typography
+												sx={{
+													fontSize: '0.875rem',
+													fontWeight: 'bold',
+													letterSpacing: '0.1em',
+												}}
+											>
 												{formatDate(article.create_at)}
 											</Typography>
-											<Box sx={{ width: '32px', height: '1px', backgroundColor: theme.palette.primary.main }} />
-											<Typography sx={{ fontSize: '0.875rem', fontFamily: "'Kaisei Opti', serif" }}>
+											<Box
+												sx={{
+													width: '32px',
+													height: '1px',
+													backgroundColor: theme.palette.primary.main,
+												}}
+											/>
+											<Typography
+												sx={{
+													fontSize: '0.875rem',
+													fontFamily: "'Kaisei Opti', serif",
+												}}
+											>
 												{categoryTag}
 											</Typography>
 										</Box>
@@ -327,7 +372,8 @@ const JournalSection = () => {
 												overflow: 'hidden',
 											}}
 										>
-											{article.description || '旬の素材や文化を紐解く職人の視点で、味わい深い日常をお届けします。'}
+											{article.description ||
+												'旬の素材や文化を紐解く職人の視点で、味わい深い日常をお届けします。'}
 										</Typography>
 										<Link
 											href={`/articles/${article.id}`}
@@ -343,13 +389,22 @@ const JournalSection = () => {
 											}}
 										>
 											{isEven && (
-												<span className="material-symbols-outlined" style={{ marginRight: 8, transform: 'rotate(180deg)' }}>
+												<span
+													className="material-symbols-outlined"
+													style={{
+														marginRight: 8,
+														transform: 'rotate(180deg)',
+													}}
+												>
 													arrow_right_alt
 												</span>
 											)}
-											続きを読む
+											繼續閱讀
 											{!isEven && (
-												<span className="material-symbols-outlined" style={{ marginLeft: 8 }}>
+												<span
+													className="material-symbols-outlined"
+													style={{ marginLeft: 8 }}
+												>
 													arrow_right_alt
 												</span>
 											)}
@@ -385,7 +440,7 @@ const JournalSection = () => {
 							},
 						}}
 					>
-						過去の日誌を紐解く
+						查看更多日誌
 					</Button>
 				</Box>
 			</Container>
@@ -394,4 +449,3 @@ const JournalSection = () => {
 };
 
 export default JournalSection;
-

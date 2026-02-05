@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { auth } from '../utils/auth';
+import { auth } from '@/utils/auth';
 import { useLocation, useNavigate, Link as RouterLink } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import {
@@ -17,19 +17,19 @@ import {
 const NAV_LIST = [
 	{
 		name: '產品一覽',
-		path: '/products',
+		path: '/admin/products',
 	},
 	{
 		name: '優惠券管理',
-		path: '/coupons',
+		path: '/admin/coupons',
 	},
 	{
 		name: '訂單列表',
-		path: '/orders',
+		path: '/admin/orders',
 	},
 	{
 		name: '文章管理',
-		path: '/articles',
+		path: '/admin/articles',
 	},
 ];
 export default function AdminHeader() {
@@ -60,7 +60,7 @@ export default function AdminHeader() {
 			>
 				<Stack
 					component={RouterLink}
-					to="/products"
+					to="/admin/products"
 					direction="row"
 					alignItems="center"
 					spacing={1.5}

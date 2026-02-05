@@ -1,22 +1,32 @@
 import PropTypes from 'prop-types';
-import { Box, Container, Typography, Grid, Avatar, useTheme } from '@mui/material';
+import {
+	Box,
+	Container,
+	Typography,
+	Grid,
+	Avatar,
+	useTheme,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const REVIEWS = [
 	{
-		name: 'John Doe',
+		id: 1,
+		name: '佐藤健',
 		rating: 5,
-		comment: 'This is a test review',
-	},
-{
-		name: 'John Doe',
-		rating: 5,
-		comment: 'This is a test review',
+		comment: '魚料極其新鮮，醋飯的酸度與溫度掌握得恰到好處。',
 	},
 	{
-		name: 'John Doe',
+		name: 'Emily Chen',
+		rating: 4,
+		comment:
+			'豚骨湯頭極其濃郁卻不膩口，手打麵條彈牙吸汁。店內氣氛充滿活力的日式喧囂感，配上一杯生啤酒，彷彿置身於新宿街頭。',
+	},
+	{
+		name: '林先生',
 		rating: 5,
-		comment: 'This is a test review',
+		comment:
+			'餐點如藝術品般精緻，陶器皿的選用也非常講究。服務完美詮釋了「御持成」的精神，店員觀察入微且專業，是慶祝重要紀念日的首選。',
 	},
 ];
 const SectionBox = styled(Box)(({ theme }) => ({
@@ -51,7 +61,16 @@ const StarRating = ({ rating }) => {
 	const half = rating % 1 >= 0.5;
 
 	return (
-		<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25, color: theme.palette.secondary.main, fontSize: '0.75rem', marginBottom: 3 }}>
+		<Box
+			sx={{
+				display: 'flex',
+				alignItems: 'center',
+				gap: 0.25,
+				color: theme.palette.secondary.main,
+				fontSize: '0.75rem',
+				marginBottom: 3,
+			}}
+		>
 			{Array.from({ length: full }).map((_, idx) => (
 				<span
 					key={`full-${idx}`}
@@ -62,7 +81,10 @@ const StarRating = ({ rating }) => {
 				</span>
 			))}
 			{half && (
-				<span className="material-symbols-outlined" style={{ fontSize: '14px' }}>
+				<span
+					className="material-symbols-outlined"
+					style={{ fontSize: '14px' }}
+				>
 					star_half
 				</span>
 			)}
@@ -102,7 +124,7 @@ const TestimonialsSection = () => {
 							fontFamily: "'Kaisei Opti', serif",
 						}}
 					>
-						お客様の声
+						顧客的聲音
 					</Typography>
 				</Box>
 
@@ -126,7 +148,9 @@ const TestimonialsSection = () => {
 									sx={{
 										display: 'flex',
 										alignItems: 'center',
-										borderTop: `1px solid ${theme.palette.divider || 'rgba(0, 0, 0, 0.1)'}`,
+										borderTop: `1px solid ${
+											theme.palette.divider || 'rgba(0, 0, 0, 0.1)'
+										}`,
 										paddingTop: 2,
 									}}
 								>
@@ -176,4 +200,3 @@ TestimonialsSection.propTypes = {
 };
 
 export default TestimonialsSection;
-

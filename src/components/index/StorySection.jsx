@@ -1,4 +1,11 @@
-import { Box, Container, Typography, Grid, Link, useTheme } from '@mui/material';
+import {
+	Box,
+	Container,
+	Typography,
+	Grid,
+	Link,
+	useTheme,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const SectionBox = styled(Box)(({ theme }) => ({
@@ -61,11 +68,17 @@ const StorySection = () => {
 							<img src="/banner.jpg" alt="Craft" />
 						</ImageContainer>
 						<QuoteBox>
-							<Typography sx={{ fontWeight: 'bold', marginBottom: 0.5, color: theme.palette.primary.main }}>
-								&ldquo;本物とは、単なる味ではなく、生き方そのものだ。&rdquo;
+							<Typography
+								sx={{
+									fontWeight: 'bold',
+									marginBottom: 0.5,
+									color: theme.palette.primary.main,
+								}}
+							>
+								&ldquo;真正的味道不只是單純的口味，而是生活方式本身。&rdquo;
 							</Typography>
 							<Typography variant="caption" sx={{ color: 'text.secondary' }}>
-								— 熟練の職人 健次郎
+								— 熟練的職人 健次郎
 							</Typography>
 						</QuoteBox>
 					</Grid>
@@ -82,7 +95,7 @@ const StorySection = () => {
 								marginBottom: 1,
 							}}
 						>
-							私たちの物語
+							我們的故事
 						</Typography>
 						<Typography
 							variant="h2"
@@ -94,7 +107,8 @@ const StorySection = () => {
 								fontFamily: "'Kaisei Opti', serif",
 							}}
 						>
-							江戸の<span style={{ color: theme.palette.primary.main }}>魂</span>を継ぐ
+							傳承江戸的
+							<span style={{ color: theme.palette.primary.main }}>靈魂</span>
 						</Typography>
 						<Typography
 							variant="body1"
@@ -104,8 +118,8 @@ const StorySection = () => {
 								lineHeight: 1.8,
 							}}
 						>
-							古き良き東京の路地裏で始まった私たちの物語は、素材を尊ぶという約束から生まれました。真の風味は、
-							あらゆる要素の自然な本質を尊重することから生まれると信じています。
+							在古東京的小巷中，我們的故事從尊崇食材的承諾開始。真實的味道，
+							尊重所有元素的自然本質，從而產生真實的味道，我們相信這是真理。
 						</Typography>
 						<Typography
 							variant="body1"
@@ -115,7 +129,7 @@ const StorySection = () => {
 								lineHeight: 1.8,
 							}}
 						>
-							刺身の繊細な切り方から出汁の絶妙なバランスまで、何十年もかけて磨いた技を、あなたの食卓へ。
+							刺身細緻的切法到出汁的絕妙平衡，經過幾十年的技術磨練，呈現在您的餐桌上。
 						</Typography>
 
 						<Box sx={{ display: 'flex', gap: 4, marginBottom: 4 }}>
@@ -159,7 +173,7 @@ const StorySection = () => {
 								},
 							}}
 						>
-							市場の物語を深く知る
+							了解更多故事
 						</Link>
 					</Grid>
 				</Grid>
@@ -169,4 +183,3 @@ const StorySection = () => {
 };
 
 export default StorySection;
-

@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Box, Container } from '@mui/material';
-import AdminHeader from './AdminHeader';
-import AdminFooter from './AdminFooter';
+import AdminHeader from '@/components/header/AdminHeader';
+import CommonFooter from '@/components/footer/CommonFooter';
 
 /**
  * 後台共用佈局組件
@@ -25,7 +25,7 @@ export default function AdminLayout() {
 					<Outlet />
 				</Box>
 			</Container>
-			<AdminFooter />
+			<CommonFooter />
 		</Box>
 	);
 }
