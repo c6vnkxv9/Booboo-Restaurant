@@ -155,11 +155,10 @@ const Hero = () => {
 						</Box>
 					</HeroTitle>
 					<Typography
+						variant="body1"
 						sx={{
-							fontSize: { xs: '1rem', md: '1.125rem' },
 							color: 'rgba(255, 255, 255, 0.9)',
 							mb: 3,
-							lineHeight: 1.8,
 							fontWeight: 300,
 							letterSpacing: '0.05em',
 							maxWidth: '576px',

@@ -173,11 +173,7 @@ const JournalSection = () => {
 						<Typography
 							variant="h2"
 							sx={{
-								fontSize: { xs: '2.5rem', md: '3rem' },
-								fontWeight: 'bold',
 								color: theme.palette.text.primary,
-								lineHeight: 1.2,
-								fontFamily: "'Kaisei Opti', serif",
 							}}
 						>
 							把簡單的事做到最好，就是我們的

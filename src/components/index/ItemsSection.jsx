@@ -127,9 +127,6 @@ const ItemsSection = () => {
 					<Typography
 						variant="h2"
 						sx={{
-							fontFamily: "'Kaisei Opti', serif",
-							fontSize: { xs: '1.875rem', md: '2.25rem' },
-							fontWeight: 'bold',
 							color: theme.palette.text.primary,
 							letterSpacing: '0.05em',
 						}}

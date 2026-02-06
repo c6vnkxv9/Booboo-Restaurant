@@ -90,24 +90,19 @@ const OfferSection = () => {
 						<span className="material-symbols-outlined">local_offer</span>
 					</IconBox>
 					<Typography
-						variant="h3"
+						variant="h2"
 						sx={{
-							fontSize: { xs: '1.875rem', md: '3rem' },
-							fontWeight: 'bold',
 							marginBottom: 3,
-							fontFamily: "'Kaisei Opti', serif",
 						}}
 					>
 						初次見面，請多指教
 					</Typography>
 					<Typography
-						variant="h6"
+						variant="subtitle1"
 						sx={{
-							fontSize: { xs: '1.125rem', md: '1.25rem' },
 							fontWeight: 300,
 							marginBottom: 5,
 							color: 'rgba(255,255,255,0.8)',
-							lineHeight: 1.75,
 						}}
 					>
 						謝謝您掀開暖簾，走進我們的小店。

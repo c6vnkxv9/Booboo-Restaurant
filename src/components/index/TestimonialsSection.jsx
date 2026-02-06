@@ -111,20 +111,17 @@ const TestimonialsSection = () => {
 					<Typography
 						variant="h2"
 						sx={{
-							fontSize: { xs: '1.875rem', md: '2.25rem' },
-							fontWeight: 'bold',
 							color: theme.palette.text.primary,
-							fontFamily: "'Kaisei Opti', serif",
 						}}
 					>
 						謝謝你們，讓這裡充滿暖意
 					</Typography>
 					<Typography
+						variant="subtitle1"
 						sx={{
 							fontStyle: 'italic',
 							marginBottom: 3,
 							color: theme.palette.text.secondary || 'rgba(0, 0, 0, 0.6)',
-							lineHeight: 1.75,
 							fontFamily: 'serif',
 						}}
 					>

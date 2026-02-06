@@ -100,11 +100,8 @@ const StorySection = () => {
 						<Typography
 							variant="h2"
 							sx={{
-								fontSize: { xs: '2rem', md: '3rem' },
-								fontWeight: 'bold',
 								marginBottom: 3,
 								color: theme.palette.text.primary,
-								fontFamily: "'Kaisei Opti', serif",
 							}}
 						>
 							堅持手作，傳遞一份純粹的
