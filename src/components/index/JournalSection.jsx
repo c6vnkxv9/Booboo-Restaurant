@@ -168,7 +168,7 @@ const JournalSection = () => {
 								marginBottom: 1,
 							}}
 						>
-							職人日誌
+							關於我們的小故事
 						</Typography>
 						<Typography
 							variant="h2"
@@ -180,9 +180,9 @@ const JournalSection = () => {
 								fontFamily: "'Kaisei Opti', serif",
 							}}
 						>
-							柴米油鹽的
+							把簡單的事做到最好，就是我們的
 							<br style={{ display: { xs: 'block', md: 'none' } }} />
-							物語
+							承諾
 						</Typography>
 					</Box>
 					<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>

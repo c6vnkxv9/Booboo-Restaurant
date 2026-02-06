@@ -122,7 +122,7 @@ const ItemsSection = () => {
 							marginBottom: 1.5,
 						}}
 					>
-						季節限定
+						看看今天吃什麼
 					</Typography>
 					<Typography
 						variant="h2"
@@ -134,7 +134,7 @@ const ItemsSection = () => {
 							letterSpacing: '0.05em',
 						}}
 					>
-						此時此刻的美味
+						此時此刻，最想讓您嚐到的美味。
 					</Typography>
 				</Box>
 

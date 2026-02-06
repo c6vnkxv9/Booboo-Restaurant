@@ -1,10 +1,17 @@
-import { Box, Container, Typography, Button, Stack, useTheme } from '@mui/material';
+import {
+	Box,
+	Container,
+	Typography,
+	Button,
+	Stack,
+	useTheme,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 const heroVideo = '/banner.mp4';
 const HeroHeader = styled(Box)({
 	position: 'relative',
 	color: '#fff',
-    marginTop: 'var(--header-height)',
+	marginTop: 'var(--header-height)',
 	height: 'calc(100vh - var(--header-height))',
 	overflow: 'hidden',
 });
@@ -71,14 +78,10 @@ const DecorateText = styled(Box)(({ theme }) => ({
 
 const Hero = () => {
 	const theme = useTheme();
-	
+
 	return (
 		<HeroHeader component="header">
-			<VideoBackground
-				autoPlay
-				muted
-				playsInline
-			>
+			<VideoBackground autoPlay muted playsInline>
 				<source src={heroVideo} type="video/mp4" />
 			</VideoBackground>
 			<VideoOverlay />
@@ -128,11 +131,14 @@ const Hero = () => {
 								fontWeight: 300,
 							}}
 						>
-							季節探索
+							今天的飯，也要好好吃
 						</Typography>
 					</Box>
-					<HeroTitle variant="h1" sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-						一期一會的
+					<HeroTitle
+						variant="h1"
+						sx={{ textAlign: { xs: 'center', md: 'left' } }}
+					>
+						嚴選當季新鮮食材，
 						<br />
 						<Box
 							component="span"
@@ -145,7 +151,7 @@ const Hero = () => {
 								color: theme.palette.primary.main,
 							}}
 						>
-							旬之味
+							煮一碗家常菜。
 						</Box>
 					</HeroTitle>
 					<Typography
@@ -159,20 +165,17 @@ const Hero = () => {
 							maxWidth: '576px',
 						}}
 					>
-						體驗四季旬味的無常美感，以匠心與傳承細膩呈現。
+						不必盛裝打扮，，在平凡的日子裡，回家吃飯一樣輕鬆。
 						<br />
-						每一碗皆蘊藏時間與技藝的故事。
+						我們用慢火熬的湯、剛出爐的飯，為您遞上一碗熱騰騰的慰藉，溫暖您的每個日常。
 					</Typography>
-					<Stack
-						direction={{ xs: 'column', sm: 'row' }}
-						spacing={1.5}
-					>
+					<Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
 						<PrimaryButton
 							href="#items"
 							endIcon={
 								<span
 									className="material-symbols-outlined"
-									style={{ 
+									style={{
 										transition: 'transform 0.2s',
 										fontSize: '1rem',
 									}}
@@ -200,7 +203,7 @@ const Hero = () => {
 					</Stack>
 				</Box>
 				<DecorateText sx={{ display: { xs: 'none', md: 'block' } }}>
-					二十四節氣 七十二候
+					#日日是好日 #手作料理
 				</DecorateText>
 			</Container>
 		</HeroHeader>

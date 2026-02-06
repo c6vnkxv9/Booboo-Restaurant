@@ -1,12 +1,5 @@
 import PropTypes from 'prop-types';
-import {
-	Box,
-	Container,
-	Typography,
-	Grid,
-	Avatar,
-	useTheme,
-} from '@mui/material';
+import { Box, Container, Typography, Avatar, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const REVIEWS = [
@@ -124,13 +117,39 @@ const TestimonialsSection = () => {
 							fontFamily: "'Kaisei Opti', serif",
 						}}
 					>
-						顧客的聲音
+						謝謝你們，讓這裡充滿暖意
+					</Typography>
+					<Typography
+						sx={{
+							fontStyle: 'italic',
+							marginBottom: 3,
+							color: theme.palette.text.secondary || 'rgba(0, 0, 0, 0.6)',
+							lineHeight: 1.75,
+							fontFamily: 'serif',
+						}}
+					>
+						來自餐桌上的真實迴響
 					</Typography>
 				</Box>
 
-				<Grid container spacing={4}>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: { xs: 'column', md: 'row' },
+						flexWrap: { xs: 'nowrap', md: 'wrap' },
+						gap: 4,
+					}}
+				>
 					{REVIEWS.map((t, index) => (
-						<Grid item xs={12} md={4} key={t.name || t.id || index}>
+						<Box
+							key={t.name || t.id || index}
+							sx={{
+								minWidth: 0,
+								width: { xs: '100%', md: 'calc(33.333% - 32px)' },
+								flex: { xs: '1 1 auto', md: '1 1 calc(33.333% - 32px)' },
+								maxWidth: { md: 'calc(33.333% - 32px)' },
+							}}
+						>
 							<TestimonialCard>
 								<StarRating rating={t.rating} />
 								<Typography
@@ -140,9 +159,11 @@ const TestimonialsSection = () => {
 										color: theme.palette.text.secondary || 'rgba(0, 0, 0, 0.6)',
 										lineHeight: 1.75,
 										fontFamily: 'serif',
+										overflowWrap: 'anywhere',
+										wordBreak: 'break-word',
 									}}
 								>
-									&ldquo;{t.quote || t.comment}&rdquo;
+									{t.quote || t.comment}
 								</Typography>
 								<Box
 									sx={{
@@ -178,9 +199,9 @@ const TestimonialsSection = () => {
 									</Typography>
 								</Box>
 							</TestimonialCard>
-						</Grid>
+						</Box>
 					))}
-				</Grid>
+				</Box>
 			</Container>
 		</SectionBox>
 	);

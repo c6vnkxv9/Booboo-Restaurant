@@ -98,7 +98,7 @@ const OfferSection = () => {
 							fontFamily: "'Kaisei Opti', serif",
 						}}
 					>
-						初見之緣｜首購禮遇
+						初次見面，請多指教
 					</Typography>
 					<Typography
 						variant="h6"
@@ -110,9 +110,9 @@ const OfferSection = () => {
 							lineHeight: 1.75,
 						}}
 					>
-						感謝您掀開暖簾，與我們相遇。
+						謝謝您掀開暖簾，走進我們的小店。
 						<br />
-						為了慶祝這份初次見面的緣分，我們準備了特別的招待。
+						這份初相遇的緣分，我們想化作一份溫暖的小禮物。
 					</Typography>
 					<CouponContainer>
 						<CouponCode>WELCOME50</CouponCode>
@@ -130,7 +130,7 @@ const OfferSection = () => {
 								},
 							}}
 						>
-							NT.50折扣券
+							立即領取招待
 						</Button>
 					</CouponContainer>
 				</ContentBox>
