@@ -1,14 +1,15 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
+import Login from './pages/admin/Login';
 import IndexPage from './pages/index';
-import FrontProducts from './pages/FrontProducts';
-import ProductDetail from './pages/ProductDetail';
-import Cart from './pages/Cart';
+import FrontProducts from './pages/front/FrontProducts';
+import ProductDetail from './pages/front/ProductDetail';
+import Cart from './pages/front/Cart';
+import Checkout from './pages/front/Checkout';
 import NotFound from './pages/NotFound';
-import AdminProducts from './pages/Products';
-import Articles from './pages/Articles';
+import AdminProducts from './pages/admin/Products';
+import Articles from './pages/admin/Articles';
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminLayout from './components/AdminLayout';
+import AdminLayout from './components/admin/AdminLayout';
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 				<Route path="/products" element={<FrontProducts />} />
 				<Route path="/product/:id" element={<ProductDetail />} />
 				<Route path="/cart" element={<Cart />} />
+				<Route path="/checkout" element={<Checkout />} />
 				<Route path="/login" element={<Login />} />
 				<Route
 					path="/admin"

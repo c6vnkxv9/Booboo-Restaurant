@@ -1,4 +1,4 @@
-import { getPermissionErrorMessage } from '../utils/permissions';
+import { getPermissionErrorMessage } from '@/utils/permissions';
 import PropTypes from 'prop-types';
 import { Alert, Box, Button, Paper, Stack, Typography } from '@mui/material';
 

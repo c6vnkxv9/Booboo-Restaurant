@@ -17,7 +17,10 @@
     "bootstrap": "^5.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.71.1",
+    "react-loader-spinner": "^8.0.2",
     "react-router-dom": "^6.26.0",
+    "sweetalert2": "^11.26.18",
     "swiper": "^12.0.3"
   },
   "devDependencies": {

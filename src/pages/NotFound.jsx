@@ -1,6 +1,6 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { Button, Stack, Typography } from '@mui/material';
-import FrontLayout from '@/components/FrontLayout';
+import FrontLayout from '@/components/front/FrontLayout';
 
 export default function NotFound() {
 	return (

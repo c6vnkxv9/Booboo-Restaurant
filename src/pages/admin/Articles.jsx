@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import { getArticlesAPI } from '../api/article';
-import ListLayout from '../components/ListLayout';
-import CategorySidebar from '../components/CategorySidebar';
-import ArticleCard from '../components/ArticleCard';
-import PermissionDenied from '../components/PermissionDenied';
-import { isPermissionDenied } from '../utils/permissions';
+import { getArticlesAPI } from '@/api/article';
+import ListLayout from '@/components/ListLayout';
+import CategorySidebar from '@/components/CategorySidebar';
+import ArticleCard from '@/components/front/ArticleCard';
+import PermissionDenied from '@/components/PermissionDenied';
+import { isPermissionDenied } from '@/utils/permissions';
 import {
 	Alert,
 	Box,

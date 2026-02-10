@@ -87,10 +87,7 @@ const StorySection = () => {
 						<Typography
 							variant="overline"
 							sx={{
-								fontWeight: 'bold',
-								textTransform: 'uppercase',
 								color: theme.palette.primary.main,
-								letterSpacing: '0.25em',
 								display: 'block',
 								marginBottom: 1,
 							}}

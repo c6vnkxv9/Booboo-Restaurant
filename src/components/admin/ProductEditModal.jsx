@@ -54,8 +54,8 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 			description: '',
 			content: '',
 			category: '',
-			price: null,
-			origin_price: null,
+			price: '',
+			origin_price: '',
 			unit: '',
 			is_enabled: 1,
 			rating: 0,
@@ -80,8 +80,8 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 				description: product.description || '',
 				content: product.content || '',
 				category: product.category || '',
-				price: product.price || 0,
-				origin_price: product.origin_price || 0,
+				price: product.price ?? '',
+				origin_price: product.origin_price ?? '',
 				unit: product.unit || '',
 				is_enabled: product.is_enabled !== undefined ? product.is_enabled : 1,
 				rating:
@@ -607,9 +607,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 													...inputSx(theme),
 													'& input': { fontWeight: 900 },
 												})}
-												inputProps={{
-													min: 0,
-													step: 1,
+												InputProps={{
 													startAdornment: (
 														<InputAdornment
 															position="start"
@@ -618,6 +616,10 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 															NT$
 														</InputAdornment>
 													),
+												}}
+												inputProps={{
+													min: 0,
+													step: 1,
 												}}
 											/>
 										</Grid>
@@ -637,9 +639,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 													...inputSx(theme),
 													'& input': { fontWeight: 900 },
 												})}
-												inputProps={{
-													min: 0,
-													step: 1,
+												InputProps={{
 													startAdornment: (
 														<InputAdornment
 															position="start"
@@ -648,6 +648,10 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 															NT$
 														</InputAdornment>
 													),
+												}}
+												inputProps={{
+													min: 0,
+													step: 1,
 												}}
 											/>
 										</Grid>

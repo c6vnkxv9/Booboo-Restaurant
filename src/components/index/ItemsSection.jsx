@@ -15,7 +15,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { getProductsAPI } from '@/api/products';
 import { Link as RouterLink } from 'react-router-dom';
-import FrontProductCard from '@/components/FrontProductCard';
+import FrontProductCard from '@/components/front/FrontProductCard';
 const SectionBox = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(12, 0),
 	position: 'relative',
@@ -113,11 +113,7 @@ const ItemsSection = () => {
 					<Typography
 						variant="overline"
 						sx={{
-							fontSize: '0.75rem',
-							fontWeight: 'bold',
-							textTransform: 'uppercase',
 							color: theme.palette.primary.main,
-							letterSpacing: '0.3em',
 							display: 'block',
 							marginBottom: 1.5,
 						}}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
 	Alert,
 	Backdrop,
@@ -16,7 +17,9 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-import FrontLayout from '@/components/FrontLayout';
+import Swal from 'sweetalert2';
+import FrontLayout from '@/components/front/FrontLayout';
+import DeleteModal from '@/components/admin/DeleteModal';
 import {
 	clearCartAPI,
 	getCartAPI,
@@ -37,12 +40,18 @@ const normalizeCart = (response) => {
 };
 
 export default function Cart() {
+	const navigate = useNavigate();
 	const [cartItems, setCartItems] = useState([]);
 	const [total, setTotal] = useState(0);
 	const [finalTotal, setFinalTotal] = useState(0);
 	const [loading, setLoading] = useState(true);
 	const [updatingId, setUpdatingId] = useState(null);
 	const [clearing, setClearing] = useState(false);
+	const [deleteModal, setDeleteModal] = useState({
+		open: false,
+		itemId: null,
+		itemName: '',
+	});
 	const [toast, setToast] = useState({
 		open: false,
 		message: '',
@@ -75,7 +84,19 @@ export default function Cart() {
 	const handleUpdateQty = async (item, qty) => {
 		const productId = item.product_id || item.product?.id;
 		if (!item?.id || !productId) return;
-		const nextQty = Math.max(1, Number(qty));
+		const nextQty = Number(qty);
+
+		// 如果數量低於 1，顯示刪除確認
+		if (nextQty < 1) {
+			const product = item.product || {};
+			setDeleteModal({
+				open: true,
+				itemId: item.id,
+				itemName: product.title || product.name || '此商品',
+			});
+			return;
+		}
+
 		try {
 			setUpdatingId(item.id);
 			await updateCartItemAPI(item.id, productId, nextQty);
@@ -91,11 +112,28 @@ export default function Cart() {
 		}
 	};
 
-	const handleRemoveItem = async (itemId) => {
+	const handleRemoveItem = async (itemId, itemName) => {
+		setDeleteModal({
+			open: true,
+			itemId,
+			itemName,
+		});
+	};
+
+	const confirmRemoveItem = async () => {
+		const { itemId } = deleteModal;
 		try {
 			setUpdatingId(itemId);
+			setDeleteModal({ open: false, itemId: null, itemName: '' });
 			await removeCartItemAPI(itemId);
 			await fetchCart();
+			Swal.fire({
+				icon: 'success',
+				title: '已刪除',
+				text: '商品已從購物車移除',
+				timer: 1500,
+				showConfirmButton: false,
+			});
 		} catch (err) {
 			setToast({
 				open: true,
@@ -192,7 +230,7 @@ export default function Cart() {
 														min: 1,
 														style: { textAlign: 'center', width: '80px' },
 													}}
-													value={item.qty}
+													value={item.qty || 1}
 													onChange={(e) =>
 														handleUpdateQty(item, e.target.value)
 													}
@@ -204,7 +242,12 @@ export default function Cart() {
 											</TableCell>
 											<TableCell align="center">
 												<IconButton
-													onClick={() => handleRemoveItem(item.id)}
+													onClick={() =>
+														handleRemoveItem(
+															item.id,
+															product.title || product.name || '此商品'
+														)
+													}
 													disabled={updatingId === item.id}
 													aria-label="刪除"
 												>
@@ -221,25 +264,50 @@ export default function Cart() {
 					</Box>
 				)}
 
-				<Stack spacing={1} sx={{ alignSelf: 'flex-end', minWidth: 240 }}>
-					<Stack direction="row" justifyContent="space-between">
-						<Typography variant="body2" sx={{ color: 'text.secondary' }}>
-							小計
-						</Typography>
-						<Typography variant="body2">
-							NT$ {total.toLocaleString()}
-						</Typography>
+				<Stack spacing={2} sx={{ alignSelf: 'flex-end', minWidth: 280 }}>
+					<Stack spacing={1}>
+						<Stack direction="row" justifyContent="space-between">
+							<Typography variant="body2" sx={{ color: 'text.secondary' }}>
+								小計
+							</Typography>
+							<Typography variant="body2">
+								NT$ {total.toLocaleString()}
+							</Typography>
+						</Stack>
+						<Stack direction="row" justifyContent="space-between">
+							<Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+								總金額
+							</Typography>
+							<Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+								NT$ {finalTotal.toLocaleString()}
+							</Typography>
+						</Stack>
 					</Stack>
-					<Stack direction="row" justifyContent="space-between">
-						<Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
-							總金額
-						</Typography>
-						<Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
-							NT$ {finalTotal.toLocaleString()}
-						</Typography>
-					</Stack>
+					<Button
+						variant="contained"
+						size="large"
+						onClick={() => navigate('/checkout')}
+						disabled={cartItems.length === 0}
+						sx={{
+							py: 1.5,
+							fontWeight: 800,
+						}}
+					>
+						前往結帳
+					</Button>
 				</Stack>
 			</Stack>
+
+			<DeleteModal
+				open={deleteModal.open}
+				title="確認刪除商品"
+				description={`確定要將「${deleteModal.itemName}」從購物車移除嗎？`}
+				onClose={() =>
+					setDeleteModal({ open: false, itemId: null, itemName: '' })
+				}
+				onConfirm={confirmRemoveItem}
+				loading={Boolean(updatingId)}
+			/>
 
 			<Backdrop
 				open={Boolean(updatingId) || clearing}

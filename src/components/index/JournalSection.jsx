@@ -161,9 +161,6 @@ const JournalSection = () => {
 							variant="overline"
 							sx={{
 								color: theme.palette.primary.main,
-								fontWeight: 'bold',
-								letterSpacing: '0.2em',
-								fontSize: '0.875rem',
 								display: 'block',
 								marginBottom: 1,
 							}}

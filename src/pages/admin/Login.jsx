@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { adminSigninAPI } from '../api/auth';
+import { useForm } from 'react-hook-form';
+import { adminSigninAPI } from '@/api/auth';
 
 import {
 	Alert,
@@ -15,32 +15,35 @@ import {
 	Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
+
 export default function Login() {
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
-	const [error, setError] = useState('');
 	const navigate = useNavigate();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors, isSubmitting },
+		setError,
+	} = useForm({
+		defaultValues: {
+			username: '',
+			password: '',
+		},
+	});
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		setError('');
-
-		if (!username || !password) {
-			setError('請輸入用戶名和密碼');
-			return;
-		}
-
+	const onSubmit = async (data) => {
 		try {
-			const response = await adminSigninAPI(username, password);
+			const response = await adminSigninAPI(data.username, data.password);
 			if (response.success && response.token) {
-				navigate('/products', { replace: true });
+				navigate('/admin/products', { replace: true });
 			} else {
-				setError(response.message || '登入失敗');
+				setError('root', {
+					message: response.message || '登入失敗',
+				});
 			}
 		} catch (err) {
 			const errorMessage =
 				err.response?.data?.message || err.message || '登入時發生錯誤';
-			setError(errorMessage);
+			setError('root', { message: errorMessage });
 		}
 	};
 	return (
@@ -54,7 +57,7 @@ export default function Login() {
 				backgroundColor: theme.palette.background.default,
 				backgroundImage: `linear-gradient(135deg, ${alpha(
 					theme.palette.primary.light,
-					0.1
+					0.1,
 				)} 0%, ${alpha(theme.palette.primary.main, 0.08)} 100%), url(${
 					theme.custom?.login?.backgroundImageUrl || '/japanese-paper.jpg'
 				})`,
@@ -198,17 +201,24 @@ export default function Login() {
 								</Stack>
 							</Stack>
 
-							<Box component="form" onSubmit={handleSubmit}>
+							<Box component="form" onSubmit={handleSubmit(onSubmit)}>
 								<Stack spacing={2.5}>
 									<TextField
+										{...register('username', {
+											required: '請輸入電子郵件',
+											pattern: {
+												value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+												message: '請輸入有效的電子郵件格式',
+											},
+										})}
 										id="username"
-										name="username"
-										label="用戶名"
-										placeholder="請輸入用戶名"
-										value={username}
-										onChange={(e) => setUsername(e.target.value)}
+										type="email"
+										label="電子郵件"
+										placeholder="請輸入電子郵件"
 										fullWidth
 										variant="filled"
+										error={!!errors.username}
+										helperText={errors.username?.message}
 										InputProps={{
 											disableUnderline: true,
 											startAdornment: (
@@ -218,7 +228,7 @@ export default function Login() {
 														className="material-symbols-outlined"
 														sx={{ opacity: 0.55 }}
 													>
-														person
+														email
 													</Box>
 												</InputAdornment>
 											),
@@ -232,15 +242,21 @@ export default function Login() {
 									/>
 
 									<TextField
+										{...register('password', {
+											required: '請輸入密碼',
+											minLength: {
+												value: 6,
+												message: '密碼至少需要 6 個字元',
+											},
+										})}
 										id="password"
-										name="password"
 										label="密碼"
 										placeholder="請輸入密碼"
 										type="password"
-										value={password}
-										onChange={(e) => setPassword(e.target.value)}
 										fullWidth
 										variant="filled"
+										error={!!errors.password}
+										helperText={errors.password?.message}
 										InputProps={{
 											disableUnderline: true,
 											startAdornment: (
@@ -263,14 +279,14 @@ export default function Login() {
 										}}
 									/>
 
-									{error ? (
+									{errors.root ? (
 										<Alert
 											severity="error"
 											icon={
 												<span className="material-symbols-outlined">info</span>
 											}
 										>
-											{error}
+											{errors.root.message}
 										</Alert>
 									) : null}
 
@@ -278,6 +294,7 @@ export default function Login() {
 										type="submit"
 										variant="contained"
 										size="large"
+										disabled={isSubmitting}
 										sx={{
 											py: 1.5,
 											borderRadius: 2,
@@ -296,7 +313,7 @@ export default function Login() {
 											</span>
 										}
 									>
-										登入
+										{isSubmitting ? '登入中...' : '登入'}
 									</Button>
 
 									<Divider sx={{ pt: 0.5 }} />

@@ -7,11 +7,11 @@ import {
 } from '@/api/products';
 import ListLayout from '@/components/ListLayout';
 import CategorySidebar from '@/components/CategorySidebar';
-import ProductCard from '@/components/ProductCard';
-import ProductEditModal from '@/components/ProductEditModal';
+import ProductCard from '@/components/admin/ProductCard';
+import ProductEditModal from '@/components/admin/ProductEditModal';
 import ProductDetailModal from '@/components/ProductDetailModal';
 import Pagination from '@/components/Pagination';
-import DeleteModal from '@/components/DeleteModal';
+import DeleteModal from '@/components/admin/DeleteModal';
 import PermissionDenied from '@/components/PermissionDenied';
 import EmptyState from '@/components/EmptyState';
 import { isPermissionDenied } from '@/utils/permissions';
