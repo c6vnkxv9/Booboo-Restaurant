@@ -63,7 +63,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 			imageUrl: '',
 			imagesUrl: [],
 		}),
-		[]
+		[],
 	);
 
 	const [formData, setFormData] = useState(initialFormData);
@@ -186,7 +186,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 
 		const isImage = file.type.startsWith('image/');
 		if (!isImage) {
-			setError('請選擇圖片檔（JPG / PNG）');
+			setError('請選擇圖片檔');
 			return;
 		}
 		const maxSizeBytes = 2 * 1024 * 1024;
@@ -242,7 +242,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 		<Dialog
 			open={Boolean(show)}
 			onClose={() => {
-				if (!loading) onClose();
+				if (!loading && !uploadingImage) onClose();
 			}}
 			fullWidth
 			maxWidth="md"
@@ -375,7 +375,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 											bgcolor: alpha(theme.palette.text.primary, 0.03),
 											border: `2px dashed ${alpha(
 												theme.palette.text.primary,
-												0.14
+												0.14,
 											)}`,
 											borderRadius: 6,
 											overflow: 'hidden',
@@ -384,7 +384,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 												['border-color', 'transform'],
 												{
 													duration: theme.transitions.duration.shortest,
-												}
+												},
 											),
 											'&:hover': {
 												borderColor: theme.palette.primary.main,
@@ -399,7 +399,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 												outline: 'none',
 												boxShadow: `0 0 0 3px ${alpha(
 													theme.palette.primary.main,
-													0.18
+													0.18,
 												)}`,
 											},
 										})}
@@ -418,7 +418,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 													bgcolor: alpha(theme.palette.primary.main, 0.14),
 													border: `1px solid ${alpha(
 														theme.palette.primary.main,
-														0.3
+														0.3,
 													)}`,
 												})}
 											/>
@@ -436,7 +436,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 													bgcolor: alpha(theme.palette.primary.main, 0.14),
 													border: `1px solid ${alpha(
 														theme.palette.primary.main,
-														0.3
+														0.3,
 													)}`,
 												})}
 											/>
@@ -458,7 +458,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 														bgcolor: 'rgba(0,0,0,0.35)',
 														border: `1px solid ${alpha(
 															theme.palette.common.white,
-															0.25
+															0.25,
 														)}`,
 														'&:hover': { bgcolor: 'rgba(0,0,0,0.55)' },
 													})}
@@ -698,7 +698,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 													bgcolor: '#fff',
 													border: `1px solid ${alpha(
 														theme.palette.text.primary,
-														0.12
+														0.12,
 													)}`,
 													px: 2,
 													py: 1.5,
@@ -746,7 +746,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 				>
 					<Button
 						onClick={onClose}
-						disabled={loading}
+						disabled={loading || uploadingImage}
 						variant="text"
 						sx={{ color: 'text.secondary', fontWeight: 800 }}
 					>
@@ -764,7 +764,7 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 							background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
 							boxShadow: `0 10px 24px ${alpha(
 								theme.palette.primary.main,
-								0.22
+								0.22,
 							)}`,
 							'&:hover': { filter: 'brightness(1.05)' },
 							'&:active': { transform: 'scale(0.98)' },
@@ -773,8 +773,8 @@ export default function ProductEditModal({ show, product, onClose, onSave }) {
 						{uploadingImage
 							? '圖片上傳中...'
 							: loading
-							? '儲存中...'
-							: '儲存變更'}
+								? '儲存中...'
+								: '儲存變更'}
 					</Button>
 				</DialogActions>
 			</Box>

@@ -20,7 +20,7 @@ export default function AdminFooter() {
 				color: alpha(theme.palette.common.white, 0.72),
 				background: `linear-gradient(180deg, ${alpha(
 					theme.palette.text.primary,
-					0.92
+					0.92,
 				)} 0%, ${alpha(theme.palette.text.primary, 0.98)} 100%)`,
 			})}
 		>
@@ -46,8 +46,10 @@ export default function AdminFooter() {
 										fontWeight: 900,
 										color: '#fff',
 										fontFamily:
-											theme.typography.title?.fontFamily || "'Kaisei Opti', serif",
-										letterSpacing: theme.typography.title?.letterSpacing || '0.04em',
+											theme.typography.title?.fontFamily ||
+											"'Kaisei Opti', serif",
+										letterSpacing:
+											theme.typography.title?.letterSpacing || '0.04em',
 									})}
 								>
 									BooBoo食堂
@@ -86,22 +88,44 @@ export default function AdminFooter() {
 									<span
 										className="material-symbols-outlined"
 										style={{ fontSize: 18 }}
+										aria-hidden="true"
 									>
 										call
 									</span>
-									<Typography variant="body2">(02) 2345-6789</Typography>
+									<Typography
+										component="a"
+										href="tel:+886223456789"
+										variant="body2"
+										sx={{
+											color: 'inherit',
+											textDecoration: 'none',
+											'&:hover': { textDecoration: 'underline' },
+										}}
+									>
+										(02) 2345-6789
+									</Typography>
 								</Stack>
 								<Stack direction="row" spacing={1} alignItems="center">
 									<span
 										className="material-symbols-outlined"
 										style={{ fontSize: 18 }}
+										aria-hidden="true"
 									>
 										mail
 									</span>
-									<Typography variant="body2">
+									<Typography
+										component="a"
+										href="mailto:service@japanesecanteen.com"
+										variant="body2"
+										sx={{
+											color: 'inherit',
+											textDecoration: 'none',
+											'&:hover': { textDecoration: 'underline' },
+										}}
+									>
 										service@japanesecanteen.com
 									</Typography>
-								</Stack>
+								</Stack>{' '}
 							</Stack>
 						</Stack>
 					</Grid>

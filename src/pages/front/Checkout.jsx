@@ -30,7 +30,7 @@ const normalizeCart = (response) => {
 		carts: cartData.carts || [],
 		total: Number(cartData.total || 0),
 		finalTotal: Number(
-			cartData.final_total || cartData.finalTotal || cartData.total || 0
+			cartData.final_total || cartData.finalTotal || cartData.total || 0,
 		),
 	};
 };
@@ -293,7 +293,6 @@ export default function Checkout() {
 									<Stack spacing={2} sx={{ mb: 3 }}>
 										{cartItems.map((item) => {
 											const product = item.product || {};
-											const price = Number(product.price || item.price || 0);
 											return (
 												<Box
 													key={item.id}

@@ -74,9 +74,13 @@ export default function ArticleCard({ article }) {
 						<div className="card-body p-4">
 							<div className="d-flex align-items-center gap-2 mb-2 small text-muted">
 								<span>{article.author || '管理員'}</span>
-								<span>•</span>
-								<span>{date}</span>
-							</div>
+								{date && (
+									<>
+										<span>•</span>
+										<span>{date}</span>
+									</>
+								)}
+							</div>{' '}
 							<h3
 								className="h5 fw-bold mb-3"
 								style={{
@@ -115,14 +119,14 @@ export default function ArticleCard({ article }) {
 
 ArticleCard.propTypes = {
 	article: PropTypes.shape({
-		id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-		title: PropTypes.string,
+		id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+		title: PropTypes.string.isRequired,
 		description: PropTypes.string,
 		image: PropTypes.string,
 		imageUrl: PropTypes.string,
 		create_at: PropTypes.number,
-		tag: PropTypes.array,
+		tag: PropTypes.arrayOf(PropTypes.string),
 		author: PropTypes.string,
 		category: PropTypes.string,
-	}),
+	}).isRequired,
 };

@@ -164,10 +164,10 @@ const Hero = () => {
 							maxWidth: '576px',
 						}}
 					>
-						不必盛裝打扮，，在平凡的日子裡，回家吃飯一樣輕鬆。
+						不必盛裝打扮，在平凡的日子裡，回家吃飯一樣輕鬆。
 						<br />
 						我們用慢火熬的湯、剛出爐的飯，為您遞上一碗熱騰騰的慰藉，溫暖您的每個日常。
-					</Typography>
+					</Typography>{' '}
 					<Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
 						<PrimaryButton
 							href="#items"

@@ -36,7 +36,10 @@ const QuoteBox = styled(Box)(({ theme }) => ({
 	borderRadius: theme.spacing(1.5),
 	padding: theme.spacing(2.25),
 	boxShadow: theme.shadows[8],
-	display: { xs: 'none', md: 'block' },
+	display: 'none',
+	[theme.breakpoints.up('md')]: {
+		display: 'block',
+	},
 }));
 
 const FeatureIconBox = styled(Box)(({ theme }) => ({

@@ -46,7 +46,10 @@ const SwiperWrapper = styled(Box)(({ theme }) => ({
 		'&::after': {
 			fontSize: '1.5rem',
 		},
-		display: { xs: 'none', md: 'flex' },
+		display: 'none',
+		[theme.breakpoints.up('md')]: {
+			display: 'flex',
+		},
 	},
 	'& .swiper-pagination': {
 		bottom: '0 !important',

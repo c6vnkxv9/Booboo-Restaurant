@@ -25,6 +25,7 @@ export default function LoadingSpinner({
 			secondaryColor={secondaryColor}
 			strokeWidth={4}
 			strokeWidthSecondary={4}
+			ariaLabel="loading"
 		/>
 	);
 

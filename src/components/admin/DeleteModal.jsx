@@ -17,7 +17,11 @@ export default function DeleteModal({
 	loading = false,
 }) {
 	return (
-		<Dialog open={open} onClose={onClose}>
+		<Dialog
+			open={open}
+			onClose={loading ? undefined : onClose}
+			disableEscapeKeyDown={loading}
+		>
 			<DialogTitle sx={{ fontWeight: 900 }}>{title}</DialogTitle>
 			<DialogContent>
 				<Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>

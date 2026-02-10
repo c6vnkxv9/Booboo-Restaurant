@@ -92,7 +92,7 @@ const JournalSection = () => {
 	const [articles, setArticles] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const [selectedCategory, setSelectedCategory] = useState('全て');
+	const [selectedCategory, setSelectedCategory] = useState('全部');
 
 	const iconMap = {
 		Recipe: 'restaurant_menu',
@@ -337,7 +337,10 @@ const JournalSection = () => {
 										<Typography
 											variant="h3"
 											component={Link}
-											href={`/articles/${article.id}`}
+										<Typography
+											variant="h3"
+											component={Link}
+											href={`/articles/${article.id || article._id}`}
 											sx={{
 												fontSize: { xs: '1.875rem', md: '2.25rem' },
 												fontWeight: 'bold',
@@ -366,7 +369,7 @@ const JournalSection = () => {
 											}}
 										>
 											{article.description ||
-												'旬の素材や文化を紐解く職人の視点で、味わい深い日常をお届けします。'}
+												'以職人的視角解讀當季食材與文化，為您帶來深具韻味的日常。'}
 										</Typography>
 										<Link
 											href={`/articles/${article.id}`}

@@ -47,10 +47,6 @@ export default function Products() {
 	const [deletingProduct, setDeletingProduct] = useState(null);
 
 	useEffect(() => {
-		fetchProducts(1);
-	}, []);
-
-	useEffect(() => {
 		setCurrentPage(1);
 		fetchProducts(1);
 	}, [activeCategory, sortBy]);
@@ -70,7 +66,7 @@ export default function Products() {
 			setTotalPages(
 				Number.isFinite(totalPagesFromAPI) && totalPagesFromAPI > 0
 					? totalPagesFromAPI
-					: 1
+					: 1,
 			);
 		} catch (err) {
 			// 檢查是否為權限不足錯誤
@@ -88,7 +84,7 @@ export default function Products() {
 		let filtered = [...allProducts];
 		if (activeCategory !== 'all') {
 			filtered = filtered.filter(
-				(product) => product.category === activeCategory
+				(product) => product.category === activeCategory,
 			);
 		}
 		switch (sortBy) {
@@ -204,14 +200,14 @@ export default function Products() {
 				elevation={0}
 				sx={{
 					p: 5,
+			<Paper
+				elevation={0}
+				sx={{
+					p: 5,
 					textAlign: 'center',
-					bgcolor: 'theme.palette.background.default',
+					bgcolor: 'background.default',
 				}}
 			>
-				<CircularProgress
-					size={28}
-					sx={{ color: 'theme.palette.primary.main' }}
-				/>
 				<Typography sx={{ mt: 2, color: 'theme.palette.text.primary' }}>
 					正在載入產品列表...
 				</Typography>
@@ -245,18 +241,18 @@ export default function Products() {
 						variant="contained"
 						onClick={fetchProducts}
 						sx={{
+					<Button
+						variant="contained"
+						onClick={() => fetchProducts(1)}
+						sx={{
 							fontWeight: 800,
-							background:
-								'linear-gradient(to right, theme.palette.primary.main, theme.palette.primary.dark, #d88a7d))',
+							background: (theme) =>
+								`linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.dark}, #d88a7d)`,
 						}}
 					>
 						重新載入
 					</Button>
 				</Box>
-			</Paper>
-		);
-	}
-
 	return (
 		<ListLayout
 			sidebar={

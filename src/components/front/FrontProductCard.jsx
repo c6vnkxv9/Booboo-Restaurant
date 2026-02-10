@@ -19,8 +19,8 @@ export default function FrontProductCard({ product, onAddToCart, adding }) {
 		product.images?.[0] ||
 		'/error-img.svg';
 	const title = product.title || product.name || '';
-	const price = Number(product.price || 0);
-	const originPrice = Number(product.origin_price || product.originPrice || 0);
+	const price = Number(product.price) || 0;
+	const originPrice = Number(product.origin_price || product.originPrice) || 0;
 
 	return (
 		<Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -35,7 +35,12 @@ export default function FrontProductCard({ product, onAddToCart, adding }) {
 					image={imageSrc}
 					alt={title}
 					onError={(e) => {
-						e.currentTarget.src = '/error-img.svg';
+						if (
+							e.currentTarget.src !==
+							window.location.origin + '/error-img.svg'
+						) {
+							e.currentTarget.src = '/error-img.svg';
+						}
 					}}
 					sx={{ objectFit: 'cover' }}
 				/>

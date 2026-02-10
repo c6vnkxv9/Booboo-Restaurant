@@ -300,11 +300,11 @@ export default function Login() {
 											borderRadius: 2,
 											fontWeight: 800,
 											boxShadow: '0 8px 18px rgba(0,0,0,0.10)',
-											background:
-												'linear-gradient(to right, theme.palette.primary.main, theme.palette.primary.dark, #d88a7d))',
+											background: (theme) =>
+												`linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.dark}, #d88a7d)`,
 											'&:hover': {
-												background:
-													'linear-gradient(to right, theme.palette.primary.main, theme.palette.primary.dark, #c85a4a))',
+												background: (theme) =>
+													`linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.dark}, #c85a4a)`,
 											},
 										}}
 										endIcon={
