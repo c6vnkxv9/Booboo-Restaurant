@@ -159,7 +159,6 @@ export default function Articles() {
 		>
 			{/* 篩選和排序工具欄 */}
 			<Stack
-			<Stack
 				direction={{ xs: 'column', sm: 'row' }}
 				justifyContent="space-between"
 				alignItems={{ xs: 'flex-start', sm: 'center' }}
@@ -212,24 +211,33 @@ export default function Articles() {
 				</FormControl>
 			</Stack>
 
-			{/* 文章網格 */}
-			{filteredArticles.length === 0 ? (
-				<Paper
-					elevation={0}
-					sx={{
-						p: 5,
-						textAlign: 'center',
-						bgcolor: 'background.default',
-					}}
-				>
-					<Typography sx={{ color: 'text.primary' }}>
-						目前沒有文章
-					</Typography>
-				</Paper>					{filteredArticles.map((article) => (
-						<ArticleCard key={article.id} article={article} />
-					))}
-				</div>
-			)}
+		{/* 文章網格 */}
+		{filteredArticles.length === 0 ? (
+			<Paper
+				elevation={0}
+				sx={{
+					p: 5,
+					textAlign: 'center',
+					bgcolor: 'background.default',
+				}}
+			>
+				<Typography sx={{ color: 'text.primary' }}>
+					目前沒有文章
+				</Typography>
+			</Paper>
+		) : (
+			<div
+				style={{
+					display: 'grid',
+					gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+					gap: '1.5rem',
+				}}
+			>
+				{filteredArticles.map((article) => (
+					<ArticleCard key={article.id} article={article} />
+				))}
+			</div>
+		)}
 		</ListLayout>
 	);
 }

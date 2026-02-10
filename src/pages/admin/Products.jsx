@@ -200,15 +200,12 @@ export default function Products() {
 				elevation={0}
 				sx={{
 					p: 5,
-			<Paper
-				elevation={0}
-				sx={{
-					p: 5,
 					textAlign: 'center',
 					bgcolor: 'background.default',
 				}}
 			>
-				<Typography sx={{ mt: 2, color: 'theme.palette.text.primary' }}>
+				<CircularProgress />
+				<Typography sx={{ mt: 2, color: 'text.primary' }}>
 					正在載入產品列表...
 				</Typography>
 			</Paper>
@@ -227,7 +224,7 @@ export default function Products() {
 				sx={{
 					p: 5,
 					textAlign: 'center',
-					bgcolor: 'theme.palette.background.default',
+					bgcolor: 'background.default',
 				}}
 			>
 				<Alert
@@ -237,10 +234,6 @@ export default function Products() {
 					{error}
 				</Alert>
 				<Box sx={{ mt: 2 }}>
-					<Button
-						variant="contained"
-						onClick={fetchProducts}
-						sx={{
 					<Button
 						variant="contained"
 						onClick={() => fetchProducts(1)}
@@ -253,6 +246,10 @@ export default function Products() {
 						重新載入
 					</Button>
 				</Box>
+			</Paper>
+		);
+	}
+
 	return (
 		<ListLayout
 			sidebar={
@@ -278,12 +275,12 @@ export default function Products() {
 							width: 6,
 							height: 24,
 							borderRadius: 1,
-							bgcolor: 'theme.palette.primary.main',
+							bgcolor: 'primary.main',
 						}}
 					/>
 					<Typography
 						variant="h5"
-						sx={{ fontWeight: 900, color: 'theme.palette.text.primary' }}
+						sx={{ fontWeight: 900, color: 'text.primary' }}
 					>
 						全部商品
 						<Typography
@@ -292,7 +289,7 @@ export default function Products() {
 								ml: 1.25,
 								fontSize: 14,
 								fontWeight: 500,
-								color: 'theme.palette.secondary.main',
+								color: 'secondary.main',
 							}}
 						>
 							({filteredProducts.length} 項餐點)
@@ -307,7 +304,7 @@ export default function Products() {
 							onChange={(e) => setSortBy(e.target.value)}
 							sx={{
 								borderRadius: 999,
-								bgcolor: 'theme.palette.background.default',
+								bgcolor: 'background.default',
 							}}
 						>
 							{SORT_OPTIONS.map((option) => (
@@ -325,8 +322,8 @@ export default function Products() {
 							fontWeight: 900,
 							borderRadius: 2,
 							px: 2,
-							background:
-								'linear-gradient(to right, theme.palette.primary.main, theme.palette.primary.dark, #d88a7d))',
+							background: (theme) =>
+								`linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.dark}, #d88a7d)`,
 						}}
 					>
 						新增商品
@@ -334,10 +331,10 @@ export default function Products() {
 				</Stack>
 			</Stack>
 
-			{/* 產品網格 */}
 			{filteredProducts.length === 0 ? (
 				<EmptyState
-					title="目前沒有商品"
+					icon="restaurant_menu"
+					title="目前沒有餐點"
 					description={
 						activeCategory === 'all'
 							? '目前還沒有任何餐點。你可以先新增商品，或稍後再回來看看。'

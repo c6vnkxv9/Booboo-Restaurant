@@ -337,9 +337,6 @@ const JournalSection = () => {
 										<Typography
 											variant="h3"
 											component={Link}
-										<Typography
-											variant="h3"
-											component={Link}
 											href={`/articles/${article.id || article._id}`}
 											sx={{
 												fontSize: { xs: '1.875rem', md: '2.25rem' },
