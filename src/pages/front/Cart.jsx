@@ -20,6 +20,7 @@ import {
 import Swal from 'sweetalert2';
 import FrontLayout from '@/components/front/FrontLayout';
 import DeleteModal from '@/components/admin/DeleteModal';
+import EmptyCart from '@/components/front/EmptyCart';
 import {
 	clearCartAPI,
 	getCartAPI,
@@ -34,7 +35,7 @@ const normalizeCart = (response) => {
 		carts: cartData.carts || [],
 		total: Number(cartData.total || 0),
 		finalTotal: Number(
-			cartData.final_total || cartData.finalTotal || cartData.total || 0
+			cartData.final_total || cartData.finalTotal || cartData.total || 0,
 		),
 	};
 };
@@ -187,115 +188,116 @@ export default function Cart() {
 						<CircularProgress />
 					</Box>
 				) : cartItems.length === 0 ? (
-					<Alert severity="info">購物車目前沒有商品</Alert>
+					<EmptyCart />
 				) : (
-					<Box sx={{ overflowX: 'auto' }}>
-						<Table>
-							<TableHead>
-								<TableRow>
-									<TableCell>品項</TableCell>
-									<TableCell align="right">單價</TableCell>
-									<TableCell align="center">數量</TableCell>
-									<TableCell align="right">小計</TableCell>
-									<TableCell align="center">操作</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{cartItems.map((item) => {
-									const product = item.product || {};
-									const price = Number(product.price || item.price || 0);
-									return (
-										<TableRow key={item.id}>
-											<TableCell>
-												<Stack spacing={0.5}>
-													<Typography sx={{ fontWeight: 700 }}>
-														{product.title || product.name}
-													</Typography>
-													<Typography
-														variant="caption"
-														sx={{ color: 'text.secondary' }}
+					<>
+						<Box sx={{ overflowX: 'auto' }}>
+							<Table>
+								<TableHead>
+									<TableRow>
+										<TableCell>品項</TableCell>
+										<TableCell align="right">單價</TableCell>
+										<TableCell align="center">數量</TableCell>
+										<TableCell align="right">小計</TableCell>
+										<TableCell align="center">操作</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{cartItems.map((item) => {
+										const product = item.product || {};
+										const price = Number(product.price || item.price || 0);
+										return (
+											<TableRow key={item.id}>
+												<TableCell>
+													<Stack spacing={0.5}>
+														<Typography sx={{ fontWeight: 700 }}>
+															{product.title || product.name}
+														</Typography>
+														<Typography
+															variant="caption"
+															sx={{ color: 'text.secondary' }}
+														>
+															{product.category || ''}
+														</Typography>
+													</Stack>
+												</TableCell>
+												<TableCell align="right">
+													NT$ {price.toLocaleString()}
+												</TableCell>
+												<TableCell align="center">
+													<TextField
+														type="number"
+														size="small"
+														inputProps={{
+															min: 1,
+															style: { textAlign: 'center', width: '80px' },
+														}}
+														value={item.qty || 1}
+														onChange={(e) =>
+															handleUpdateQty(item, e.target.value)
+														}
+														disabled={updatingId === item.id}
+													/>
+												</TableCell>
+												<TableCell align="right">
+													NT$ {Number(item.total || 0).toLocaleString()}
+												</TableCell>
+												<TableCell align="center">
+													<IconButton
+														onClick={() =>
+															handleRemoveItem(
+																item.id,
+																product.title || product.name || '此商品',
+															)
+														}
+														disabled={updatingId === item.id}
+														aria-label="刪除"
 													>
-														{product.category || ''}
-													</Typography>
-												</Stack>
-											</TableCell>
-											<TableCell align="right">
-												NT$ {price.toLocaleString()}
-											</TableCell>
-											<TableCell align="center">
-												<TextField
-													type="number"
-													size="small"
-													inputProps={{
-														min: 1,
-														style: { textAlign: 'center', width: '80px' },
-													}}
-													value={item.qty || 1}
-													onChange={(e) =>
-														handleUpdateQty(item, e.target.value)
-													}
-													disabled={updatingId === item.id}
-												/>
-											</TableCell>
-											<TableCell align="right">
-												NT$ {Number(item.total || 0).toLocaleString()}
-											</TableCell>
-											<TableCell align="center">
-												<IconButton
-													onClick={() =>
-														handleRemoveItem(
-															item.id,
-															product.title || product.name || '此商品'
-														)
-													}
-													disabled={updatingId === item.id}
-													aria-label="刪除"
-												>
-													<span className="material-symbols-outlined">
-														delete
-													</span>
-												</IconButton>
-											</TableCell>
-										</TableRow>
-									);
-								})}
-							</TableBody>
-						</Table>
-					</Box>
-				)}
+														<span className="material-symbols-outlined">
+															delete
+														</span>
+													</IconButton>
+												</TableCell>
+											</TableRow>
+										);
+									})}
+								</TableBody>
+							</Table>
+						</Box>
 
-				<Stack spacing={2} sx={{ alignSelf: 'flex-end', minWidth: 280 }}>
-					<Stack spacing={1}>
-						<Stack direction="row" justifyContent="space-between">
-							<Typography variant="body2" sx={{ color: 'text.secondary' }}>
-								小計
-							</Typography>
-							<Typography variant="body2">
-								NT$ {total.toLocaleString()}
-							</Typography>
+						<Stack spacing={2} sx={{ alignSelf: 'flex-end', minWidth: 280 }}>
+							<Stack spacing={1}>
+								<Stack direction="row" justifyContent="space-between">
+									<Typography variant="body2" sx={{ color: 'text.secondary' }}>
+										小計
+									</Typography>
+									<Typography variant="body2">
+										NT$ {total.toLocaleString()}
+									</Typography>
+								</Stack>
+								<Stack direction="row" justifyContent="space-between">
+									<Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+										總金額
+									</Typography>
+									<Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+										NT$ {finalTotal.toLocaleString()}
+									</Typography>
+								</Stack>
+							</Stack>
+							<Button
+								variant="contained"
+								size="large"
+								onClick={() => navigate('/checkout')}
+								sx={{
+									py: 1.5,
+									fontWeight: 800,
+								}}
+							>
+								前往結帳
+							</Button>
 						</Stack>
-						<Stack direction="row" justifyContent="space-between">
-							<Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
-								總金額
-							</Typography>
-							<Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
-								NT$ {finalTotal.toLocaleString()}
-							</Typography>
-						</Stack>
-					</Stack>
-					<Button
-						variant="contained"
-						size="large"
-						onClick={() => navigate('/checkout')}
-						disabled={cartItems.length === 0}
-						sx={{
-							py: 1.5,
-							fontWeight: 800,
-						}}
-					>
-						前往結帳
-					</Button>
-				</Stack>
+					</>
+				)}
 			</Stack>
 
 			<DeleteModal

@@ -213,7 +213,7 @@ TestimonialsSection.propTypes = {
 			comment: PropTypes.string,
 			image: PropTypes.string,
 			id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-		})
+		}),
 	),
 };
 

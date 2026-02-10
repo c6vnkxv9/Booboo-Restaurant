@@ -36,7 +36,9 @@ export default function FrontProducts() {
 			const productsData =
 				response.products || response.data?.products || response.data || [];
 			setProducts(
-				Array.isArray(productsData) ? productsData : Object.values(productsData)
+				Array.isArray(productsData)
+					? productsData
+					: Object.values(productsData),
 			);
 			const total =
 				response.pagination?.total_pages ||

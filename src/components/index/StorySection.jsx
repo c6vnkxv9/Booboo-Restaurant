@@ -9,32 +9,56 @@ import {
 import { styled } from '@mui/material/styles';
 
 const SectionBox = styled(Box)(({ theme }) => ({
-	padding: theme.spacing(5, 0),
+	padding: theme.spacing(12, 0),
+	overflow: 'hidden',
+}));
+
+const ImageWrapper = styled(Box)(({ theme }) => ({
+	position: 'relative',
+	width: '100%',
+	'&:hover .border-decoration': {
+		transform: 'translate(8px, 8px)',
+	},
+}));
+
+const BorderDecoration = styled(Box)(({ theme }) => ({
+	position: 'absolute',
+	top: '16px',
+	left: '16px',
+	width: '100%',
+	height: '100%',
+	border: `2px solid ${theme.palette.primary.main}30`,
+	zIndex: 0,
+	transition: 'transform 0.5s ease',
 }));
 
 const ImageContainer = styled(Box)(({ theme }) => ({
-	borderRadius: theme.spacing(2),
-	overflow: 'hidden',
-	boxShadow: theme.shadows[8],
-	border: `3px solid ${theme.palette.secondary.main}`,
 	position: 'relative',
+	zIndex: 10,
+	borderRadius: theme.spacing(0.5),
+	overflow: 'hidden',
+	boxShadow: theme.shadows[10],
 	'& img': {
 		width: '100%',
-		height: '100%',
+		height: 'auto',
 		objectFit: 'cover',
 		display: 'block',
+		transition: 'transform 0.7s ease',
+	},
+	'&:hover img': {
+		transform: 'scale(1.05)',
 	},
 }));
 
 const QuoteBox = styled(Box)(({ theme }) => ({
 	position: 'absolute',
-	bottom: '-30px',
-	left: '15%',
+	bottom: '24px',
+	left: '24px',
 	maxWidth: '320px',
-	backgroundColor: theme.palette.background.paper || '#FAEDE7',
+	backgroundColor: theme.palette.background.paper,
 	borderLeft: `4px solid ${theme.palette.primary.main}`,
-	borderRadius: theme.spacing(1.5),
-	padding: theme.spacing(2.25),
+	borderRadius: theme.spacing(0.5),
+	padding: theme.spacing(3),
 	boxShadow: theme.shadows[8],
 	display: 'none',
 	[theme.breakpoints.up('md')]: {
@@ -43,13 +67,14 @@ const QuoteBox = styled(Box)(({ theme }) => ({
 }));
 
 const FeatureIconBox = styled(Box)(({ theme }) => ({
-	width: '64px',
-	height: '64px',
+	width: '48px',
+	height: '48px',
 	borderRadius: '50%',
-	backgroundColor: `${theme.palette.primary.main}14`,
+	backgroundColor: `${theme.palette.primary.main}1A`,
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
+	margin: '0 auto',
 	marginBottom: theme.spacing(1),
 }));
 
@@ -64,35 +89,55 @@ const StorySection = () => {
 
 	return (
 		<SectionBox component="section" id="story">
-			<Container>
-				<Grid container spacing={4} alignItems="center">
-					<Grid item xs={12} lg={6} sx={{ position: 'relative' }}>
-						<ImageContainer>
-							<img src="/banner.jpg" alt="Craft" />
-						</ImageContainer>
-						<QuoteBox>
-							<Typography
-								sx={{
-									fontWeight: 'bold',
-									marginBottom: 0.5,
-									color: theme.palette.primary.main,
-								}}
-							>
-								&ldquo;沒什麼大道理，只要看到客人吃得乾乾淨淨，就是我最快樂的事。&rdquo;
-							</Typography>
-							<Typography variant="caption" sx={{ color: 'text.secondary' }}>
-								— 料理長 健次郎
-							</Typography>
-						</QuoteBox>
-					</Grid>
-
-					<Grid item xs={12} lg={6}>
+			<Container maxWidth="lg">
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: { xs: 'column', lg: 'row' },
+						alignItems: 'center',
+						gap: 8,
+					}}
+				>
+					<Box component="aside" sx={{ width: { xs: '100%', lg: '60%' } }}>
+						<ImageWrapper>
+							<BorderDecoration className="border-decoration" />
+							<ImageContainer>
+								<img src="/banner.jpg" alt="Craft" />
+								<QuoteBox>
+									<Typography
+										sx={{
+											fontWeight: 'bold',
+											marginBottom: 1,
+											color: theme.palette.primary.main,
+											fontSize: '0.875rem',
+											fontFamily: 'serif',
+										}}
+									>
+										&ldquo;沒什麼大道理，只要看到客人吃得乾乾淨淨，就是我最快樂的事。&rdquo;
+									</Typography>
+									<Typography
+										variant="caption"
+										sx={{
+											color: 'text.secondary',
+											fontSize: '0.75rem',
+										}}
+									>
+										— 料理長 健次郎
+									</Typography>
+								</QuoteBox>
+							</ImageContainer>
+						</ImageWrapper>
+					</Box>
+					<Box component="main" sx={{ width: { xs: '100%', lg: '40%' } }}>
 						<Typography
 							variant="overline"
 							sx={{
 								color: theme.palette.primary.main,
 								display: 'block',
-								marginBottom: 1,
+								marginBottom: 2,
+								fontSize: '0.75rem',
+								fontWeight: 'bold',
+								letterSpacing: '0.3em',
 							}}
 						>
 							我們的料理日常
@@ -102,6 +147,10 @@ const StorySection = () => {
 							sx={{
 								marginBottom: 3,
 								color: theme.palette.text.primary,
+								fontSize: { xs: '2rem', md: '2.25rem' },
+								fontWeight: 'bold',
+								lineHeight: 1.3,
+								fontFamily: 'serif',
 							}}
 						>
 							堅持手作，傳遞一份純粹的
@@ -112,7 +161,10 @@ const StorySection = () => {
 							sx={{
 								color: 'text.secondary',
 								marginBottom: 3,
-								lineHeight: 1.8,
+								lineHeight: 1.75,
+								fontSize: '0.875rem',
+								textAlign: 'justify',
+								letterSpacing: '0.05em',
 							}}
 						>
 							從古老巷弄的職人精神出發，我們堅持最純粹的味道。
@@ -122,21 +174,34 @@ const StorySection = () => {
 							variant="body1"
 							sx={{
 								color: 'text.secondary',
-								marginBottom: 4,
-								lineHeight: 1.8,
+								marginBottom: 5,
+								lineHeight: 1.75,
+								fontSize: '0.875rem',
+								textAlign: 'justify',
+								letterSpacing: '0.05em',
 							}}
 						>
 							從拉麵的湯頭到味噌湯的餘韻，我們想把這份職人精神，變成您餐桌上最平常的幸福。
 						</Typography>
 
-						<Box sx={{ display: 'flex', gap: 4, marginBottom: 4 }}>
+						<Box
+							sx={{
+								display: 'flex',
+								gap: 4,
+								marginBottom: 5,
+								borderTop: '1px solid',
+								borderBottom: '1px solid',
+								borderColor: 'divider',
+								paddingY: 3,
+							}}
+						>
 							{features.map((feature) => (
 								<Box key={feature.label} sx={{ textAlign: 'center' }}>
 									<FeatureIconBox>
 										<span
 											className="material-symbols-outlined"
 											style={{
-												fontSize: '1.5rem',
+												fontSize: '1.25rem',
 												color: theme.palette.primary.main,
 											}}
 										>
@@ -149,6 +214,7 @@ const StorySection = () => {
 											fontWeight: 'bold',
 											color: theme.palette.text.primary,
 											display: 'block',
+											fontSize: '0.75rem',
 										}}
 									>
 										{feature.label}
@@ -161,19 +227,23 @@ const StorySection = () => {
 							href="#journal"
 							sx={{
 								display: 'inline-block',
-								marginTop: 2,
 								fontWeight: 'bold',
-								textDecoration: 'underline',
-								color: theme.palette.text.primary,
+								fontSize: '0.875rem',
+								borderBottom: `1px solid ${theme.palette.primary.main}`,
+								paddingBottom: 0.5,
+								color: theme.palette.primary.main,
+								textDecoration: 'none',
 								'&:hover': {
-									color: theme.palette.primary.main,
+									color: theme.palette.primary.dark,
+									borderBottomColor: theme.palette.primary.dark,
 								},
+								transition: 'all 0.3s ease',
 							}}
 						>
 							了解更多故事
 						</Link>
-					</Grid>
-				</Grid>
+					</Box>
+				</Box>
 			</Container>
 		</SectionBox>
 	);

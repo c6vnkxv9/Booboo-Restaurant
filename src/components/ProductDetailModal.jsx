@@ -116,7 +116,7 @@ export default function ProductDetailModal({ open, product, onClose }) {
 											overflow: 'hidden',
 											border: `1px solid ${alpha(
 												theme.palette.text.primary,
-												0.1
+												0.1,
 											)}`,
 											bgcolor: theme.palette.secondary.main,
 											aspectRatio: '4 / 3',
@@ -166,14 +166,14 @@ export default function ProductDetailModal({ open, product, onClose }) {
 																? `2px solid ${theme.palette.primary.main}`
 																: `1px solid ${alpha(
 																		theme.palette.text.primary,
-																		0.1
-																  )}`,
+																		0.1,
+																	)}`,
 															cursor: 'pointer',
 															outline: 'none',
 															'&:focus-visible': {
 																boxShadow: `0 0 0 3px ${alpha(
 																	theme.palette.primary.main,
-																	0.25
+																	0.25,
 																)}`,
 															},
 														})}
@@ -243,7 +243,7 @@ export default function ProductDetailModal({ open, product, onClose }) {
 													color: theme.palette.secondary.main,
 													border: `1px solid ${alpha(
 														theme.palette.secondary.main,
-														0.35
+														0.35,
 													)}`,
 												})}
 											/>
@@ -322,7 +322,7 @@ export default function ProductDetailModal({ open, product, onClose }) {
 											bgcolor: theme.palette.background.default,
 											border: `1px solid ${alpha(
 												theme.palette.text.primary,
-												0.1
+												0.1,
 											)}`,
 											borderColor: alpha(theme.palette.text.primary, 0.1),
 											boxShadow: 'none',
