@@ -70,7 +70,12 @@ export default function ProductCard({ product, onView, onEdit, onDelete }) {
 							'.product-card-new:hover &': { transform: 'scale(1.06)' },
 						}}
 						onError={(e) => {
-							e.currentTarget.src = '/error-img.svg';
+							if (
+								e.currentTarget.src !==
+								window.location.origin + '/error-img.svg'
+							) {
+								e.currentTarget.src = '/error-img.svg';
+							}
 						}}
 					/>
 				</Box>
@@ -128,7 +133,7 @@ export default function ProductCard({ product, onView, onEdit, onDelete }) {
 										color: theme.palette.secondary.main,
 										border: `1px solid ${alpha(
 											theme.palette.secondary.main,
-											0.35
+											0.35,
 										)}`,
 									})}
 								/>

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { auth } from '../utils/auth';
+import { auth } from '@/utils/auth';
 import { useLocation, useNavigate, Link as RouterLink } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import {

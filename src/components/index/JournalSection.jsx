@@ -92,7 +92,7 @@ const JournalSection = () => {
 	const [articles, setArticles] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const [selectedCategory, setSelectedCategory] = useState('全て');
+	const [selectedCategory, setSelectedCategory] = useState('全部');
 
 	const iconMap = {
 		Recipe: 'restaurant_menu',
@@ -161,28 +161,21 @@ const JournalSection = () => {
 							variant="overline"
 							sx={{
 								color: theme.palette.primary.main,
-								fontWeight: 'bold',
-								letterSpacing: '0.2em',
-								fontSize: '0.875rem',
 								display: 'block',
 								marginBottom: 1,
 							}}
 						>
-							職人日誌
+							關於我們的小故事
 						</Typography>
 						<Typography
 							variant="h2"
 							sx={{
-								fontSize: { xs: '2.5rem', md: '3rem' },
-								fontWeight: 'bold',
 								color: theme.palette.text.primary,
-								lineHeight: 1.2,
-								fontFamily: "'Kaisei Opti', serif",
 							}}
 						>
-							柴米油鹽的
+							把簡單的事做到最好，就是我們的
 							<br style={{ display: { xs: 'block', md: 'none' } }} />
-							物語
+							承諾
 						</Typography>
 					</Box>
 					<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
@@ -344,7 +337,7 @@ const JournalSection = () => {
 										<Typography
 											variant="h3"
 											component={Link}
-											href={`/articles/${article.id}`}
+											href={`/articles/${article.id || article._id}`}
 											sx={{
 												fontSize: { xs: '1.875rem', md: '2.25rem' },
 												fontWeight: 'bold',
@@ -373,7 +366,7 @@ const JournalSection = () => {
 											}}
 										>
 											{article.description ||
-												'旬の素材や文化を紐解く職人の視点で、味わい深い日常をお届けします。'}
+												'以職人的視角解讀當季食材與文化，為您帶來深具韻味的日常。'}
 										</Typography>
 										<Link
 											href={`/articles/${article.id}`}

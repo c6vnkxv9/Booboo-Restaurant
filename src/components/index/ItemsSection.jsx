@@ -15,7 +15,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { getProductsAPI } from '@/api/products';
 import { Link as RouterLink } from 'react-router-dom';
-import FrontProductCard from '@/components/FrontProductCard';
+import FrontProductCard from '@/components/front/FrontProductCard';
 const SectionBox = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(12, 0),
 	position: 'relative',
@@ -46,7 +46,10 @@ const SwiperWrapper = styled(Box)(({ theme }) => ({
 		'&::after': {
 			fontSize: '1.5rem',
 		},
-		display: { xs: 'none', md: 'flex' },
+		display: 'none',
+		[theme.breakpoints.up('md')]: {
+			display: 'flex',
+		},
 	},
 	'& .swiper-pagination': {
 		bottom: '0 !important',
@@ -113,28 +116,21 @@ const ItemsSection = () => {
 					<Typography
 						variant="overline"
 						sx={{
-							fontSize: '0.75rem',
-							fontWeight: 'bold',
-							textTransform: 'uppercase',
 							color: theme.palette.primary.main,
-							letterSpacing: '0.3em',
 							display: 'block',
 							marginBottom: 1.5,
 						}}
 					>
-						季節限定
+						看看今天吃什麼
 					</Typography>
 					<Typography
 						variant="h2"
 						sx={{
-							fontFamily: "'Kaisei Opti', serif",
-							fontSize: { xs: '1.875rem', md: '2.25rem' },
-							fontWeight: 'bold',
 							color: theme.palette.text.primary,
 							letterSpacing: '0.05em',
 						}}
 					>
-						此時此刻的美味
+						此時此刻，最想讓您嚐到的美味。
 					</Typography>
 				</Box>
 

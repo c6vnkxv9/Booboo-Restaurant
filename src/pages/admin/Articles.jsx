@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import { getArticlesAPI } from '../api/article';
-import ListLayout from '../components/ListLayout';
-import CategorySidebar from '../components/CategorySidebar';
-import ArticleCard from '../components/ArticleCard';
-import PermissionDenied from '../components/PermissionDenied';
-import { isPermissionDenied } from '../utils/permissions';
+import { getArticlesAPI } from '@/api/article';
+import ListLayout from '@/components/ListLayout';
+import CategorySidebar from '@/components/CategorySidebar';
+import ArticleCard from '@/components/front/ArticleCard';
+import PermissionDenied from '@/components/PermissionDenied';
+import { isPermissionDenied } from '@/utils/permissions';
 import {
 	Alert,
 	Box,
@@ -70,7 +70,7 @@ export default function Articles() {
 			filtered = filtered.filter(
 				(article) =>
 					article.tag?.includes(activeCategory) ||
-					article.category === activeCategory
+					article.category === activeCategory,
 			);
 		}
 		switch (sortBy) {
@@ -120,7 +120,7 @@ export default function Articles() {
 				sx={{
 					p: 5,
 					textAlign: 'center',
-					bgcolor: 'theme.palette.background.default',
+					bgcolor: 'background.default',
 				}}
 			>
 				<Alert
@@ -135,8 +135,8 @@ export default function Articles() {
 						onClick={fetchArticles}
 						sx={{
 							fontWeight: 800,
-							background:
-								'linear-gradient(to right, theme.palette.primary.main, theme.palette.primary.dark, #d88a7d))',
+							background: (theme) =>
+								`linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.dark}, #d88a7d)`,
 						}}
 					>
 						重新載入
@@ -145,7 +145,6 @@ export default function Articles() {
 			</Paper>
 		);
 	}
-
 	return (
 		<ListLayout
 			sidebar={
@@ -172,12 +171,12 @@ export default function Articles() {
 							width: 6,
 							height: 24,
 							borderRadius: 1,
-							bgcolor: 'theme.palette.primary.main',
+							bgcolor: 'primary.main',
 						}}
 					/>
 					<Typography
 						variant="h5"
-						sx={{ fontWeight: 900, color: 'theme.palette.text.primary' }}
+						sx={{ fontWeight: 900, color: 'text.primary' }}
 					>
 						全部文章
 						<Typography
@@ -186,7 +185,7 @@ export default function Articles() {
 								ml: 1.25,
 								fontSize: 14,
 								fontWeight: 500,
-								color: 'theme.palette.secondary.main',
+								color: 'secondary.main',
 							}}
 						>
 							({filteredArticles.length} 項文章)
@@ -200,7 +199,7 @@ export default function Articles() {
 						onChange={(e) => setSortBy(e.target.value)}
 						sx={{
 							borderRadius: 999,
-							bgcolor: 'theme.palette.background.default',
+							bgcolor: 'background.default',
 						}}
 					>
 						{SORT_OPTIONS.map((option) => (
@@ -212,27 +211,33 @@ export default function Articles() {
 				</FormControl>
 			</Stack>
 
-			{/* 文章網格 */}
-			{filteredArticles.length === 0 ? (
-				<Paper
-					elevation={0}
-					sx={{
-						p: 5,
-						textAlign: 'center',
-						bgcolor: 'theme.palette.background.default',
-					}}
-				>
-					<Typography sx={{ color: 'theme.palette.text.primary' }}>
-						目前沒有文章
-					</Typography>
-				</Paper>
-			) : (
-				<div className="row g-4">
-					{filteredArticles.map((article) => (
-						<ArticleCard key={article.id} article={article} />
-					))}
-				</div>
-			)}
+		{/* 文章網格 */}
+		{filteredArticles.length === 0 ? (
+			<Paper
+				elevation={0}
+				sx={{
+					p: 5,
+					textAlign: 'center',
+					bgcolor: 'background.default',
+				}}
+			>
+				<Typography sx={{ color: 'text.primary' }}>
+					目前沒有文章
+				</Typography>
+			</Paper>
+		) : (
+			<div
+				style={{
+					display: 'grid',
+					gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+					gap: '1.5rem',
+				}}
+			>
+				{filteredArticles.map((article) => (
+					<ArticleCard key={article.id} article={article} />
+				))}
+			</div>
+		)}
 		</ListLayout>
 	);
 }

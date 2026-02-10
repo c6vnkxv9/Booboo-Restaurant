@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { API_CONFIG } from '../config/api'
-import { auth } from '../utils/auth'
+import { API_CONFIG } from '@/config/api'
+import { auth } from '@/utils/auth'
 
 // 創建 axios 實例
 const axiosInstance = axios.create({

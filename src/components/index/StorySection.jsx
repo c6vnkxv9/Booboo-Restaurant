@@ -36,7 +36,10 @@ const QuoteBox = styled(Box)(({ theme }) => ({
 	borderRadius: theme.spacing(1.5),
 	padding: theme.spacing(2.25),
 	boxShadow: theme.shadows[8],
-	display: { xs: 'none', md: 'block' },
+	display: 'none',
+	[theme.breakpoints.up('md')]: {
+		display: 'block',
+	},
 }));
 
 const FeatureIconBox = styled(Box)(({ theme }) => ({
@@ -54,9 +57,9 @@ const StorySection = () => {
 	const theme = useTheme();
 
 	const features = [
-		{ icon: 'restaurant', label: '伝統' },
-		{ icon: 'local_florist', label: '新鮮' },
-		{ icon: 'handshake', label: '手作り' },
+		{ icon: 'restaurant', label: '#傳統風味' },
+		{ icon: 'local_florist', label: '#新鮮直送' },
+		{ icon: 'handshake', label: '#客戶重視' },
 	];
 
 	return (
@@ -75,10 +78,10 @@ const StorySection = () => {
 									color: theme.palette.primary.main,
 								}}
 							>
-								&ldquo;真正的味道不只是單純的口味，而是生活方式本身。&rdquo;
+								&ldquo;沒什麼大道理，只要看到客人吃得乾乾淨淨，就是我最快樂的事。&rdquo;
 							</Typography>
 							<Typography variant="caption" sx={{ color: 'text.secondary' }}>
-								— 熟練的職人 健次郎
+								— 料理長 健次郎
 							</Typography>
 						</QuoteBox>
 					</Grid>
@@ -87,28 +90,22 @@ const StorySection = () => {
 						<Typography
 							variant="overline"
 							sx={{
-								fontWeight: 'bold',
-								textTransform: 'uppercase',
 								color: theme.palette.primary.main,
-								letterSpacing: '0.25em',
 								display: 'block',
 								marginBottom: 1,
 							}}
 						>
-							我們的故事
+							我們的料理日常
 						</Typography>
 						<Typography
 							variant="h2"
 							sx={{
-								fontSize: { xs: '2rem', md: '3rem' },
-								fontWeight: 'bold',
 								marginBottom: 3,
 								color: theme.palette.text.primary,
-								fontFamily: "'Kaisei Opti', serif",
 							}}
 						>
-							傳承江戸的
-							<span style={{ color: theme.palette.primary.main }}>靈魂</span>
+							堅持手作，傳遞一份純粹的
+							<span style={{ color: theme.palette.primary.main }}>初心。</span>
 						</Typography>
 						<Typography
 							variant="body1"
@@ -118,8 +115,8 @@ const StorySection = () => {
 								lineHeight: 1.8,
 							}}
 						>
-							在古東京的小巷中，我們的故事從尊崇食材的承諾開始。真實的味道，
-							尊重所有元素的自然本質，從而產生真實的味道，我們相信這是真理。
+							從古老巷弄的職人精神出發，我們堅持最純粹的味道。
+							沒有華麗的擺盤，只有對食材的尊重。從拉麵湯頭的熬製到壽司飯的溫度，每一道菜都經過幾十年的技術磨練，只為了呈現在您家門口的餐桌上。
 						</Typography>
 						<Typography
 							variant="body1"
@@ -129,7 +126,7 @@ const StorySection = () => {
 								lineHeight: 1.8,
 							}}
 						>
-							刺身細緻的切法到出汁的絕妙平衡，經過幾十年的技術磨練，呈現在您的餐桌上。
+							從拉麵的湯頭到味噌湯的餘韻，我們想把這份職人精神，變成您餐桌上最平常的幸福。
 						</Typography>
 
 						<Box sx={{ display: 'flex', gap: 4, marginBottom: 4 }}>

@@ -7,11 +7,11 @@ import {
 } from '@/api/products';
 import ListLayout from '@/components/ListLayout';
 import CategorySidebar from '@/components/CategorySidebar';
-import ProductCard from '@/components/ProductCard';
-import ProductEditModal from '@/components/ProductEditModal';
+import ProductCard from '@/components/admin/ProductCard';
+import ProductEditModal from '@/components/admin/ProductEditModal';
 import ProductDetailModal from '@/components/ProductDetailModal';
 import Pagination from '@/components/Pagination';
-import DeleteModal from '@/components/DeleteModal';
+import DeleteModal from '@/components/admin/DeleteModal';
 import PermissionDenied from '@/components/PermissionDenied';
 import EmptyState from '@/components/EmptyState';
 import { isPermissionDenied } from '@/utils/permissions';
@@ -47,10 +47,6 @@ export default function Products() {
 	const [deletingProduct, setDeletingProduct] = useState(null);
 
 	useEffect(() => {
-		fetchProducts(1);
-	}, []);
-
-	useEffect(() => {
 		setCurrentPage(1);
 		fetchProducts(1);
 	}, [activeCategory, sortBy]);
@@ -70,7 +66,7 @@ export default function Products() {
 			setTotalPages(
 				Number.isFinite(totalPagesFromAPI) && totalPagesFromAPI > 0
 					? totalPagesFromAPI
-					: 1
+					: 1,
 			);
 		} catch (err) {
 			// 檢查是否為權限不足錯誤
@@ -88,7 +84,7 @@ export default function Products() {
 		let filtered = [...allProducts];
 		if (activeCategory !== 'all') {
 			filtered = filtered.filter(
-				(product) => product.category === activeCategory
+				(product) => product.category === activeCategory,
 			);
 		}
 		switch (sortBy) {
@@ -205,14 +201,11 @@ export default function Products() {
 				sx={{
 					p: 5,
 					textAlign: 'center',
-					bgcolor: 'theme.palette.background.default',
+					bgcolor: 'background.default',
 				}}
 			>
-				<CircularProgress
-					size={28}
-					sx={{ color: 'theme.palette.primary.main' }}
-				/>
-				<Typography sx={{ mt: 2, color: 'theme.palette.text.primary' }}>
+				<CircularProgress />
+				<Typography sx={{ mt: 2, color: 'text.primary' }}>
 					正在載入產品列表...
 				</Typography>
 			</Paper>
@@ -231,7 +224,7 @@ export default function Products() {
 				sx={{
 					p: 5,
 					textAlign: 'center',
-					bgcolor: 'theme.palette.background.default',
+					bgcolor: 'background.default',
 				}}
 			>
 				<Alert
@@ -243,11 +236,11 @@ export default function Products() {
 				<Box sx={{ mt: 2 }}>
 					<Button
 						variant="contained"
-						onClick={fetchProducts}
+						onClick={() => fetchProducts(1)}
 						sx={{
 							fontWeight: 800,
-							background:
-								'linear-gradient(to right, theme.palette.primary.main, theme.palette.primary.dark, #d88a7d))',
+							background: (theme) =>
+								`linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.dark}, #d88a7d)`,
 						}}
 					>
 						重新載入
@@ -282,12 +275,12 @@ export default function Products() {
 							width: 6,
 							height: 24,
 							borderRadius: 1,
-							bgcolor: 'theme.palette.primary.main',
+							bgcolor: 'primary.main',
 						}}
 					/>
 					<Typography
 						variant="h5"
-						sx={{ fontWeight: 900, color: 'theme.palette.text.primary' }}
+						sx={{ fontWeight: 900, color: 'text.primary' }}
 					>
 						全部商品
 						<Typography
@@ -296,7 +289,7 @@ export default function Products() {
 								ml: 1.25,
 								fontSize: 14,
 								fontWeight: 500,
-								color: 'theme.palette.secondary.main',
+								color: 'secondary.main',
 							}}
 						>
 							({filteredProducts.length} 項餐點)
@@ -311,7 +304,7 @@ export default function Products() {
 							onChange={(e) => setSortBy(e.target.value)}
 							sx={{
 								borderRadius: 999,
-								bgcolor: 'theme.palette.background.default',
+								bgcolor: 'background.default',
 							}}
 						>
 							{SORT_OPTIONS.map((option) => (
@@ -329,8 +322,8 @@ export default function Products() {
 							fontWeight: 900,
 							borderRadius: 2,
 							px: 2,
-							background:
-								'linear-gradient(to right, theme.palette.primary.main, theme.palette.primary.dark, #d88a7d))',
+							background: (theme) =>
+								`linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.dark}, #d88a7d)`,
 						}}
 					>
 						新增商品
@@ -338,10 +331,10 @@ export default function Products() {
 				</Stack>
 			</Stack>
 
-			{/* 產品網格 */}
 			{filteredProducts.length === 0 ? (
 				<EmptyState
-					title="目前沒有商品"
+					icon="restaurant_menu"
+					title="目前沒有餐點"
 					description={
 						activeCategory === 'all'
 							? '目前還沒有任何餐點。你可以先新增商品，或稍後再回來看看。'

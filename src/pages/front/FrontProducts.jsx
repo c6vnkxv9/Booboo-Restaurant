@@ -8,8 +8,9 @@ import {
 	Stack,
 	Typography,
 } from '@mui/material';
-import FrontLayout from '@/components/FrontLayout';
-import FrontProductCard from '@/components/FrontProductCard';
+import Swal from 'sweetalert2';
+import FrontLayout from '@/components/front/FrontLayout';
+import FrontProductCard from '@/components/front/FrontProductCard';
 import Pagination from '@/components/Pagination';
 import { getProductsAPI } from '@/api/products';
 import { addToCartAPI } from '@/api/cart';
@@ -58,12 +59,21 @@ export default function FrontProducts() {
 		try {
 			setAddingId(product.id);
 			await addToCartAPI(product.id, 1);
-			setToast({ open: true, message: '已加入購物車', severity: 'success' });
+			Swal.fire({
+				icon: 'success',
+				title: '加入成功！',
+				text: `已將「${product.title || product.name}」加入購物車`,
+				timer: 2000,
+				showConfirmButton: false,
+				position: 'top-end',
+				toast: true,
+			});
 		} catch (err) {
-			setToast({
-				open: true,
-				message: '加入購物車失敗，請稍後再試',
-				severity: 'error',
+			Swal.fire({
+				icon: 'error',
+				title: '加入失敗',
+				text: '加入購物車失敗，請稍後再試',
+				confirmButtonText: '確定',
 			});
 		} finally {
 			setAddingId(null);

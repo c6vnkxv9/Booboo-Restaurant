@@ -52,6 +52,29 @@ const theme = createTheme({
       lineHeight: 'tight',
       letterSpacing: '0.05em',
     },
+    h2: {
+      fontFamily: "'Kaisei Opti', serif",
+      fontWeight: 700,
+      lineHeight: 1.25,
+      letterSpacing: '0.02em',
+      fontSize: 'clamp(1.875rem, 2.2vw + 1rem, 3rem)',
+    },
+    overline: {
+      fontWeight: 700,
+      letterSpacing: '0.25em',
+      fontSize: '0.75rem',
+      textTransform: 'uppercase',
+    },
+    subtitle1: {
+      fontWeight: 400,
+      lineHeight: 1.7,
+      fontSize: 'clamp(1rem, 0.8vw + 0.9rem, 1.25rem)',
+    },
+    body1: {
+      fontWeight: 400,
+      lineHeight: 1.8,
+      fontSize: '1rem',
+    },
   },
   components: {
     MuiCssBaseline: {
