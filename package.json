@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.7",
     "@mui/material": "^7.3.6",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
@@ -21,16 +22,17 @@
     "react-loader-spinner": "^8.0.2",
     "react-router-dom": "^6.26.0",
     "sweetalert2": "^11.26.18",
-    "swiper": "^12.0.3"
+    "swiper": "^12.0.3",
+    "uipro-cli": "^2.2.3"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.1",
+    "@vitejs/plugin-react": "^4.7.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.14",
-    "vite": "^5.4.11"
+    "vite": "^5.4.21"
   }
 }

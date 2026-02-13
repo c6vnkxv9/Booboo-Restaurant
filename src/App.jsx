@@ -8,6 +8,8 @@ import Checkout from './pages/front/Checkout';
 import NotFound from './pages/NotFound';
 import AdminProducts from './pages/admin/Products';
 import Articles from './pages/admin/Articles';
+import Coupons from './pages/admin/Coupons';
+import Orders from './pages/admin/Orders';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminLayout from './components/admin/AdminLayout';
 
@@ -32,6 +34,8 @@ function App() {
 					<Route index element={<Navigate to="/admin/products" replace />} />
 					<Route path="products" element={<AdminProducts />} />
 					<Route path="articles" element={<Articles />} />
+					<Route path="coupons" element={<Coupons />} />
+					<Route path="orders" element={<Orders />} />
 				</Route>
 				<Route path="*" element={<NotFound />} />
 			</Routes>

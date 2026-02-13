@@ -203,8 +203,8 @@ export default function Checkout() {
 									{...register('tel', {
 										required: '請輸入電話',
 										minLength: {
-											value: 8,
-											message: '電話號碼至少需要 8 碼',
+											value: 10,
+											message: '電話號碼至少需要 10 碼',
 										},
 										pattern: {
 											value: /^[0-9-]+$/,
